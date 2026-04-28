@@ -61,40 +61,6 @@ body::before {
   pointer-events: none;
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  inset: -12vh -12vw;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 8% 18%, rgba(255, 255, 255, 0.56) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 24% 82%, rgba(118, 226, 214, 0.34) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 48% 36%, rgba(255, 255, 255, 0.48) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 71% 64%, rgba(246, 191, 102, 0.28) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 91% 28%, rgba(255, 255, 255, 0.42) 0 1px, transparent 1.5px);
-  background-size: 360px 360px, 510px 510px, 620px 620px, 760px 760px, 920px 920px;
-  opacity: 0.62;
-  pointer-events: none;
-  transform: translate3d(0, 0, 0);
-  animation: slowStarDrift 96s linear infinite;
-}
-
-@keyframes slowStarDrift {
-  0% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0.52;
-  }
-
-  50% {
-    opacity: 0.72;
-  }
-
-  100% {
-    transform: translate3d(-4vw, 5vh, 0);
-    opacity: 0.52;
-  }
-}
-
 img {
   display: block;
   max-width: 100%;
@@ -2316,10 +2282,5 @@ summary:focus-visible {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-  }
-
-  body::after {
-    animation: none !important;
-    transform: none;
   }
 }
