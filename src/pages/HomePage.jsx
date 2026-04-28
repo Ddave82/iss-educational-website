@@ -15,17 +15,17 @@ const teacherPreview = [
   {
     title: "30-minute lesson plan",
     body: "A short class flow for orbit, microgravity, and live tracking.",
-    href: "/teachers#lesson-plan"
+    href: "/learn#teacher-resources"
   },
   {
     title: "ISS quiz",
     body: "Simple questions with expandable answers for review or warmups.",
-    href: "/teachers#quiz"
+    href: "/learn#quiz"
   },
   {
     title: "Track one orbit activity",
     body: "Students observe how the ground track changes during one orbit.",
-    href: "/teachers#track-one-orbit"
+    href: "/learn#track-one-orbit"
   }
 ];
 
@@ -145,7 +145,7 @@ export function HomePage({ telemetry, scene }) {
           ))}
         </div>
         <div className="section-cta-row">
-          <a className="button-secondary" href="/teachers">
+          <a className="button-secondary" href="/learn#teacher-resources">
             Open teacher resources
           </a>
         </div>

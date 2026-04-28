@@ -1,6 +1,7 @@
 import { Accordion } from "../components/ui/Accordion";
 import { InfoTip } from "../components/ui/InfoTip";
 import { PageHero } from "../components/ui/PageHero";
+import { SectionHeader } from "../components/ui/SectionHeader";
 import { learningQuestions } from "../lib/learningQuestions";
 
 const moduleContent = {
@@ -182,7 +183,7 @@ const moduleContent = {
       "Maintenance is part of station life.",
       "Daily routines are carefully scheduled."
     ],
-    action: { label: "Open teacher activities", href: "/teachers" },
+    action: { label: "Open teacher activities", href: "/learn#teacher-resources" },
     visualItems: ["Sleep", "Eat", "Exercise", "Science", "Repair", "Talk to Earth"]
   },
   "what-science-happens-there": {
@@ -323,9 +324,50 @@ const quizItems = [
 const continueLinks = [
   { label: "Open Live Tracker", href: "/tracker" },
   { label: "See the ISS from Earth", href: "/see-the-iss" },
-  { label: "Teacher resources", href: "/teachers" },
   { label: "Explore NASA Gallery", href: "/gallery" }
 ];
+
+const teacherGoals = [
+  "Describe the ISS as a laboratory in orbit",
+  "Explain orbit as falling around Earth",
+  "Connect microgravity to the floating effect",
+  "Read simple live telemetry from the tracker"
+];
+
+const teacherMaterials = [
+  "Projector or shared screen",
+  "Live Tracker page",
+  "Student notebooks or worksheet",
+  "Timer",
+  "Optional globe or ball"
+];
+
+const discussionGroups = [
+  {
+    title: "Beginner",
+    items: ["What surprised you about the ISS?", "Why do astronauts need a schedule?"]
+  },
+  {
+    title: "Intermediate",
+    items: ["Why does the ISS move over different parts of Earth?", "Why is microgravity useful for experiments?"]
+  },
+  {
+    title: "Advanced",
+    items: ["What problems would engineers solve on a station?", "How could ISS data help people on Earth?"]
+  }
+];
+
+const extensionIdeas = [
+  "Draw the orbit",
+  "Compare ISS speed to an airplane",
+  "Research one astronaut",
+  "Watch NASA live",
+  "Write a postcard from the ISS"
+];
+
+function printWorksheet() {
+  window.print();
+}
 
 function LearningPathCards() {
   return (
@@ -406,6 +448,195 @@ function LearningSection({ question }) {
   );
 }
 
+function CompactListCard({ title, items }) {
+  return (
+    <article className="teacher-card">
+      <h3>{title}</h3>
+      <ul>
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </article>
+  );
+}
+
+function TeacherResourcesSection() {
+  return (
+    <section className="content-section teacher-anchor learn-teacher-section" id="teacher-resources">
+      <SectionHeader
+        kicker="Classroom resources"
+        title="For teachers, parents, and homeschoolers"
+      >
+        Use this learning guide as a short ISS lesson with ready-to-use
+        classroom activities.
+      </SectionHeader>
+
+      <div className="lesson-summary-grid">
+        <article className="teacher-card">
+          <h3>30-minute lesson plan</h3>
+          <p>
+            Ages 8-14. Start with the live tracker, explain orbit and
+            microgravity, record live telemetry, then close with discussion.
+          </p>
+          <ul>
+            <li>0-5 min: ask where the ISS is right now.</li>
+            <li>5-10 min: open the tracker and read live data.</li>
+            <li>10-20 min: explain orbit and microgravity.</li>
+            <li>20-30 min: students record data and discuss changes.</li>
+          </ul>
+        </article>
+        <CompactListCard title="Learning goals" items={teacherGoals} />
+        <CompactListCard title="Materials needed" items={teacherMaterials} />
+      </div>
+
+      <section className="teacher-anchor compact-teacher-block" id="worksheet">
+        <div className="section-heading-wide compact-heading">
+          <span className="section-kicker">Printable</span>
+          <h2>ISS Live Tracker Worksheet</h2>
+          <p>
+            A compact worksheet students can complete while using the live
+            tracker.
+          </p>
+        </div>
+        <div className="worksheet-actions">
+          <button className="button-primary print-button" type="button" onClick={printWorksheet}>
+            Print worksheet
+          </button>
+          <a className="button-secondary" href="/tracker">
+            Open live tracker
+          </a>
+        </div>
+        <article className="printable-worksheet" aria-label="ISS Live Tracker Worksheet">
+          <header>
+            <h2>ISS Live Tracker Worksheet</h2>
+            <div className="worksheet-line-grid">
+              <span>Student name:</span>
+              <span>Date:</span>
+            </div>
+          </header>
+          <section>
+            <h3>Live tracker observations</h3>
+            <div className="worksheet-data-grid">
+              {[
+                "Latitude",
+                "Longitude",
+                "Altitude",
+                "Speed",
+                "Last updated",
+                "Visibility",
+                "Over land or ocean?"
+              ].map((label) => (
+                <label key={label}>
+                  {label}
+                  <span />
+                </label>
+              ))}
+            </div>
+          </section>
+          <section>
+            <h3>Reflection</h3>
+            {[
+              "Why does the ISS not stay above one city?",
+              "Why do astronauts float?",
+              "What science question would you send to the ISS?"
+            ].map((question) => (
+              <label className="worksheet-line" key={question}>
+                {question}
+                <span />
+              </label>
+            ))}
+          </section>
+          <section>
+            <h3>Draw</h3>
+            <p>Draw Earth, the ISS, and the station's path around Earth.</p>
+            <div className="drawing-box" aria-label="Drawing area" />
+          </section>
+        </article>
+      </section>
+
+      <section className="teacher-anchor compact-teacher-block" id="track-one-orbit">
+        <div className="teacher-split">
+          <div>
+            <div className="section-heading-wide compact-heading">
+              <span className="section-kicker">Live activity</span>
+              <h2>Track one orbit</h2>
+              <p>
+                Students record the ISS position at different times and compare
+                how the ground track changes.
+              </p>
+            </div>
+            <article className="teacher-card">
+              <ul>
+                <li>Open the live tracker.</li>
+                <li>Record current telemetry.</li>
+                <li>Return after 10, 20, or 30 minutes.</li>
+                <li>Discuss why the station moved over a different place.</li>
+              </ul>
+              <a className="button-primary" href="/tracker">
+                Open Live Tracker
+              </a>
+            </article>
+          </div>
+          <article className="teacher-card observation-card">
+            <h3>Observation table</h3>
+            <div className="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Altitude</th>
+                    <th>Speed</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3].map((row) => (
+                    <tr key={row}>
+                      <td />
+                      <td />
+                      <td />
+                      <td />
+                      <td />
+                      <td />
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="teacher-anchor compact-teacher-block" id="discussion">
+        <div className="section-heading-wide compact-heading">
+          <span className="section-kicker">Discussion</span>
+          <h2>Discussion questions</h2>
+        </div>
+        <div className="teacher-overview-grid">
+          {discussionGroups.map((group) => (
+            <CompactListCard title={group.title} items={group.items} key={group.title} />
+          ))}
+        </div>
+      </section>
+
+      <section className="compact-teacher-block">
+        <div className="section-heading-wide compact-heading">
+          <span className="section-kicker">Extensions</span>
+          <h2>Optional extension activities</h2>
+        </div>
+        <div className="extension-chip-grid">
+          {extensionIdeas.map((idea) => (
+            <span key={idea}>{idea}</span>
+          ))}
+        </div>
+      </section>
+    </section>
+  );
+}
+
 export function LearnPage() {
   return (
     <>
@@ -455,7 +686,7 @@ export function LearnPage() {
             <LearningSection question={question} key={question.id} />
           ))}
 
-          <section className="learn-quiz-section" id="check-your-understanding">
+          <section className="learn-quiz-section" id="quiz">
             <div className="section-heading-wide">
               <span className="section-kicker">Quick quiz</span>
               <h2>Check your understanding</h2>
@@ -468,6 +699,8 @@ export function LearnPage() {
           </section>
         </article>
       </section>
+
+      <TeacherResourcesSection />
 
       <section className="content-section continue-section">
         <div className="section-heading-wide compact-heading">

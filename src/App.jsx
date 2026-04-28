@@ -7,7 +7,6 @@ import { GalleryPage } from "./pages/GalleryPage";
 import { HomePage } from "./pages/HomePage";
 import { LearnPage } from "./pages/LearnPage";
 import { SeeTheIssPage } from "./pages/SeeTheIssPage";
-import { TeachersPage } from "./pages/TeachersPage";
 import { TrackerPage } from "./pages/TrackerPage";
 
 const EarthScene = lazy(() =>
@@ -90,13 +89,28 @@ function scrollToHash(hash = window.location.hash) {
 }
 
 function usePathRouting() {
-  const [currentPath, setCurrentPath] = useState(() =>
-    normalizePath(window.location.pathname)
-  );
+  const [currentPath, setCurrentPath] = useState(() => {
+    const initialPath = normalizePath(window.location.pathname);
+
+    if (initialPath === "/teachers") {
+      window.history.replaceState({}, "", "/learn#teacher-resources");
+      return "/learn";
+    }
+
+    return initialPath;
+  });
 
   useEffect(() => {
     function handlePopState() {
-      setCurrentPath(normalizePath(window.location.pathname));
+      const nextPath = normalizePath(window.location.pathname);
+
+      if (nextPath === "/teachers") {
+        window.history.replaceState({}, "", "/learn#teacher-resources");
+        setCurrentPath("/learn");
+        return;
+      }
+
+      setCurrentPath(nextPath);
     }
 
     function handleClick(event) {
@@ -119,7 +133,10 @@ function usePathRouting() {
 
       const nextPath = normalizePath(url.pathname);
       const currentPathBeforeNavigation = normalizePath(window.location.pathname);
-      const nextUrl = `${nextPath}${url.search}${url.hash}`;
+      const resolvedPath = nextPath === "/teachers" ? "/learn" : nextPath;
+      const resolvedHash =
+        nextPath === "/teachers" && !url.hash ? "#teacher-resources" : url.hash;
+      const nextUrl = `${resolvedPath}${url.search}${resolvedHash}`;
       const currentUrl = `${currentPathBeforeNavigation}${window.location.search}${window.location.hash}`;
 
       event.preventDefault();
@@ -128,13 +145,13 @@ function usePathRouting() {
         window.history.pushState({}, "", nextUrl);
       }
 
-      if (nextPath !== currentPathBeforeNavigation) {
-        setCurrentPath(nextPath);
+      if (resolvedPath !== currentPathBeforeNavigation) {
+        setCurrentPath(resolvedPath);
         return;
       }
 
-      if (url.hash) {
-        window.requestAnimationFrame(() => scrollToHash(url.hash));
+      if (resolvedHash) {
+        window.requestAnimationFrame(() => scrollToHash(resolvedHash));
       } else {
         window.scrollTo({ top: 0, behavior: "auto" });
       }
@@ -223,8 +240,6 @@ function App() {
       <SeeTheIssPage />
     ) : currentPath === "/gallery" ? (
       <GalleryPage />
-    ) : currentPath === "/teachers" ? (
-      <TeachersPage />
     ) : currentPath === "/about-data" ? (
       <AboutDataPage />
     ) : (

@@ -6,7 +6,6 @@ const navItems = [
   { label: "Learn", href: "/learn" },
   { label: "See the ISS", href: "/see-the-iss" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Teachers", href: "/teachers" },
   { label: "About Data", href: "/about-data" }
 ];
 

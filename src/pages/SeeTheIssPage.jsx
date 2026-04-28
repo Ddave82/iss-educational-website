@@ -42,8 +42,14 @@ export function SeeTheIssPage() {
           </SectionHeader>
           <p className="fine-print">
             Predictions use current TLE orbital data in the browser. They are
-            estimates, not official viewing alerts.
+            educational estimates, not official viewing alerts. Re-check close
+            to viewing time and use local sky conditions.
           </p>
+          <div className="hero-actions">
+            <a className="button-secondary" href="/tracker">
+              Open live tracker
+            </a>
+          </div>
         </div>
         <article className="panel">
           <h2>Visible pass estimator</h2>
@@ -63,6 +69,15 @@ export function SeeTheIssPage() {
             </FeatureCard>
           ))}
         </div>
+      </section>
+
+      <section className="content-section">
+        <SectionHeader kicker="Good passes" title="What makes a good pass?">
+          The easiest passes are high above the horizon, happen under clear
+          skies, and last long enough for students or families to follow the
+          station across the sky. Low passes can be blocked by buildings, trees,
+          or haze.
+        </SectionHeader>
       </section>
     </>
   );

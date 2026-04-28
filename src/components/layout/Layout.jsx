@@ -7,7 +7,7 @@ export function Layout({ currentPath, children }) {
     <div className="site-shell">
       <Navbar currentPath={currentPath} />
       <main>{children}</main>
-      <Footer compact={currentPath === "/learn" || currentPath === "/teachers"} />
+      <Footer compact={currentPath !== "/"} />
       <BackToTopButton />
     </div>
   );

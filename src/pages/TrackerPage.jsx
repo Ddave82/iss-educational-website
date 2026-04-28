@@ -1,3 +1,4 @@
+import { LivestreamSection } from "../components/sections/LivestreamSection";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
 import { PageHero } from "../components/ui/PageHero";
 import { SectionHeader } from "../components/ui/SectionHeader";
@@ -72,6 +73,15 @@ export function TrackerPage({ telemetry, scene }) {
           available. Values can be briefly stale during network delays.
         </SectionHeader>
       </section>
+
+      <LivestreamSection
+        title="Live station view"
+        intro="Watch NASA's live ISS stream when available."
+        fallbackActions={[
+          { label: "Explore NASA gallery", href: "/gallery" },
+          { label: "Learn about the ISS", href: "/learn" }
+        ]}
+      />
     </>
   );
 }
