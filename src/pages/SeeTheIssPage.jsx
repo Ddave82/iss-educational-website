@@ -7,31 +7,34 @@ import { SectionHeader } from "../components/ui/SectionHeader";
 const viewingTips = [
   {
     title: "Best time to look",
-    body: "Look shortly after sunset or before sunrise. Your sky should be dark while the station is still lit by the Sun."
+    body: "Shortly after sunset or before sunrise."
   },
   {
-    title: "Why it looks bright",
-    body: "The station reflects sunlight from its structure and solar arrays, so it can look like a bright moving star."
-  },
-  {
-    title: "Why not every night",
-    body: "A visible pass needs the right orbit path, a dark local sky, and sunlight on the station."
+    title: "What it looks like",
+    body: "A bright, steady moving point of light."
   },
   {
     title: "What direction to look",
-    body: "Pass predictions list where the station appears and disappears. Higher passes are usually easier to spot."
+    body: "Use the pass prediction direction and watch the sky path."
   },
   {
     title: "What makes a good pass",
-    body: "A good pass is high above the horizon, lasts several minutes, and happens when clouds and city glare are limited."
+    body: "High above the horizon, several minutes long, and under clear skies."
+  },
+  {
+    title: "What can block visibility",
+    body: "Clouds, haze, buildings, trees, city glare, or Earth's shadow."
+  },
+  {
+    title: "How it differs from aircraft",
+    body: "It usually does not blink and moves smoothly."
   }
 ];
 
-const whatToLookFor = [
-  "It does not blink like an airplane",
-  "It moves steadily",
-  "It usually appears for a few minutes",
-  "It may disappear when entering Earth's shadow"
+const visualGuideSteps = [
+  "Bright dot",
+  "Steady movement",
+  "Disappears in shadow"
 ];
 
 export function SeeTheIssPage() {
@@ -67,8 +70,8 @@ export function SeeTheIssPage() {
 
       <section className="learning-section">
         <SectionHeader kicker="Observing tips" title="How to spot the station">
-          The ISS does not blink like an airplane. It glides steadily across the
-          sky and usually disappears when it enters Earth's shadow.
+          Use the pass estimator first, then scan for a steady bright point
+          moving across the predicted sky path.
         </SectionHeader>
         <div className="feature-grid">
           {viewingTips.map((tip) => (
@@ -77,30 +80,14 @@ export function SeeTheIssPage() {
             </FeatureCard>
           ))}
         </div>
-      </section>
-
-      <section className="content-section viewing-visual-section">
-        <SectionHeader kicker="Visual guide" title="Seeing the ISS from Earth">
-          The station can appear as a bright, steady point of light moving
-          across the night sky.
-        </SectionHeader>
-        <div className="look-for-grid" aria-label="What to look for when viewing the ISS">
-          {whatToLookFor.map((item) => (
-            <article className="panel look-for-card" key={item}>
-              <span aria-hidden="true" />
-              <p>{item}</p>
-            </article>
+        <div className="observation-strip" aria-label="Compact ISS viewing sequence">
+          {visualGuideSteps.map((step, index) => (
+            <span key={step}>
+              {step}
+              {index < visualGuideSteps.length - 1 ? <strong aria-hidden="true">→</strong> : null}
+            </span>
           ))}
         </div>
-      </section>
-
-      <section className="content-section">
-        <SectionHeader kicker="Good passes" title="What makes a good pass?">
-          The easiest passes are high above the horizon, happen under clear
-          skies, and last long enough for students or families to follow the
-          station across the sky. Low passes can be blocked by buildings, trees,
-          or haze.
-        </SectionHeader>
       </section>
 
       <LivestreamSection

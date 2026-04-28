@@ -376,17 +376,6 @@ const quizItems = [
     correctIndex: 1,
     explanation:
       "EVA means extravehicular activity, usually called a spacewalk."
-  },
-  {
-    question: "Why do astronauts exercise every day?",
-    choices: [
-      "To protect muscles and bones",
-      "To make the station move faster",
-      "To create oxygen"
-    ],
-    correctIndex: 0,
-    explanation:
-      "Exercise helps protect muscles and bones that weaken in microgravity."
   }
 ];
 
@@ -397,22 +386,44 @@ const continueLinks = [
   { label: "About the data", href: "/about-data" }
 ];
 
-function LearningPathCards({ activeId, exploredIds }) {
+const LEARN_PROGRESS_STORAGE_KEY = "iss-explorer-learn-progress";
+
+function readStoredLearnProgress() {
+  if (typeof window === "undefined") {
+    return new Set();
+  }
+
+  try {
+    const storedIds = JSON.parse(
+      window.localStorage.getItem(LEARN_PROGRESS_STORAGE_KEY) || "[]"
+    );
+
+    return new Set(
+      storedIds.filter((id) =>
+        learningQuestions.some((question) => question.id === id)
+      )
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+function LearningPathCards({ activeId, learnedIds }) {
   return (
     <div className="learn-path-grid">
       {learningQuestions.map((question, index) => (
         <a
-          className={`learn-path-card${question.id === activeId ? " is-active" : ""}${exploredIds.has(question.id) ? " is-complete" : ""}`}
+          className={`learn-path-card${question.id === activeId ? " is-active" : ""}${learnedIds.has(question.id) ? " is-complete" : ""}`}
           href={question.href}
           key={question.id}
         >
           <div className="learn-path-card-top">
             <span>{question.category}</span>
-            <strong aria-hidden="true">{question.icon}</strong>
+            <strong aria-hidden="true">{String(index + 1).padStart(2, "0")}</strong>
           </div>
           <h3>{question.title}</h3>
           <p>{question.teaser}</p>
-          <small>Module {String(index + 1).padStart(2, "0")}</small>
+          <small>{learnedIds.has(question.id) ? "Learned" : "Open module"}</small>
         </a>
       ))}
     </div>
@@ -437,7 +448,7 @@ function VisualSupport({ module }) {
   );
 }
 
-function LearningSection({ question }) {
+function LearningSection({ question, isLearned, onMarkLearned }) {
   const module = moduleContent[question.id];
 
   return (
@@ -480,36 +491,46 @@ function LearningSection({ question }) {
           ) : null}
         </article>
       </div>
+
+      <div className="module-complete-row">
+        <p>{isLearned ? "Marked as learned. This module now counts toward your mission progress." : "Finished this module? Mark it so your Mission Path updates."}</p>
+        <button type="button" className={isLearned ? "button-secondary" : "button-primary"} onClick={onMarkLearned}>
+          {isLearned ? "Learned" : "Mark as learned"}
+        </button>
+      </div>
     </section>
   );
 }
 
-function LearningPathSidebar({ activeId, exploredIds }) {
-  const exploredCount = exploredIds.size;
+function LearningPathSidebar({ activeId, learnedIds, onResetProgress }) {
+  const learnedCount = learnedIds.size;
 
   return (
     <aside className="learn-toc" aria-label="Learning path">
       <span className="section-kicker">Mission path</span>
       <strong className="learn-progress-text">
-        {exploredCount} / {learningQuestions.length} modules visited
+        {learnedCount} / {learningQuestions.length} modules marked as learned
       </strong>
-      <small>Reach a module and it stays marked.</small>
+      <small>Use each module's Mark as learned button to complete it.</small>
       <div className="learn-progress-track" aria-hidden="true">
-        <span style={{ width: `${(exploredCount / learningQuestions.length) * 100}%` }} />
+        <span style={{ width: `${(learnedCount / learningQuestions.length) * 100}%` }} />
       </div>
       <nav>
         {learningQuestions.map((question, index) => (
           <a
-            className={`${question.id === activeId ? "is-active" : ""}${exploredIds.has(question.id) ? " is-complete" : ""}`}
+            className={`${question.id === activeId ? "is-active" : ""}${learnedIds.has(question.id) ? " is-complete" : ""}`}
             href={question.href}
             key={question.id}
             aria-current={question.id === activeId ? "location" : undefined}
           >
-            <span>{exploredIds.has(question.id) ? "Read" : index + 1}</span>
+            <span>{learnedIds.has(question.id) ? "Done" : index + 1}</span>
             {question.title}
           </a>
         ))}
       </nav>
+      <button type="button" className="learn-reset-button" onClick={onResetProgress}>
+        Reset progress
+      </button>
     </aside>
   );
 }
@@ -519,28 +540,28 @@ function QuizCheckpoint() {
     <section className="content-section quiz-checkpoint" aria-labelledby="quiz-checkpoint-title">
       <div>
         <span className="section-kicker">Mission checkpoint</span>
-        <h2 id="quiz-checkpoint-title">Think you can explain the ISS?</h2>
+        <h2 id="quiz-checkpoint-title">Ready for a quick challenge?</h2>
         <p>
-          The mini quiz is always available. Read a few modules first or jump
-          straight into the station check.
+          Test what you know about orbit, microgravity, speed, and life on the
+          station.
         </p>
       </div>
       <div className="quiz-checkpoint-card">
-        <strong>7 questions</strong>
+        <strong>6 questions</strong>
         <span>Instant feedback</span>
-        <span>Final rank card</span>
+        <span>Final rank</span>
         <a className="button-primary" href="#quiz">
-          Launch mini quiz
+          Start mini quiz
         </a>
       </div>
     </section>
   );
 }
 
-function FragmentWithChallenge({ question, index }) {
+function FragmentWithChallenge({ question, index, isLearned, onMarkLearned }) {
   return (
     <>
-      <LearningSection question={question} />
+      <LearningSection question={question} isLearned={isLearned} onMarkLearned={onMarkLearned} />
       {index === 2 ? <QuickChallenge /> : null}
     </>
   );
@@ -600,12 +621,12 @@ function QuickChallenge() {
 function getResultTier(score) {
   if (score <= 2) {
     return {
-      title: "ISS Beginner",
+      title: "ISS Rookie",
       message: "You have the first pieces. Review orbit and microgravity, then try again."
     };
   }
 
-  if (score <= 5) {
+  if (score <= 4) {
     return {
       title: "Orbit Explorer",
       message: "Strong progress. You understand the big ideas behind the station."
@@ -658,14 +679,14 @@ function MiniQuiz() {
     <section className="learn-quiz-section gamified-quiz" id="quiz">
       <div className="section-heading-wide">
         <span className="section-kicker">Mini quiz</span>
-        <h2>Check your understanding</h2>
+        <h2>Mini Quiz: Are you ready for orbit?</h2>
         <p>
           Answer one question at a time and get instant feedback as you go.
         </p>
       </div>
 
       <div className="quiz-progress-row">
-        <span>{Math.min(answeredQuestions + 1, quizItems.length)} / {quizItems.length}</span>
+        <span>Question {Math.min(answeredQuestions + 1, quizItems.length)} of {quizItems.length}</span>
         <strong>Score: {score}</strong>
       </div>
       <div className="quiz-progress-track" aria-hidden="true">
@@ -727,11 +748,11 @@ function MiniQuiz() {
             <button type="button" className="button-secondary" onClick={handleReset}>
               Try again
             </button>
-            <a className="button-primary" href="/tracker">
-              Track the ISS live
+            <a className="button-secondary" href="#what-is-the-iss">
+              Review learning modules
             </a>
-            <a className="button-secondary" href="/gallery">
-              Explore the gallery
+            <a className="button-primary" href="/tracker">
+              Open Live Tracker
             </a>
           </div>
           {showReview ? (
@@ -759,7 +780,18 @@ function MiniQuiz() {
 
 export function LearnPage() {
   const [activeModuleId, setActiveModuleId] = useState(learningQuestions[0].id);
-  const [exploredModuleIds, setExploredModuleIds] = useState(() => new Set());
+  const [learnedModuleIds, setLearnedModuleIds] = useState(readStoredLearnProgress);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        LEARN_PROGRESS_STORAGE_KEY,
+        JSON.stringify([...learnedModuleIds])
+      );
+    } catch {
+      // Progress still works for the current session if browser storage is blocked.
+    }
+  }, [learnedModuleIds]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -770,15 +802,6 @@ export function LearnPage() {
 
         if (visibleEntry?.target.id) {
           setActiveModuleId(visibleEntry.target.id);
-          setExploredModuleIds((current) => {
-            if (current.has(visibleEntry.target.id)) {
-              return current;
-            }
-
-            const next = new Set(current);
-            next.add(visibleEntry.target.id);
-            return next;
-          });
         }
       },
       {
@@ -797,6 +820,22 @@ export function LearnPage() {
 
     return () => observer.disconnect();
   }, []);
+
+  function markModuleLearned(moduleId) {
+    setLearnedModuleIds((current) => {
+      if (current.has(moduleId)) {
+        return current;
+      }
+
+      const next = new Set(current);
+      next.add(moduleId);
+      return next;
+    });
+  }
+
+  function resetProgress() {
+    setLearnedModuleIds(new Set());
+  }
 
   return (
     <>
@@ -817,9 +856,10 @@ export function LearnPage() {
                 Start learning
               </a>
               <a className="button-secondary" href="#quiz">
-                Take mini quiz
+                Jump to quiz
               </a>
             </div>
+            <p className="learn-hero-note">Read the modules or test yourself right away.</p>
           </div>
         }
       >
@@ -832,21 +872,31 @@ export function LearnPage() {
           <span className="section-kicker">Learning path</span>
           <h2>Choose your first mission question.</h2>
           <p>
-            Use the mission map to jump between modules. Chapters stay marked
-            once you reach them.
+            Use the mission map to jump between modules. Mark a module as
+            learned when you finish it.
           </p>
         </div>
-        <LearningPathCards activeId={activeModuleId} exploredIds={exploredModuleIds} />
+        <LearningPathCards activeId={activeModuleId} learnedIds={learnedModuleIds} />
       </section>
 
       <QuizCheckpoint />
 
       <section className="content-section learn-guide-layout">
-        <LearningPathSidebar activeId={activeModuleId} exploredIds={exploredModuleIds} />
+        <LearningPathSidebar
+          activeId={activeModuleId}
+          learnedIds={learnedModuleIds}
+          onResetProgress={resetProgress}
+        />
 
         <article className="learn-article">
           {learningQuestions.map((question, index) => (
-            <FragmentWithChallenge question={question} index={index} key={question.id} />
+            <FragmentWithChallenge
+              question={question}
+              index={index}
+              isLearned={learnedModuleIds.has(question.id)}
+              onMarkLearned={() => markModuleLearned(question.id)}
+              key={question.id}
+            />
           ))}
         </article>
 

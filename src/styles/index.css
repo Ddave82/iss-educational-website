@@ -2327,6 +2327,12 @@ summary:focus-visible {
   gap: 16px;
 }
 
+.learn-hero-note {
+  margin: 0;
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
 .learn-hero-chips span {
   display: inline-flex;
   align-items: center;
@@ -2419,6 +2425,10 @@ summary:focus-visible {
   color: var(--accent-strong);
 }
 
+.learn-path-card small::after {
+  content: " →";
+}
+
 .learn-path-card:hover,
 .continue-card:hover {
   border-color: var(--border-strong);
@@ -2438,7 +2448,7 @@ summary:focus-visible {
 }
 
 .learn-path-card.is-complete small::after {
-  content: " visited";
+  content: "";
 }
 
 .quiz-checkpoint {
@@ -2586,7 +2596,7 @@ summary:focus-visible {
 .learn-toc a.is-complete span {
   background: rgba(125, 227, 161, 0.14);
   color: var(--success);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
 }
 
 .learn-toc a span {
@@ -2778,6 +2788,25 @@ summary:focus-visible {
   font-weight: 700;
   text-decoration-color: rgba(246, 191, 102, 0.45);
   text-underline-offset: 4px;
+}
+
+.module-complete-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid rgba(125, 227, 161, 0.22);
+  border-radius: 8px;
+  background: rgba(125, 227, 161, 0.07);
+}
+
+.module-complete-row p {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .learn-quiz-section {
@@ -2986,6 +3015,47 @@ summary:focus-visible {
 .quiz-review-list small {
   color: var(--muted);
   line-height: 1.5;
+}
+
+.learn-reset-button {
+  width: 100%;
+  min-height: 38px;
+  margin-top: 14px;
+  border: 1px solid rgba(192, 213, 231, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.learn-reset-button:hover {
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.observation-strip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.observation-strip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(246, 191, 102, 0.24);
+  border-radius: 8px;
+  background: rgba(246, 191, 102, 0.08);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.observation-strip strong {
+  color: var(--accent-strong);
 }
 
 .continue-section {
@@ -3538,6 +3608,11 @@ summary:focus-visible {
   .learn-module,
   .learn-quiz-section {
     padding: 18px;
+  }
+
+  .module-complete-row {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .tracker-page-layout .sidebar-stack,
