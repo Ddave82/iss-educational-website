@@ -1,8 +1,8 @@
 # 🛰️ ISS Tracker
 
-> Eine moderne, lokal startbare 3D-Web-App, die die aktuelle Position der International Space Station live visualisiert.
+> A modern 3D web app that visualizes the current position of the International Space Station in real time.
 
-ISS Tracker kombiniert Live-Telemetrie, eine interaktive 3D-Erde, Ground-Track-Erkennung und einen eingebetteten ISS-Livestream zu einem kompakten Mission-Control-Dashboard.
+ISS Tracker combines live telemetry, an interactive 3D Earth, ground-track detection, and an embedded ISS livestream into a compact mission-control dashboard.
 
 ![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react&logoColor=06111f)
 ![Vite](https://img.shields.io/badge/Vite-7-646cff?style=for-the-badge&logo=vite&logoColor=white)
@@ -11,43 +11,41 @@ ISS Tracker kombiniert Live-Telemetrie, eine interaktive 3D-Erde, Ground-Track-E
 
 ## 🚀 Live Demo
 
-Die App ist live auf Vercel erreichbar:
-
 👉 **[iss-tracker-gilt.vercel.app](https://iss-tracker-gilt.vercel.app)**
 
 ## ✨ Highlights
 
-- 🌍 **Interaktive 3D-Erde** mit Sternenfeld, Atmosphärenglanz, Wolkenlayer und ISS-Marker
-- 📡 **Live-Telemetrie** für Koordinaten, Höhe, Geschwindigkeit, Sichtbarkeit, Richtung und Update-Zeitpunkt
-- 🗺️ **Ground Track** erkennt, welches Land oder welcher Ozean aktuell unter der ISS liegt
-- 🔴 **Orbit-Trail** zeigt die zuletzt empfangenen Positionspunkte
-- 🧭 **Orbit-Prognose** visualisiert die aktuelle Flugbahn als gestrichelte Linie
-- 📺 **ISS-Livestream** direkt im Dashboard eingebettet
-- ⚡ **Optimierter Startpfad** mit lazy geladener 3D-Szene und ausgelagerten Geo-Daten
-- 📱 **Responsive Layout** für Desktop, Tablet und Mobile
+- 🌍 **Interactive 3D Earth** with starfield, atmospheric glow, cloud layer, and ISS marker
+- 📡 **Live telemetry** for latitude, longitude, altitude, velocity, visibility, heading, and last update
+- 🗺️ **Ground-track detection** showing the country or ocean currently below the ISS
+- 🔴 **Orbit trail** with recently received ISS positions
+- 🧭 **Orbit preview** visualizing the current flight path as a dashed line
+- 📺 **Embedded ISS livestream** directly inside the dashboard
+- ⚡ **Optimized loading path** with a lazy-loaded 3D scene and split geo data
+- 📱 **Responsive layout** for desktop, tablet, and mobile screens
 
-## 🧪 Demo lokal starten
+## 🧪 Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Danach im Browser öffnen:
+Then open the local Vite URL in your browser:
 
 ```text
 http://localhost:5173/
 ```
 
-> Wichtig: Die App bitte über den Vite-Dev-Server starten. Ein Doppelklick auf `index.html` reicht nicht, weil ES-Module und der lokale API-Proxy benötigt werden.
+> Important: Start the app through the Vite dev server. Opening `index.html` directly is not enough because the app uses ES modules and the local API proxy.
 
-## 🏗️ Produktions-Build
+## 🏗️ Production Build
 
 ```bash
 npm run build
 ```
 
-Build lokal testen:
+Preview the production build locally:
 
 ```bash
 npm run preview
@@ -55,17 +53,17 @@ npm run preview
 
 ## 🧰 Tech Stack
 
-| Bereich | Technologie |
+| Area | Technology |
 | --- | --- |
 | UI | React 19 |
-| Build Tooling | Vite |
-| 3D Rendering | Three.js, React Three Fiber |
-| 3D Helpers | `@react-three/drei` |
-| Geo-Berechnung | `d3-geo`, `topojson-client` |
-| Kartenbasis | `world-atlas` |
-| Styling | CSS mit responsivem Glas-/Space-UI |
+| Build tooling | Vite |
+| 3D rendering | Three.js, React Three Fiber |
+| 3D helpers | `@react-three/drei` |
+| Geo calculations | `d3-geo`, `topojson-client` |
+| Map data | `world-atlas` |
+| Styling | Responsive custom CSS with a space-themed glass UI |
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
 ```text
 .
@@ -95,53 +93,53 @@ npm run preview
             └── EarthScene.jsx
 ```
 
-## 🔌 Datenquellen
+## 🔌 Data Sources
 
-| Zweck | Quelle |
+| Purpose | Source |
 | --- | --- |
-| Primäre ISS-Telemetrie | `https://api.wheretheiss.at/v1/satellites/25544` |
-| Lokaler Dev-Proxy | `/api/iss/current` |
-| Sekundärer Fallback | `http://api.open-notify.org/iss-now.json` |
+| Primary ISS telemetry | `https://api.wheretheiss.at/v1/satellites/25544` |
+| Local dev proxy | `/api/iss/current` |
+| Secondary fallback | `http://api.open-notify.org/iss-now.json` |
 | Livestream | `https://www.youtube.com/watch?v=zPH5KtjJFaQ` |
-| Länder- und Küstengeometrie | `world-atlas/countries-110m.json` |
+| Country and coastline geometry | `world-atlas/countries-110m.json` |
 
-## 🛡️ Robustheit
+## 🛡️ Resilience
 
-- Primär-API, direkter Abruf und Fallback-API werden automatisch kombiniert.
-- Bei temporären Fehlern bleibt die letzte bekannte Position sichtbar.
-- Stale-/Offline-Status wird im UI transparent angezeigt.
-- Polling läuft sequenziell, damit bei langsamen API-Antworten keine Request-Staus entstehen.
-- Fehlende Fallback-Werte werden im Interface als `Nicht verfügbar` angezeigt.
+- Primary API, direct fetch, and fallback API are combined automatically.
+- The last known position remains visible during temporary API issues.
+- Stale and offline states are clearly shown in the UI.
+- Polling runs sequentially to avoid request pileups during slow API responses.
+- Missing fallback values are shown as `Not available` in the interface.
 
-## ⚡ Performance-Notizen
+## ⚡ Performance Notes
 
-- Die 3D-Szene wird lazy geladen, damit die App schneller interaktiv wird.
-- Geo-Daten für den Ground Track werden dynamisch nachgeladen.
-- Three.js-Texturen und berechnete Orbit-/Markerpunkte werden memoisiert.
-- Auf Mobile wird eine kleinere Texturauflösung genutzt.
-- Der YouTube-Embed lädt lazy und blockiert nicht den Start.
+- The 3D scene is lazy-loaded to make the app interactive faster.
+- Ground-track geo data is dynamically imported.
+- Three.js textures and computed orbit/marker points are memoized.
+- Mobile devices use a smaller texture resolution.
+- The YouTube embed loads lazily and does not block the initial render.
 
-## 🎮 Bedienung
+## 🎮 Controls
 
-| Gerät | Interaktion |
+| Device | Interaction |
 | --- | --- |
-| Desktop | Ziehen zum Rotieren, Mausrad zum Zoomen |
-| Mobile | Ziehen zum Rotieren, Spreizen zum Zoomen |
-| Große Screens | Sidebar scrollt unabhängig, 3D-Ansicht bleibt sichtbar |
-| Kleine Screens | Layout wechselt in eine vertikale, touchfreundliche Ansicht |
+| Desktop | Drag to rotate, mouse wheel to zoom |
+| Mobile | Drag to rotate, pinch to zoom |
+| Large screens | Sidebar scrolls independently while the 3D view stays visible |
+| Small screens | Layout switches to a vertical, touch-friendly view |
 
-## 🚀 Deployment-Hinweis
+## 🚀 Deployment Notes
 
-Für statisches Hosting funktioniert der Build grundsätzlich über `npm run build`. Da die App in der lokalen Entwicklung einen Vite-Proxy für ISS-APIs nutzt, sollte für produktives Hosting ein eigener Proxy, eine Serverless Function oder ein kleines Backend für die API-Aufrufe eingeplant werden.
+The production build works for static hosting via `npm run build`. For production deployments, plan for a small API proxy, serverless function, or backend endpoint for ISS telemetry requests, because the local Vite proxy is only available during development.
 
 ## 📜 Scripts
 
 ```bash
-npm run dev      # Entwicklungsserver starten
-npm run build    # Produktionsbuild erstellen
-npm run preview  # Produktionsbuild lokal ansehen
+npm run dev      # Start the development server
+npm run build    # Create a production build
+npm run preview  # Preview the production build locally
 ```
 
 ---
 
-Made for space nerds, curious builders and everyone who gerne mal wissen will, wo die ISS gerade über uns vorbeizieht. 🌌
+Made for space nerds, curious builders, and everyone who wants to know where the ISS is right now. 🌌
