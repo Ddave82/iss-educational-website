@@ -27,19 +27,23 @@ export function LivestreamSection() {
         </div>
         <aside className="stream-notes">
           <span className="section-kicker">Signal notes</span>
-          <h3>Why does the feed sometimes pause?</h3>
+          <h3>NASA livestream is temporarily unavailable?</h3>
           <p>
-            The ISS sends video through relay satellites and ground systems.
-            When the station moves between coverage zones, station views can
-            pause for a short time.
+            Live station feeds are not always active. The station may be
+            switching cameras, passing through signal gaps, or the stream may
+            be offline.
           </p>
-          <a
-            href="https://www.nasa.gov/live/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open NASA Live
-          </a>
+          <div className="stream-actions">
+            <a href="/tracker">Open live tracker</a>
+            <a href="/gallery">Explore NASA imagery</a>
+            <a
+              href="https://www.nasa.gov/live/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open NASA Live
+            </a>
+          </div>
         </aside>
       </div>
     </section>

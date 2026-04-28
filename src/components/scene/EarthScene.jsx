@@ -460,7 +460,7 @@ function SceneHudCard({ groundTrack, statusText, interactionHint, inline = false
   return (
     <div className={`scene-hud-card${inline ? " scene-hud-card-inline" : ""}`}>
       <span className="scene-card-label">Ground Track</span>
-      <strong>{groundTrack || "Position wird bestimmt"}</strong>
+      <strong>{groundTrack || "Finding position"}</strong>
       <span>{statusText}</span>
       <span>{interactionHint}</span>
     </div>

@@ -5,8 +5,8 @@ with React, Vite, Three.js, live orbital data, and public NASA learning
 resources.
 
 ISS Explorer is designed for curious kids, families, classrooms, and space fans:
-it combines a live 3D ISS tracker with short learning sections, NASA imagery,
-and livestream access in one polished single-page experience.
+it combines a live 3D ISS tracker with route-based learning sections, NASA
+imagery, livestream access, teacher resources, and transparent data notes.
 
 ![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react&logoColor=06111f)
 ![Vite](https://img.shields.io/badge/Vite-7-646cff?style=for-the-badge&logo=vite&logoColor=white)
@@ -27,6 +27,7 @@ Live preview: [iss-educational-website.vercel.app](https://iss-educational-websi
 - Loads imagery from NASA's public Image and Video Library
 - Falls back to curated NASA gallery items when the media API is unavailable
 - Embeds NASA Live and links station-viewing resources
+- Includes dedicated pages for learning, viewing guidance, gallery, teacher resources, and data credits
 - Works as a static Vite build for Vercel deployment
 
 ## Live Data and Media
@@ -69,6 +70,18 @@ Open:
 
 ```text
 http://localhost:5173/
+```
+
+Routes:
+
+```text
+/
+/tracker
+/learn
+/see-the-iss
+/gallery
+/teachers
+/about-data
 ```
 
 ## Build

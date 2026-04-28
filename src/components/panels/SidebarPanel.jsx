@@ -1,74 +1,19 @@
 import { DataField } from "./DataField";
-
-const DATE_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-  timeStyle: "medium"
-});
-
-function formatCoordinate(value, positiveLabel, negativeLabel) {
-  if (!Number.isFinite(value)) {
-    return "Not available";
-  }
-
-  const direction = value >= 0 ? positiveLabel : negativeLabel;
-  return `${Math.abs(value).toFixed(2)} deg ${direction}`;
-}
-
-function formatMetric(value, suffix, digits = 1) {
-  if (!Number.isFinite(value)) {
-    return "Not available";
-  }
-
-  return `${value.toFixed(digits)} ${suffix}`;
-}
-
-function formatTimestamp(timestamp) {
-  if (!timestamp) {
-    return "No update yet";
-  }
-
-  return DATE_TIME_FORMATTER.format(new Date(timestamp));
-}
-
-function formatHeading(heading) {
-  if (!Number.isFinite(heading)) {
-    return "Not available";
-  }
-
-  const normalized = (heading + 360) % 360;
-  const sectors = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-  const sector = sectors[Math.round(normalized / 45) % sectors.length];
-  return `${normalized.toFixed(0)} deg ${sector}`;
-}
-
-function getStatusLabel(status, error) {
-  if (status === "loading") {
-    return "Connecting";
-  }
-
-  if (status === "stale") {
-    return "Cached";
-  }
-
-  if (status === "offline") {
-    return "Offline";
-  }
-
-  if (error) {
-    return "Partial";
-  }
-
-  return "Live";
-}
+import { InfoTip } from "../ui/InfoTip";
+import { StatusPill } from "../ui/StatusPill";
+import {
+  formatCoordinate,
+  formatDataAge,
+  formatHeading,
+  formatMetric,
+  formatTimestamp,
+  formatVisibility,
+  formatWholeMetric
+} from "../../lib/formatters";
 
 export function SidebarPanel({ telemetry }) {
   const { snapshot, status, error, lastUpdated, history } = telemetry;
-  const visibility =
-    snapshot?.visibility === "daylight"
-      ? "Sunlit"
-      : snapshot?.visibility === "eclipsed"
-        ? "In Earth's shadow"
-        : "Not available";
+  const visibility = formatVisibility(snapshot?.visibility);
 
   const trailWindow =
     history.length > 1
@@ -83,10 +28,7 @@ export function SidebarPanel({ telemetry }) {
             <span className="panel-eyebrow">Mission Control</span>
             <h2>Live Telemetry</h2>
           </div>
-          <div className={`status-pill status-${status}`}>
-            <span className="status-dot" />
-            {getStatusLabel(status, error)}
-          </div>
+          <StatusPill status={status} error={error} />
         </div>
         {error ? (
           <div className="alert-card">
@@ -116,10 +58,22 @@ export function SidebarPanel({ telemetry }) {
           <DataField
             label="Altitude"
             value={formatMetric(snapshot?.altitude, "km")}
+            info={
+              <InfoTip label="Altitude">
+                Altitude is the station's height above Earth's surface. It
+                changes slightly as the orbit is adjusted.
+              </InfoTip>
+            }
           />
           <DataField
             label="Speed"
-            value={formatMetric(snapshot?.velocity, "km/h", 0)}
+            value={formatWholeMetric(snapshot?.velocity, "km/h")}
+            info={
+              <InfoTip label="Velocity">
+                Velocity means speed plus direction. The station moves fast
+                enough to circle Earth in roughly 90 minutes.
+              </InfoTip>
+            }
           />
           <DataField label="Visibility" value={visibility} />
           <DataField
@@ -130,6 +84,12 @@ export function SidebarPanel({ telemetry }) {
                 ? `Footprint ${formatMetric(snapshot.footprint, "km", 0)}`
                 : undefined
             }
+            info={
+              <InfoTip label="Ground track">
+                Ground track is the place on Earth directly under the station's
+                path.
+              </InfoTip>
+            }
           />
           <DataField
             label="Direction"
@@ -139,6 +99,7 @@ export function SidebarPanel({ telemetry }) {
           <DataField
             label="Last update"
             value={formatTimestamp(lastUpdated)}
+            hint={formatDataAge(lastUpdated)}
           />
         </div>
       </section>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FALLBACK_MEDIA_ITEMS, fetchIssMedia } from "../../lib/nasaMedia";
 
-function MediaCard({ item }) {
+export function MediaCard({ item, cta = "View source" }) {
   const [imageFailed, setImageFailed] = useState(false);
 
   return (
@@ -28,14 +28,20 @@ function MediaCard({ item }) {
         <h3>{item.title}</h3>
         <p>{item.description}</p>
         <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-          View source
+          {cta}
         </a>
       </div>
     </article>
   );
 }
 
-export function MediaGallery() {
+export function MediaGallery({
+  limit,
+  title = "Real station imagery for learning and wonder.",
+  intro = "These images are loaded from NASA's public Image and Video Library when available. If the API is unreachable, curated NASA gallery items remain visible.",
+  showHeader = true,
+  cta = "View source"
+}) {
   const [mediaItems, setMediaItems] = useState(FALLBACK_MEDIA_ITEMS);
   const [status, setStatus] = useState("loading");
 
@@ -64,15 +70,13 @@ export function MediaGallery() {
 
   return (
     <section className="media-section" id="media">
-      <div className="section-heading-wide">
-        <span className="section-kicker">NASA media library</span>
-        <h2>Real station imagery for learning and wonder.</h2>
-        <p>
-          These images are loaded from NASA's public Image and Video Library
-          when available. If the API is unreachable, curated NASA gallery items
-          remain visible.
-        </p>
-      </div>
+      {showHeader ? (
+        <div className="section-heading-wide">
+          <span className="section-kicker">NASA media library</span>
+          <h2>{title}</h2>
+          <p>{intro}</p>
+        </div>
+      ) : null}
 
       <div className="media-status-line" aria-live="polite">
         {status === "loading"
@@ -83,8 +87,8 @@ export function MediaGallery() {
       </div>
 
       <div className="media-grid">
-        {mediaItems.map((item) => (
-          <MediaCard item={item} key={item.id} />
+        {mediaItems.slice(0, limit || mediaItems.length).map((item) => (
+          <MediaCard item={item} key={item.id} cta={cta} />
         ))}
       </div>
     </section>

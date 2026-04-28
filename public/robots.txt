@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iss-educational-website.vercel.app/sitemap.xml

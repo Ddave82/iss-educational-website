@@ -1,6 +1,9 @@
+import { formatTimestamp, formatWholeMetric } from "../../lib/formatters";
+import { StatCard } from "../ui/StatCard";
+
 function formatAltitude(value) {
   if (!Number.isFinite(value)) {
-    return "400 km";
+    return "About 400 km";
   }
 
   return `${value.toFixed(0)} km`;
@@ -8,47 +11,55 @@ function formatAltitude(value) {
 
 function formatVelocity(value) {
   if (!Number.isFinite(value)) {
-    return "28,000 km/h";
+    return "About 27,600 km/h";
   }
 
-  return `${value.toLocaleString("en-US", {
-    maximumFractionDigits: 0
-  })} km/h`;
+  return formatWholeMetric(value, "km/h");
 }
 
 export function FactStrip({ telemetry }) {
-  const { snapshot } = telemetry;
+  const { snapshot, lastUpdated } = telemetry;
   const facts = [
     {
       value: formatAltitude(snapshot?.altitude),
-      label: "above Earth",
-      detail: "Roughly 250 miles / 400 km straight up; the exact altitude changes."
+      label: "Current altitude",
+      detail: "The exact height changes as orbit maintenance adjusts the station.",
+      info: "Altitude is the station's height above Earth's surface."
     },
     {
       value: formatVelocity(snapshot?.velocity),
-      label: "orbital speed",
-      detail: "Fast enough to circle Earth in roughly 90 minutes."
+      label: "Orbital speed",
+      detail: "Fast enough to circle Earth in roughly 90 minutes.",
+      info: "Velocity means speed in a direction along the station's orbit."
     },
     {
-      value: "16",
-      label: "sunrises per day",
+      value: "About 16",
+      label: "Orbits per day",
       detail: "The crew sees day and night many times in one Earth day."
     },
     {
-      value: "292",
-      label: "people visited",
-      detail: "NASA count as of Apr. 27, 2026; continuously inhabited since Nov. 2000."
+      value: "Crewed",
+      label: "Station status",
+      detail: "A continuously inhabited orbital laboratory since November 2000."
+    },
+    {
+      value: formatTimestamp(lastUpdated),
+      label: "Last updated",
+      detail: "Live telemetry refreshes about every 10 seconds when reachable.",
+      info: "Telemetry is live measurement data from the station position feed."
     }
   ];
 
   return (
     <section className="fact-strip" aria-label="ISS quick facts">
       {facts.map((fact) => (
-        <article className="fact-card" key={fact.label}>
-          <strong>{fact.value}</strong>
-          <span>{fact.label}</span>
-          <p>{fact.detail}</p>
-        </article>
+        <StatCard
+          key={fact.label}
+          value={fact.value}
+          label={fact.label}
+          detail={fact.detail}
+          info={fact.info}
+        />
       ))}
     </section>
   );
