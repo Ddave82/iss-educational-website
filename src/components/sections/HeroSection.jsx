@@ -74,7 +74,7 @@ export function HeroSection({ telemetry }) {
               target="_blank"
               rel="noreferrer"
             >
-              linked NASA media record
+              linked NASA gallery
             </a>
             .
           </figcaption>

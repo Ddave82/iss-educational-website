@@ -25,7 +25,7 @@ Live preview: [iss-educational-website.vercel.app](https://iss-educational-websi
 - Explains the ISS through concise, family-friendly learning cards
 - Loads imagery from NASA's public Image and Video Library
 - Falls back to curated NASA gallery items when the media API is unavailable
-- Embeds NASA Live / ISS livestream access
+- Embeds NASA Live and links station-viewing resources
 - Works as a static Vite build for Vercel deployment
 
 ## Live Data and Media
@@ -36,6 +36,8 @@ Live preview: [iss-educational-website.vercel.app](https://iss-educational-websi
 | NASA media search | [`images-api.nasa.gov`](https://images.nasa.gov/) |
 | Curated gallery fallbacks | [NASA Space Station Gallery](https://www.nasa.gov/international-space-station/space-station-gallery/) |
 | Livestream | [NASA Live](https://www.nasa.gov/live/) |
+| Station facts | [NASA Station Facts and Figures](https://www.nasa.gov/international-space-station/space-station-facts-and-figures/) |
+| Visitor counts | [NASA Station Visitors](https://www.nasa.gov/international-space-station/space-station-visitors-by-country/) |
 | Station visibility reference | [NASA Spot the Station](https://www.nasa.gov/spot-the-station/) |
 | Country geometry | [`world-atlas`](https://www.npmjs.com/package/world-atlas) |
 

@@ -7,7 +7,17 @@ const sources = [
   {
     label: "NASA Media Usage Guidelines",
     description: "Rules for NASA imagery, attribution, logos, and endorsement language.",
-    href: "https://www.nasa.gov/multimedia/guidelines/index.html"
+    href: "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+  },
+  {
+    label: "NASA Station Facts",
+    description: "Core ISS facts such as size, orbit time, partner agencies, and occupation history.",
+    href: "https://www.nasa.gov/international-space-station/space-station-facts-and-figures/"
+  },
+  {
+    label: "NASA Station Visitors",
+    description: "Visitor counts and countries represented aboard the International Space Station.",
+    href: "https://www.nasa.gov/international-space-station/space-station-visitors-by-country/"
   },
   {
     label: "NASA Space Station Gallery",

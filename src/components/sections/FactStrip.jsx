@@ -22,7 +22,7 @@ export function FactStrip({ telemetry }) {
     {
       value: formatAltitude(snapshot?.altitude),
       label: "above Earth",
-      detail: "About the distance from Paris to London, straight up."
+      detail: "Roughly 250 miles / 400 km straight up; the exact altitude changes."
     },
     {
       value: formatVelocity(snapshot?.velocity),
