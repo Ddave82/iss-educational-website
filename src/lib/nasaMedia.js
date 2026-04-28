@@ -10,7 +10,8 @@ export const FALLBACK_MEDIA_ITEMS = [
     imageUrl:
       "https://images-assets.nasa.gov/image/jsc2021e064215_alt/jsc2021e064215_alt~large.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1173&w=1920",
     credit: "NASA / ESA / Thomas Pesquet",
-    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/"
+    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/",
+    category: "Spacewalks"
   },
   {
     id: "iss065e242460",
@@ -19,7 +20,8 @@ export const FALLBACK_MEDIA_ITEMS = [
       "Astronauts work near the Life Sciences Glovebox, where research can run in microgravity.",
     imageUrl: "https://www.nasa.gov/wp-content/uploads/2023/03/iss065e242460.jpg?w=1024",
     credit: "NASA",
-    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/"
+    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/",
+    category: "Experiments"
   },
   {
     id: "iss060e000604",
@@ -28,7 +30,8 @@ export const FALLBACK_MEDIA_ITEMS = [
       "ISS crews photograph deserts, rivers, storms, cities, and coastlines from hundreds of kilometers above Earth.",
     imageUrl: "https://www.nasa.gov/wp-content/uploads/2023/03/iss060e000604.jpg?w=1024",
     credit: "NASA",
-    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/"
+    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/",
+    category: "Earth views"
   },
   {
     id: "iss064e055946",
@@ -37,7 +40,8 @@ export const FALLBACK_MEDIA_ITEMS = [
       "A thin line of atmosphere glows below the stars in a view photographed from the station.",
     imageUrl: "https://www.nasa.gov/wp-content/uploads/2023/03/iss064e055946.jpg?w=1041",
     credit: "NASA",
-    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/"
+    sourceUrl: "https://www.nasa.gov/international-space-station/space-station-gallery/",
+    category: "Earth views"
   }
 ];
 
@@ -97,6 +101,32 @@ function resolveCredit(data) {
   return "NASA Image and Video Library";
 }
 
+function inferMediaCategory(data) {
+  const text = `${data.title || ""} ${data.description || ""} ${data.description_508 || ""}`.toLowerCase();
+
+  if (/earth|aurora|airglow|storm|coast|city|desert|river|ocean|glacier|atmosphere/.test(text)) {
+    return "Earth views";
+  }
+
+  if (/spacewalk|eva|extravehicular|exterior|solar array|outside/.test(text)) {
+    return "Spacewalks";
+  }
+
+  if (/experiment|research|science|glovebox|plant|biology|fluid|material|laboratory/.test(text)) {
+    return "Experiments";
+  }
+
+  if (/interior|inside|module|cupola|node|deck|galley|crew quarters/.test(text)) {
+    return "Station interior";
+  }
+
+  if (/crew|astronaut|cosmonaut|expedition/.test(text)) {
+    return "Crew";
+  }
+
+  return "Crew";
+}
+
 function normalizeMediaItem(item) {
   const data = item.data?.[0] || {};
   const imageUrl = resolvePreviewLink(item);
@@ -112,7 +142,8 @@ function normalizeMediaItem(item) {
     description: compactText(stripNasaCaptionPrefix(data.description || data.description_508)),
     imageUrl,
     credit: resolveCredit(data),
-    sourceUrl: `https://images.nasa.gov/details/${encodeURIComponent(id)}`
+    sourceUrl: `https://images.nasa.gov/details/${encodeURIComponent(id)}`,
+    category: inferMediaCategory(data)
   };
 }
 
@@ -126,13 +157,22 @@ function normalizeImageIdentity(imageUrl) {
   }
 }
 
+function normalizeTextIdentity(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
 function dedupeMediaItems(items) {
   const seenKeys = new Set();
 
   return items.filter((item) => {
     const identityKeys = [
       item.id?.toLowerCase(),
-      normalizeImageIdentity(item.imageUrl)
+      normalizeImageIdentity(item.imageUrl),
+      normalizeTextIdentity(item.title),
+      normalizeTextIdentity(item.description).slice(0, 90)
     ].filter(Boolean);
     const hasDuplicate = identityKeys.some((key) => seenKeys.has(key));
 

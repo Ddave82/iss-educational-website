@@ -1,7 +1,6 @@
 import { LivestreamSection } from "../components/sections/LivestreamSection";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
 import { PageHero } from "../components/ui/PageHero";
-import { SectionHeader } from "../components/ui/SectionHeader";
 import { ErrorState, LoadingSkeleton } from "../components/ui/StateCards";
 import { StatusPill } from "../components/ui/StatusPill";
 import { formatDataAge, formatTimestamp } from "../lib/formatters";
@@ -63,15 +62,6 @@ export function TrackerPage({ telemetry, scene }) {
             </p>
           </article>
         </div>
-      </section>
-
-      <section className="content-section">
-        <SectionHeader kicker="Reading the tracker" title="Live data, with clear limits">
-          The tracker shows live position data and recent movement when the feed
-          is reachable. Ground track names depend on local map geometry, so some
-          locations may be shown more generally as ocean, region, or not
-          available. Values can be briefly stale during network delays.
-        </SectionHeader>
       </section>
 
       <LivestreamSection

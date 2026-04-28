@@ -1,6 +1,36 @@
 import { useEffect, useState } from "react";
 import { FALLBACK_MEDIA_ITEMS, fetchIssMedia } from "../../lib/nasaMedia";
 
+function normalizeGalleryKey(value) {
+  return (value || "")
+    .toLowerCase()
+    .replace(/https?:\/\/[^?]+/g, (match) => match.replace(/\/$/, ""))
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function dedupeRenderedMedia(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const keys = [
+      item.id,
+      item.imageUrl?.split("?")[0],
+      item.title,
+      item.description?.slice(0, 100)
+    ]
+      .map(normalizeGalleryKey)
+      .filter(Boolean);
+
+    if (keys.some((key) => seen.has(key))) {
+      return false;
+    }
+
+    keys.forEach((key) => seen.add(key));
+    return true;
+  });
+}
+
 export function MediaCard({ item, cta = "View source" }) {
   const [imageFailed, setImageFailed] = useState(false);
 
@@ -40,10 +70,16 @@ export function MediaGallery({
   title = "Real station imagery for learning and wonder.",
   intro = "These images are loaded from NASA's public Image and Video Library when available. If the API is unreachable, curated NASA gallery items remain visible.",
   showHeader = true,
-  cta = "View source"
+  cta = "View source",
+  activeFilter = "All"
 }) {
   const [mediaItems, setMediaItems] = useState(FALLBACK_MEDIA_ITEMS);
   const [status, setStatus] = useState("loading");
+  const filteredItems =
+    activeFilter === "All"
+      ? mediaItems
+      : mediaItems.filter((item) => item.category === activeFilter);
+  const visibleItems = dedupeRenderedMedia(filteredItems).slice(0, limit || filteredItems.length);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -83,14 +119,24 @@ export function MediaGallery({
           ? "Loading NASA media..."
           : status === "fallback"
             ? "Showing curated NASA gallery fallbacks."
-            : "Showing current NASA Image and Video Library results."}
+            : `Showing current NASA Image and Video Library results${activeFilter === "All" ? "" : ` for ${activeFilter.toLowerCase()}`}.`}
       </div>
 
-      <div className="media-grid">
-        {mediaItems.slice(0, limit || mediaItems.length).map((item) => (
-          <MediaCard item={item} key={item.id} cta={cta} />
-        ))}
-      </div>
+      {visibleItems.length ? (
+        <div className="media-grid">
+          {visibleItems.map((item) => (
+            <MediaCard item={item} key={item.id} cta={cta} />
+          ))}
+        </div>
+      ) : (
+        <article className="panel empty-filter-card">
+          <h3>No images in this category yet</h3>
+          <p>
+            NASA results can vary by request. Choose another category or try
+            again later.
+          </p>
+        </article>
+      )}
     </section>
   );
 }

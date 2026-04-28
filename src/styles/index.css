@@ -1857,7 +1857,15 @@ summary:focus-visible {
   align-items: start;
 }
 
+.iss-viewing-teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(360px, 1.15fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
 .split-section h2,
+.iss-viewing-teaser h2,
 .final-cta h2,
 .note-card h2,
 .lesson-plan h2,
@@ -1868,12 +1876,46 @@ summary:focus-visible {
 }
 
 .split-section p,
+.iss-viewing-teaser p,
 .note-card p,
 .lesson-plan,
 .worksheet-card p,
 .fine-print {
   color: var(--muted);
   line-height: 1.6;
+}
+
+.viewing-teaser-grid,
+.look-for-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.viewing-teaser-card,
+.look-for-card {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-height: 160px;
+  padding: 18px;
+}
+
+.viewing-teaser-card span,
+.look-for-card span {
+  display: block;
+  width: 38px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+}
+
+.viewing-teaser-card p,
+.look-for-card p {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.45;
 }
 
 .fact-strip {
@@ -2310,9 +2352,11 @@ summary:focus-visible {
 
 .learn-guide-layout {
   display: grid;
-  grid-template-columns: minmax(230px, 280px) minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(200px, 230px) minmax(0, 900px);
+  justify-content: center;
+  gap: 28px;
   align-items: start;
+  width: min(1140px, calc(100% - 40px));
 }
 
 .learn-toc {
@@ -2398,6 +2442,8 @@ summary:focus-visible {
 .learn-article {
   display: grid;
   gap: 24px;
+  width: 100%;
+  min-width: 0;
 }
 
 .learn-module,
@@ -2582,6 +2628,15 @@ summary:focus-visible {
   background:
     radial-gradient(circle at 92% 12%, rgba(246, 191, 102, 0.18), transparent 32%),
     rgba(10, 15, 22, 0.88);
+}
+
+.viewing-visual-section {
+  display: grid;
+  gap: 22px;
+}
+
+.viewing-media-grid {
+  margin-top: 6px;
 }
 
 .quick-challenge h2,
@@ -3125,7 +3180,7 @@ summary:focus-visible {
   flex-wrap: wrap;
 }
 
-.gallery-filter-chips span {
+.gallery-filter-chips button {
   display: inline-flex;
   align-items: center;
   min-height: 36px;
@@ -3134,8 +3189,35 @@ summary:focus-visible {
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.045);
   color: var(--muted);
+  cursor: pointer;
   font-size: 0.88rem;
   font-weight: 700;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.gallery-filter-chips button:hover,
+.gallery-filter-chips button.is-active {
+  border-color: var(--border-strong);
+  background: rgba(118, 226, 214, 0.1);
+  color: var(--text);
+}
+
+.empty-filter-card {
+  max-width: 620px;
+  padding: 22px;
+}
+
+.empty-filter-card h3 {
+  margin-top: 0;
+}
+
+.empty-filter-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 @media (max-width: 1180px) {
@@ -3157,6 +3239,7 @@ summary:focus-visible {
 
 @media (max-width: 900px) {
   .split-section,
+  .iss-viewing-teaser,
   .note-grid,
   .lesson-grid,
   .three-card-grid,
@@ -3164,6 +3247,8 @@ summary:focus-visible {
   .learn-support-grid,
   .continue-grid,
   .challenge-grid,
+  .viewing-teaser-grid,
+  .look-for-grid,
   .teacher-split,
   .quiz-grid,
   .answer-key-list {
@@ -3189,6 +3274,10 @@ summary:focus-visible {
 
   .learn-toc a {
     min-width: 220px;
+  }
+
+  .learn-guide-layout {
+    width: min(100% - 24px, 1180px);
   }
 
   .quick-challenge {

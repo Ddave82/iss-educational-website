@@ -1,7 +1,6 @@
 import { FactStrip } from "../components/sections/FactStrip";
 import { MediaGallery } from "../components/sections/MediaGallery";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
-import { PassPredictionPanel } from "../components/PassPredictionPanel";
 import { FeatureCard } from "../components/ui/FeatureCard";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { StatusPill } from "../components/ui/StatusPill";
@@ -10,6 +9,12 @@ import { learningQuestions } from "../lib/learningQuestions";
 
 const HERO_IMAGE =
   "https://images-assets.nasa.gov/image/jsc2021e064215_alt/jsc2021e064215_alt~large.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1173&w=1920";
+
+const viewingTeasers = [
+  "Best shortly after sunset or before sunrise",
+  "Looks like a bright moving star",
+  "Visibility depends on location, sky conditions, and orbit path"
+];
 
 export function HomePage({ telemetry, scene }) {
   const { snapshot, status, error } = telemetry;
@@ -92,23 +97,26 @@ export function HomePage({ telemetry, scene }) {
         </div>
       </section>
 
-      <section className="content-section split-section">
+      <section className="content-section iss-viewing-teaser">
         <div>
           <span className="section-kicker">Viewing guide</span>
           <h2>Can you see the ISS tonight?</h2>
           <p>
-            The ISS is best visible shortly before sunrise or after sunset,
-            when the sky is dark but the station is still lit by the Sun. It
-            looks like a bright moving star and crosses the sky in minutes.
+            The ISS is easiest to spot shortly after sunset or before sunrise,
+            when the sky is dark but the station is still lit by the Sun.
           </p>
           <a className="button-primary" href="/see-the-iss">
             Check visible passes
           </a>
         </div>
-        <article className="panel">
-          <h3>Pass lookup</h3>
-          <PassPredictionPanel compact />
-        </article>
+        <div className="viewing-teaser-grid" aria-label="ISS viewing basics">
+          {viewingTeasers.map((item) => (
+            <article className="panel viewing-teaser-card" key={item}>
+              <span aria-hidden="true" />
+              <p>{item}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <MediaGallery
