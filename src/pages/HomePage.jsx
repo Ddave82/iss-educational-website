@@ -172,6 +172,9 @@ export function HomePage({ telemetry, scene }) {
           <a className="button-secondary" href="/learn">
             Start learning
           </a>
+          <a className="button-secondary" href="/gallery#livestream">
+            Watch NASA live
+          </a>
         </div>
       </section>
     </>

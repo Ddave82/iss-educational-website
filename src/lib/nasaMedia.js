@@ -116,6 +116,35 @@ function normalizeMediaItem(item) {
   };
 }
 
+function normalizeImageIdentity(imageUrl) {
+  try {
+    const url = new URL(imageUrl);
+    url.search = "";
+    return url.toString().toLowerCase();
+  } catch {
+    return imageUrl.split("?")[0].toLowerCase();
+  }
+}
+
+function dedupeMediaItems(items) {
+  const seenKeys = new Set();
+
+  return items.filter((item) => {
+    const identityKeys = [
+      item.id?.toLowerCase(),
+      normalizeImageIdentity(item.imageUrl)
+    ].filter(Boolean);
+    const hasDuplicate = identityKeys.some((key) => seenKeys.has(key));
+
+    if (hasDuplicate) {
+      return false;
+    }
+
+    identityKeys.forEach((key) => seenKeys.add(key));
+    return true;
+  });
+}
+
 export async function fetchIssMedia({ signal } = {}) {
   const params = new URLSearchParams({
     q: "International Space Station astronauts Earth science",
@@ -135,10 +164,12 @@ export async function fetchIssMedia({ signal } = {}) {
 
   const payload = await response.json();
   const items = payload.collection?.items || [];
-  const normalizedItems = items.map(normalizeMediaItem).filter(Boolean);
+  const normalizedItems = dedupeMediaItems(
+    items.map(normalizeMediaItem).filter(Boolean)
+  );
 
   if (normalizedItems.length < 4) {
-    return FALLBACK_MEDIA_ITEMS;
+    return dedupeMediaItems(FALLBACK_MEDIA_ITEMS);
   }
 
   return normalizedItems.slice(0, NASA_GALLERY_RESULT_COUNT);

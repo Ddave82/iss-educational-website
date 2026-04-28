@@ -1,4 +1,5 @@
 import { PassPredictionPanel } from "../components/PassPredictionPanel";
+import { LivestreamSection } from "../components/sections/LivestreamSection";
 import { FeatureCard } from "../components/ui/FeatureCard";
 import { PageHero } from "../components/ui/PageHero";
 import { SectionHeader } from "../components/ui/SectionHeader";
@@ -79,6 +80,15 @@ export function SeeTheIssPage() {
           or haze.
         </SectionHeader>
       </section>
+
+      <LivestreamSection
+        title="Live station view"
+        intro="Watch NASA's live ISS stream when available, then use the viewing guide to understand when the station might be visible from Earth."
+        fallbackActions={[
+          { label: "Open live tracker", href: "/tracker" },
+          { label: "Explore NASA gallery", href: "/gallery" }
+        ]}
+      />
     </>
   );
 }
