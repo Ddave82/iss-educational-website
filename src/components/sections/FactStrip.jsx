@@ -35,9 +35,9 @@ export function FactStrip({ telemetry }) {
       detail: "The crew sees day and night many times in one Earth day."
     },
     {
-      value: "2000",
-      label: "continuous crew",
-      detail: "People have lived aboard the station since November 2000."
+      value: "292",
+      label: "people visited",
+      detail: "NASA count as of Apr. 27, 2026; continuously inhabited since Nov. 2000."
     }
   ];
 
