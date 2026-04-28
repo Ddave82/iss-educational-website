@@ -25,11 +25,6 @@ const sources = [
     href: "https://www.nasa.gov/international-space-station/space-station-gallery/"
   },
   {
-    label: "NASA Spot the Station",
-    description: "Public station sighting and orbit reference information.",
-    href: "https://spotthestation.nasa.gov/"
-  },
-  {
     label: "NASA ISS Final Configuration",
     description: "Reference for station assembly completion in fall 2011.",
     href: "https://www.nasa.gov/image-article/international-space-station-final-configuration"
@@ -41,7 +36,7 @@ const sources = [
   },
   {
     label: "Where the ISS at?",
-    description: "HTTPS live ISS position endpoint used by the tracker.",
+    description: "HTTPS live ISS position and TLE endpoint used by the tracker and pass calculator.",
     href: "https://wheretheiss.at/w/developer"
   }
 ];

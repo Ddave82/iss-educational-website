@@ -23,7 +23,7 @@ Live preview: [iss-educational-website.vercel.app](https://iss-educational-websi
 - Shows latitude, longitude, altitude, speed, visibility, heading, and ground track
 - Renders an interactive 3D Earth with ISS marker, recent trail, and orbit preview
 - Explains the ISS through concise, family-friendly learning cards
-- Adds Spot the Station, ISS scale, timeline, glossary, and real science examples
+- Adds local ISS sighting estimates, ISS scale, timeline, glossary, and real science examples
 - Loads imagery from NASA's public Image and Video Library
 - Falls back to curated NASA gallery items when the media API is unavailable
 - Embeds NASA Live and links station-viewing resources
@@ -41,7 +41,7 @@ Live preview: [iss-educational-website.vercel.app](https://iss-educational-websi
 | Visitor counts | [NASA Station Visitors](https://www.nasa.gov/international-space-station/space-station-visitors-by-country/) |
 | Assembly timeline | [NASA ISS Final Configuration](https://www.nasa.gov/image-article/international-space-station-final-configuration) |
 | Research examples | [NASA ISS Research](https://www.nasa.gov/missions/station/iss-research/) |
-| Station visibility reference | [NASA Spot the Station](https://spotthestation.nasa.gov/) |
+| Station visibility estimates | [`wheretheiss.at` TLE data](https://wheretheiss.at/w/developer) with in-browser SGP4 prediction |
 | Country geometry | [`world-atlas`](https://www.npmjs.com/package/world-atlas) |
 
 NASA imagery is credited as source material and is not used to imply NASA

@@ -520,10 +520,111 @@ p {
   color: #211706;
   text-decoration: none;
   font-weight: 700;
+  border: 0;
+  cursor: pointer;
 }
 
 .spot-cta:hover {
   background: #ffd287;
+}
+
+.spot-cta:disabled,
+.coordinate-form button:disabled {
+  cursor: wait;
+  opacity: 0.64;
+}
+
+.pass-predictor {
+  margin-top: 20px;
+}
+
+.pass-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.coordinate-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.coordinate-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.coordinate-form label span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.coordinate-form input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.coordinate-form input:focus {
+  outline: 2px solid rgba(118, 226, 214, 0.48);
+  outline-offset: 2px;
+}
+
+.coordinate-form button {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.coordinate-form button:hover {
+  border-color: var(--border-strong);
+}
+
+.pass-message {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.pass-message-error {
+  color: var(--danger);
+}
+
+.pass-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pass-card {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid rgba(192, 213, 231, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.pass-card strong {
+  color: var(--accent-strong);
+}
+
+.pass-card span {
+  color: var(--muted);
+  font-size: 0.88rem;
 }
 
 .scale-bars {
@@ -1542,6 +1643,10 @@ p {
   .source-card,
   .media-card-body {
     padding: 16px;
+  }
+
+  .coordinate-form {
+    grid-template-columns: 1fr;
   }
 
   .learning-card {
