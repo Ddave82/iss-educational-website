@@ -1,5 +1,5 @@
 const ISS_STREAM_URL =
-  "https://www.youtube.com/embed/zPH5KtjJFaQ?rel=0&modestbranding=1";
+  "https://www.youtube.com/embed/zPH5KtjJFaQ?autoplay=1&mute=1&rel=0&modestbranding=1";
 
 export function LivestreamSection() {
   return (
