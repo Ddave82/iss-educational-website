@@ -1,7 +1,17 @@
-const PRIMARY_SOURCE = "/api/iss/current";
 const DIRECT_PRIMARY_SOURCE = "https://api.wheretheiss.at/v1/satellites/25544";
-const FALLBACK_SOURCE = "/api/iss/fallback";
+const LOCAL_PRIMARY_SOURCE = "/api/iss/current";
+const LOCAL_FALLBACK_SOURCE = "/api/iss/fallback";
 const REQUEST_TIMEOUT_MS = 8000;
+
+function isLocalDevHost() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return ["localhost", "127.0.0.1", "0.0.0.0"].includes(
+    window.location.hostname
+  );
+}
 
 function withTimeout(resource, options = {}) {
   const controller = new AbortController();
@@ -47,7 +57,7 @@ async function fetchJson(url) {
   const response = await withTimeout(url);
 
   if (!response.ok) {
-    throw new Error(`Fehler beim Abruf: ${response.status}`);
+    throw new Error(`Request failed: ${response.status}`);
   }
 
   return response.json();
@@ -55,22 +65,34 @@ async function fetchJson(url) {
 
 export async function fetchIssSnapshot() {
   try {
-    const payload = await fetchJson(PRIMARY_SOURCE);
+    const payload = await fetchJson(DIRECT_PRIMARY_SOURCE);
     return normalizePrimaryPayload(payload);
   } catch (primaryError) {
+    if (!isLocalDevHost()) {
+      if (primaryError.name === "AbortError") {
+        throw new Error("The ISS data feed timed out.");
+      }
+
+      throw new Error("ISS data is not reachable right now.");
+    }
+
     try {
-      const directPayload = await fetchJson(DIRECT_PRIMARY_SOURCE);
-      return normalizePrimaryPayload(directPayload);
-    } catch (directError) {
+      const payload = await fetchJson(LOCAL_PRIMARY_SOURCE);
+      return normalizePrimaryPayload(payload);
+    } catch (localPrimaryError) {
       try {
-        const payload = await fetchJson(FALLBACK_SOURCE);
+        const payload = await fetchJson(LOCAL_FALLBACK_SOURCE);
         return normalizeFallbackPayload(payload);
       } catch (fallbackError) {
-        if (primaryError.name === "AbortError" || directError.name === "AbortError") {
-          throw new Error("Zeitüberschreitung beim ISS-Datenfeed.");
+        if (
+          primaryError.name === "AbortError" ||
+          localPrimaryError.name === "AbortError" ||
+          fallbackError.name === "AbortError"
+        ) {
+          throw new Error("The ISS data feed timed out.");
         }
 
-        throw new Error("ISS-Daten derzeit nicht erreichbar.");
+        throw new Error("ISS data is not reachable right now.");
       }
     }
   }

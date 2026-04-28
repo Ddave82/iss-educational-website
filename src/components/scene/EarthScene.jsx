@@ -418,7 +418,7 @@ function SceneLighting() {
 function SceneFallback() {
   return (
     <div className="scene-fallback">
-      <span>3D-Ansicht konnte nicht geladen werden.</span>
+      <span>The 3D view could not be loaded.</span>
     </div>
   );
 }
@@ -446,11 +446,11 @@ function SceneToolbar({ isFullscreen, isFullscreenAvailable, onToggleFullscreen 
         aria-pressed={isFullscreen}
         aria-label={
           isFullscreen
-            ? "Orbital View Vollbild schließen"
-            : "Orbital View im Vollbild öffnen"
+            ? "Close Orbital View fullscreen"
+            : "Open Orbital View fullscreen"
         }
       >
-        {isFullscreen ? "Vollbild schließen" : "Vollbild"}
+        {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
       </button>
     </div>
   );
@@ -477,13 +477,13 @@ export function EarthScene({ telemetry }) {
   const earthPositionY = isMobile ? MOBILE_EARTH_POSITION_Y : viewTargetY;
   const statusText =
     status === "live"
-      ? "Tracking in Echtzeit"
+      ? "Tracking in real time"
       : status === "stale"
-        ? "Zuletzt bekannte Position"
-        : "Warte auf Daten";
+        ? "Last known position"
+        : "Waiting for data";
   const interactionHint = isMobile
-    ? "Ziehen: Orbit · Spreizen: Zoom · Gestrichelt: Orbit-Prognose"
-    : "Mausrad: Zoom · Ziehen: Orbit · Gestrichelt: Orbit-Prognose";
+    ? "Drag: orbit view / Pinch: zoom / Dashed line: orbit preview"
+    : "Mouse wheel: zoom / Drag: orbit view / Dashed line: orbit preview";
 
   useEffect(() => {
     const stageElement = stageRef.current;

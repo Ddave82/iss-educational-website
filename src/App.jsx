@@ -1,6 +1,11 @@
 import { lazy, Suspense } from "react";
-import { DashboardShell } from "./components/layout/DashboardShell";
-import { SidebarPanel } from "./components/panels/SidebarPanel";
+import { FactStrip } from "./components/sections/FactStrip";
+import { HeroSection } from "./components/sections/HeroSection";
+import { LearningSection } from "./components/sections/LearningSection";
+import { LivestreamSection } from "./components/sections/LivestreamSection";
+import { MediaGallery } from "./components/sections/MediaGallery";
+import { SourceList } from "./components/sections/SourceList";
+import { TrackerSection } from "./components/sections/TrackerSection";
 import { useIssTelemetry } from "./hooks/useIssTelemetry";
 
 const EarthScene = lazy(() =>
@@ -20,7 +25,7 @@ function SceneLoadingState() {
       </div>
       <div className="scene-stage scene-stage-loading">
         <div className="scene-fallback">
-          <span>3D-Szene wird geladen ...</span>
+          <span>Loading the 3D scene ...</span>
         </div>
       </div>
     </section>
@@ -29,16 +34,24 @@ function SceneLoadingState() {
 
 function App() {
   const telemetry = useIssTelemetry();
+  const trackerScene = (
+    <Suspense fallback={<SceneLoadingState />}>
+      <EarthScene telemetry={telemetry} />
+    </Suspense>
+  );
 
   return (
-    <DashboardShell
-      sidebar={<SidebarPanel telemetry={telemetry} />}
-      scene={
-        <Suspense fallback={<SceneLoadingState />}>
-          <EarthScene telemetry={telemetry} />
-        </Suspense>
-      }
-    />
+    <div className="site-shell">
+      <HeroSection telemetry={telemetry} />
+      <main>
+        <FactStrip telemetry={telemetry} />
+        <LearningSection />
+        <TrackerSection telemetry={telemetry} scene={trackerScene} />
+        <MediaGallery />
+        <LivestreamSection />
+      </main>
+      <SourceList />
+    </div>
   );
 }
 

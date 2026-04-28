@@ -24,7 +24,7 @@ async function resolveGroundTrack(latitude, longitude) {
     const { lookupGroundTrack } = await groundTrackModulePromise;
     return lookupGroundTrack(latitude, longitude);
   } catch {
-    return "Nicht verfügbar";
+    return "Not available";
   }
 }
 

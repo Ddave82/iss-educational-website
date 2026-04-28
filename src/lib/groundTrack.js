@@ -4,15 +4,15 @@ import countriesAtlas from "world-atlas/countries-110m.json";
 
 const COUNTRIES = feature(countriesAtlas, countriesAtlas.objects.countries);
 const COUNTRY_NAME_OVERRIDES = {
-  "Bosnia and Herz.": "Bosnien und Herzegowina",
-  "Central African Rep.": "Zentralafrikanische Republik",
-  "Dem. Rep. Congo": "DR Kongo",
-  "Dominican Rep.": "Dominikanische Republik",
-  "Eq. Guinea": "Äquatorialguinea",
-  "Solomon Is.": "Salomonen",
-  "S. Sudan": "Südsudan",
-  "United States of America": "USA",
-  "W. Sahara": "Westsahara"
+  "Bosnia and Herz.": "Bosnia and Herzegovina",
+  "Central African Rep.": "Central African Republic",
+  "Dem. Rep. Congo": "Democratic Republic of the Congo",
+  "Dominican Rep.": "Dominican Republic",
+  "Eq. Guinea": "Equatorial Guinea",
+  "Solomon Is.": "Solomon Islands",
+  "S. Sudan": "South Sudan",
+  "United States of America": "United States",
+  "W. Sahara": "Western Sahara"
 };
 
 function formatCountryName(name) {
@@ -21,7 +21,7 @@ function formatCountryName(name) {
 
 export function lookupGroundTrack(latitude, longitude) {
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return "Nicht verfügbar";
+    return "Not available";
   }
 
   const matchingCountry = COUNTRIES.features.find((countryFeature) =>
@@ -32,5 +32,5 @@ export function lookupGroundTrack(latitude, longitude) {
     return formatCountryName(matchingCountry.properties.name);
   }
 
-  return "Offener Ozean";
+  return "Open ocean";
 }
