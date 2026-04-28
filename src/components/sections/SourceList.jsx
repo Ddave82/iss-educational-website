@@ -56,7 +56,6 @@ export function SourceList() {
         <div className="footer-actions" aria-label="Footer shortcuts">
           <a href="#live-tracker">Track live</a>
           <a href="#media">View media</a>
-          <a href="#top">Back to top</a>
         </div>
       </div>
 

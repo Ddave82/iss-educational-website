@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { BackToTopButton } from "./components/BackToTopButton";
 import { ExplorerSection } from "./components/sections/ExplorerSection";
 import { FactStrip } from "./components/sections/FactStrip";
 import { HeroSection } from "./components/sections/HeroSection";
@@ -53,6 +54,7 @@ function App() {
         <LivestreamSection />
       </main>
       <SourceList />
+      <BackToTopButton />
     </div>
   );
 }
