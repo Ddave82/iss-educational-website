@@ -29,7 +29,7 @@ export function TeachersPage() {
         about the International Space Station.
       </PageHero>
 
-      <section className="content-section readable-section">
+      <section className="content-section">
         <SectionHeader kicker="30-minute lesson" title="Live orbit lesson plan">
           A compact activity for teachers, parents, and homeschool groups.
         </SectionHeader>
@@ -66,7 +66,7 @@ export function TeachersPage() {
         </article>
       </section>
 
-      <section className="content-section readable-section">
+      <section className="content-section">
         <SectionHeader kicker="Quiz" title="ISS knowledge check">
           Use these as warmups, exit tickets, or review questions.
         </SectionHeader>

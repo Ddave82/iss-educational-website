@@ -103,7 +103,7 @@ export function LearnPage() {
         Simple explanations about orbit, microgravity, station life,
         experiments, spacewalks, and docking.
       </PageHero>
-      <section className="content-section readable-section">
+      <section className="content-section">
         <Accordion items={learningItems} />
       </section>
     </>

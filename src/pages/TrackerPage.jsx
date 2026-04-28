@@ -65,10 +65,11 @@ export function TrackerPage({ telemetry, scene }) {
       </section>
 
       <section className="content-section">
-        <SectionHeader kicker="Future enhancements" title="What the tracker does not fake">
-          Country or ocean lookup is shown only when local geometry can resolve
-          it. Day/night terminator rendering and richer pass overlays would
-          require additional map logic and are left for a future tracker layer.
+        <SectionHeader kicker="Reading the tracker" title="Live data, with clear limits">
+          The tracker shows live position data and recent movement when the feed
+          is reachable. Ground track names depend on local map geometry, so some
+          locations may be shown more generally as ocean, region, or not
+          available. Values can be briefly stale during network delays.
         </SectionHeader>
       </section>
     </>
