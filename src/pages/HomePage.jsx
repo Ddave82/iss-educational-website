@@ -11,24 +11,6 @@ import { learningQuestions } from "../lib/learningQuestions";
 const HERO_IMAGE =
   "https://images-assets.nasa.gov/image/jsc2021e064215_alt/jsc2021e064215_alt~large.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1173&w=1920";
 
-const teacherPreview = [
-  {
-    title: "30-minute lesson plan",
-    body: "A short class flow for orbit, microgravity, and live tracking.",
-    href: "/learn#teacher-resources"
-  },
-  {
-    title: "ISS quiz",
-    body: "Simple questions with expandable answers for review or warmups.",
-    href: "/learn#quiz"
-  },
-  {
-    title: "Track one orbit activity",
-    body: "Students observe how the ground track changes during one orbit.",
-    href: "/learn#track-one-orbit"
-  }
-];
-
 export function HomePage({ telemetry, scene }) {
   const { snapshot, status, error } = telemetry;
   const liveSpeed = Number.isFinite(snapshot?.velocity)
@@ -127,28 +109,6 @@ export function HomePage({ telemetry, scene }) {
           <h3>Pass lookup</h3>
           <PassPredictionPanel compact />
         </article>
-      </section>
-
-      <section className="learning-section">
-        <SectionHeader
-          kicker="Classroom ready"
-          title="For teachers, parents, and homeschoolers"
-        >
-          Use the live tracker as a shared observation tool, then connect it to
-          motion, gravity, engineering, and Earth science.
-        </SectionHeader>
-        <div className="feature-grid three-card-grid">
-          {teacherPreview.map((item) => (
-            <FeatureCard title={item.title} href={item.href} key={item.title}>
-              {item.body}
-            </FeatureCard>
-          ))}
-        </div>
-        <div className="section-cta-row">
-          <a className="button-secondary" href="/learn#teacher-resources">
-            Open teacher resources
-          </a>
-        </div>
       </section>
 
       <MediaGallery

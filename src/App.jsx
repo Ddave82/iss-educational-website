@@ -42,9 +42,9 @@ const routeMetadata = {
       "Explore real NASA imagery of the International Space Station, Earth views, astronauts, and experiments."
   },
   "/teachers": {
-    title: "ISS Teacher Resources – Space Lessons and Classroom Activities",
+    title: "Learn About the ISS – Orbit, Microgravity and Life in Space",
     description:
-      "Ready-to-use ISS lesson plans, quiz questions, worksheets, and classroom activities for learning about orbit, microgravity, astronaut life, and the International Space Station."
+      "Simple explanations about the International Space Station, orbit, microgravity, astronaut life, experiments, docking, and spacewalks."
   },
   "/about-data": {
     title: "ISS Explorer Data Sources and Credits",
@@ -93,7 +93,7 @@ function usePathRouting() {
     const initialPath = normalizePath(window.location.pathname);
 
     if (initialPath === "/teachers") {
-      window.history.replaceState({}, "", "/learn#teacher-resources");
+      window.history.replaceState({}, "", "/learn");
       return "/learn";
     }
 
@@ -105,7 +105,7 @@ function usePathRouting() {
       const nextPath = normalizePath(window.location.pathname);
 
       if (nextPath === "/teachers") {
-        window.history.replaceState({}, "", "/learn#teacher-resources");
+        window.history.replaceState({}, "", "/learn");
         setCurrentPath("/learn");
         return;
       }
@@ -134,8 +134,7 @@ function usePathRouting() {
       const nextPath = normalizePath(url.pathname);
       const currentPathBeforeNavigation = normalizePath(window.location.pathname);
       const resolvedPath = nextPath === "/teachers" ? "/learn" : nextPath;
-      const resolvedHash =
-        nextPath === "/teachers" && !url.hash ? "#teacher-resources" : url.hash;
+      const resolvedHash = nextPath === "/teachers" ? "" : url.hash;
       const nextUrl = `${resolvedPath}${url.search}${resolvedHash}`;
       const currentUrl = `${currentPathBeforeNavigation}${window.location.search}${window.location.hash}`;
 
@@ -191,7 +190,7 @@ function NotFoundPage() {
   return (
     <PageHero kicker="Route not found" title="This page is not on the station map">
       Use the navigation to return to the live tracker, learning modules,
-      viewing guide, gallery, teacher resources, or data notes.
+      viewing guide, gallery, or data notes.
     </PageHero>
   );
 }
