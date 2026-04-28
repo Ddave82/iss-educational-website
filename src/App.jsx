@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { ExplorerSection } from "./components/sections/ExplorerSection";
 import { FactStrip } from "./components/sections/FactStrip";
 import { HeroSection } from "./components/sections/HeroSection";
 import { LearningSection } from "./components/sections/LearningSection";
@@ -46,6 +47,7 @@ function App() {
       <main>
         <FactStrip telemetry={telemetry} />
         <LearningSection />
+        <ExplorerSection />
         <TrackerSection telemetry={telemetry} scene={trackerScene} />
         <MediaGallery />
         <LivestreamSection />

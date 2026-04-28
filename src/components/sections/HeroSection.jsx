@@ -37,6 +37,7 @@ export function HeroSection({ telemetry }) {
         </a>
         <div className="nav-links">
           <a href="#learn">Learn</a>
+          <a href="#explore">Explore</a>
           <a href="#live-tracker">Tracker</a>
           <a href="#media">Media</a>
           <a href="#sources">Sources</a>

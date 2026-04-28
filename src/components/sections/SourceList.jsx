@@ -27,7 +27,17 @@ const sources = [
   {
     label: "NASA Spot the Station",
     description: "Public station sighting and orbit reference information.",
-    href: "https://www.nasa.gov/spot-the-station/"
+    href: "https://spotthestation.nasa.gov/"
+  },
+  {
+    label: "NASA ISS Final Configuration",
+    description: "Reference for station assembly completion in fall 2011.",
+    href: "https://www.nasa.gov/image-article/international-space-station-final-configuration"
+  },
+  {
+    label: "NASA ISS Research",
+    description: "Real microgravity research examples used in the science cards.",
+    href: "https://www.nasa.gov/missions/station/iss-research/"
   },
   {
     label: "Where the ISS at?",
