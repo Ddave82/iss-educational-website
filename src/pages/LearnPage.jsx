@@ -1,4 +1,4 @@
-import { Accordion } from "../components/ui/Accordion";
+import { useEffect, useMemo, useState } from "react";
 import { InfoTip } from "../components/ui/InfoTip";
 import { PageHero } from "../components/ui/PageHero";
 import { learningQuestions } from "../lib/learningQuestions";
@@ -34,6 +34,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "The ISS shows how engineering, science, and international teamwork can keep people living safely in orbit for long periods.",
+    supportTitle: "Did you know?",
     facts: [
       "It is a laboratory in space.",
       "It orbits Earth many times per day.",
@@ -80,6 +81,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "Knowing the speed helps explain why the ISS can pass over your sky quickly and why crews see many sunrises each day.",
+    supportTitle: "Fast fact",
     facts: [
       "One orbit takes roughly 90 minutes.",
       "The ISS completes about 16 orbits per day.",
@@ -112,6 +114,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "Orbit is one of the most important ideas in spaceflight. It explains satellites, crewed spacecraft, and how the tracker map changes.",
+    supportTitle: "Common misconception",
     facts: [
       "Gravity still acts on the ISS.",
       "The station is falling around Earth.",
@@ -145,6 +148,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "Microgravity changes human bodies and experiments, which is why the station is valuable for science and why crews must exercise every day.",
+    supportTitle: "Common misconception",
     facts: [
       "Microgravity is not true zero gravity.",
       "Everything inside falls around Earth together.",
@@ -177,6 +181,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "The station is both a home and a workplace, so daily routines are designed to keep crews healthy and the spacecraft operating safely.",
+    supportTitle: "Why it matters",
     facts: [
       "Astronauts sleep, eat, exercise, work, and communicate with Earth.",
       "Maintenance is part of station life.",
@@ -207,6 +212,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "ISS research helps prepare future space missions and can also improve medicine, materials, technology, and Earth observation.",
+    supportTitle: "Why it matters",
     facts: [
       "Human health research studies bodies in space.",
       "Plant and biology experiments test life in microgravity.",
@@ -242,6 +248,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "Docking keeps the station supplied and makes crew rotation possible, turning the ISS into a continuously operating outpost.",
+    supportTitle: "Fast fact",
     facts: [
       "Crew and cargo spacecraft visit the ISS.",
       "Docking ports connect vehicles to the station.",
@@ -276,6 +283,7 @@ const moduleContent = {
     ],
     whyItMatters:
       "Spacewalks let crews maintain and improve the station when robotic arms or internal repairs are not enough.",
+    supportTitle: "Why it matters",
     facts: [
       "EVA means extravehicular activity.",
       "Astronauts work outside in spacesuits.",
@@ -285,45 +293,108 @@ const moduleContent = {
   }
 };
 
+const challengeQuestions = [
+  {
+    prompt: "True or false: the ISS floats because there is no gravity.",
+    answer: false,
+    feedback:
+      "False. Gravity is still present. The station and everything inside it are falling together."
+  },
+  {
+    prompt: "True or false: the ISS completes one orbit in roughly 90 minutes.",
+    answer: true,
+    feedback:
+      "True. That fast orbit is why its ground track changes quickly."
+  },
+  {
+    prompt: "True or false: the ISS stays above the same city all day.",
+    answer: false,
+    feedback:
+      "False. Earth rotates underneath while the station moves around the planet."
+  }
+];
+
 const quizItems = [
   {
-    title: "Why do astronauts float inside the ISS?",
-    content: <p>They float because the station and everything inside it are falling around Earth together.</p>
+    question: "Why do astronauts float inside the ISS?",
+    choices: [
+      "Because there is no gravity in orbit",
+      "Because the station and everything inside it fall together",
+      "Because air pushes them upward"
+    ],
+    correctIndex: 1,
+    explanation:
+      "Gravity is still present. Astronauts float because the station, people, and objects inside all fall around Earth together."
   },
   {
-    title: "Is microgravity the same as zero gravity?",
-    content: <p>No. Gravity is still present; microgravity describes the near-weightless effect of continuous free fall.</p>
+    question: "How long does one ISS orbit take?",
+    choices: ["About 9 minutes", "About 90 minutes", "About 9 hours"],
+    correctIndex: 1,
+    explanation:
+      "The ISS circles Earth roughly every 90 minutes, which is about 16 orbits per day."
   },
   {
-    title: "How long does one ISS orbit take?",
-    content: <p>Roughly 90 minutes.</p>
+    question: "Why does the ISS not fall straight to Earth?",
+    choices: [
+      "Its forward speed keeps it missing the ground",
+      "Solar panels hold it up",
+      "It is outside Earth's gravity"
+    ],
+    correctIndex: 0,
+    explanation:
+      "The station is falling, but its forward motion keeps carrying it around Earth."
   },
   {
-    title: "Why does the ISS not fall to Earth?",
-    content: <p>It is falling, but its forward speed keeps it missing the ground.</p>
+    question: "What do solar arrays do?",
+    choices: [
+      "Generate electricity",
+      "Make artificial gravity",
+      "Steer the station like wings"
+    ],
+    correctIndex: 0,
+    explanation:
+      "Solar arrays turn sunlight into electricity for station systems and experiments."
   },
   {
-    title: "What are solar arrays used for?",
-    content: <p>They turn sunlight into electricity for station systems and experiments.</p>
+    question: "What is docking?",
+    choices: [
+      "A spacewalk outside the ISS",
+      "A spacecraft connecting to the station",
+      "A telescope taking Earth photos"
+    ],
+    correctIndex: 1,
+    explanation:
+      "Docking lets crew and cargo spacecraft connect to the station safely."
   },
   {
-    title: "What does EVA mean?",
-    content: <p>EVA means extravehicular activity, usually called a spacewalk.</p>
+    question: "What does EVA mean?",
+    choices: [
+      "Earth viewing angle",
+      "Extravehicular activity",
+      "Emergency vehicle arrival"
+    ],
+    correctIndex: 1,
+    explanation:
+      "EVA means extravehicular activity, usually called a spacewalk."
   },
   {
-    title: "Why do astronauts exercise every day?",
-    content: <p>Exercise helps protect muscles and bones that weaken in microgravity.</p>
-  },
-  {
-    title: "What do docking ports do?",
-    content: <p>They let visiting spacecraft connect safely to the station.</p>
+    question: "Why do astronauts exercise every day?",
+    choices: [
+      "To protect muscles and bones",
+      "To make the station move faster",
+      "To create oxygen"
+    ],
+    correctIndex: 0,
+    explanation:
+      "Exercise helps protect muscles and bones that weaken in microgravity."
   }
 ];
 
 const continueLinks = [
-  { label: "Open Live Tracker", href: "/tracker" },
+  { label: "Track the ISS live", href: "/tracker" },
   { label: "See the ISS from Earth", href: "/see-the-iss" },
-  { label: "Explore NASA Gallery", href: "/gallery" }
+  { label: "Explore NASA Gallery", href: "/gallery" },
+  { label: "About the data", href: "/about-data" }
 ];
 
 function LearningPathCards() {
@@ -331,9 +402,13 @@ function LearningPathCards() {
     <div className="learn-path-grid">
       {learningQuestions.map((question, index) => (
         <a className="learn-path-card" href={question.href} key={question.id}>
-          <span>{String(index + 1).padStart(2, "0")}</span>
-          <strong>{question.title}</strong>
+          <div className="learn-path-card-top">
+            <span>{question.category}</span>
+            <strong aria-hidden="true">{question.icon}</strong>
+          </div>
+          <h3>{question.title}</h3>
           <p>{question.teaser}</p>
+          <small>Module {String(index + 1).padStart(2, "0")}</small>
         </a>
       ))}
     </div>
@@ -392,7 +467,7 @@ function LearningSection({ question }) {
           </ul>
         </article>
         <article className="why-card">
-          <h3>Why it matters</h3>
+          <h3>{module.supportTitle || "Why it matters"}</h3>
           <p>{module.whyItMatters}</p>
           {module.action ? (
             <a className="card-link" href={module.action.href}>
@@ -405,66 +480,339 @@ function LearningSection({ question }) {
   );
 }
 
+function LearningPathSidebar({ activeId }) {
+  const activeIndex = Math.max(
+    0,
+    learningQuestions.findIndex((question) => question.id === activeId)
+  );
+
+  return (
+    <aside className="learn-toc" aria-label="Learning path">
+      <span className="section-kicker">Learning path</span>
+      <strong className="learn-progress-text">
+        {activeIndex + 1} / {learningQuestions.length} explored
+      </strong>
+      <div className="learn-progress-track" aria-hidden="true">
+        <span style={{ width: `${((activeIndex + 1) / learningQuestions.length) * 100}%` }} />
+      </div>
+      <nav>
+        {learningQuestions.map((question, index) => (
+          <a
+            className={question.id === activeId ? "is-active" : ""}
+            href={question.href}
+            key={question.id}
+            aria-current={question.id === activeId ? "location" : undefined}
+          >
+            <span>{index + 1}</span>
+            {question.title}
+          </a>
+        ))}
+      </nav>
+    </aside>
+  );
+}
+
+function FragmentWithChallenge({ question, index }) {
+  return (
+    <>
+      <LearningSection question={question} />
+      {index === 2 ? <QuickChallenge /> : null}
+    </>
+  );
+}
+
+function QuickChallenge() {
+  const [answers, setAnswers] = useState({});
+  const answeredCount = Object.keys(answers).length;
+
+  return (
+    <section className="quick-challenge" id="quick-challenge">
+      <div>
+        <span className="section-kicker">Quick challenge</span>
+        <h2>Orbit check-in</h2>
+        <p>
+          Try these before the final quiz. Each tap gives immediate feedback.
+        </p>
+      </div>
+      <div className="challenge-grid">
+        {challengeQuestions.map((question, index) => {
+          const answer = answers[index];
+          const isCorrect = answer === question.answer;
+
+          return (
+            <article
+              className={`challenge-card${answer !== undefined ? isCorrect ? " is-correct" : " is-incorrect" : ""}`}
+              key={question.prompt}
+            >
+              <h3>{question.prompt}</h3>
+              <div className="challenge-actions">
+                {[true, false].map((value) => (
+                  <button
+                    type="button"
+                    className={answer === value ? "is-selected" : ""}
+                    onClick={() =>
+                      setAnswers((current) => ({
+                        ...current,
+                        [index]: value
+                      }))
+                    }
+                    key={String(value)}
+                  >
+                    {value ? "True" : "False"}
+                  </button>
+                ))}
+              </div>
+              {answer !== undefined ? <p>{question.feedback}</p> : null}
+            </article>
+          );
+        })}
+      </div>
+      <span className="challenge-progress">{answeredCount} / {challengeQuestions.length} answered</span>
+    </section>
+  );
+}
+
+function getResultTier(score) {
+  if (score <= 2) {
+    return {
+      title: "ISS Beginner",
+      message: "You have the first pieces. Review orbit and microgravity, then try again."
+    };
+  }
+
+  if (score <= 5) {
+    return {
+      title: "Orbit Explorer",
+      message: "Strong progress. You understand the big ideas behind the station."
+    };
+  }
+
+  return {
+    title: "Station Specialist",
+    message: "Excellent work. You can explain the ISS like a mission guide."
+  };
+}
+
+function MiniQuiz() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [isFinished, setIsFinished] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const currentQuestion = quizItems[currentIndex];
+  const selectedIndex = answers[currentIndex];
+  const answeredQuestions = Object.keys(answers).length;
+  const isLastQuestion = currentIndex === quizItems.length - 1;
+  const score = useMemo(
+    () =>
+      Object.entries(answers).reduce((total, [questionIndex, answerIndex]) => {
+        return total + (quizItems[Number(questionIndex)].correctIndex === answerIndex ? 1 : 0);
+      }, 0),
+    [answers]
+  );
+  const result = getResultTier(score);
+
+  function handleAnswer(answerIndex) {
+    if (selectedIndex !== undefined) {
+      return;
+    }
+
+    setAnswers((current) => ({
+      ...current,
+      [currentIndex]: answerIndex
+    }));
+  }
+
+  function handleReset() {
+    setAnswers({});
+    setCurrentIndex(0);
+    setIsFinished(false);
+    setShowReview(false);
+  }
+
+  return (
+    <section className="learn-quiz-section gamified-quiz" id="quiz">
+      <div className="section-heading-wide">
+        <span className="section-kicker">Mini quiz</span>
+        <h2>Check your understanding</h2>
+        <p>
+          Answer one question at a time and get instant feedback as you go.
+        </p>
+      </div>
+
+      <div className="quiz-progress-row">
+        <span>{Math.min(answeredQuestions + 1, quizItems.length)} / {quizItems.length}</span>
+        <strong>Score: {score}</strong>
+      </div>
+      <div className="quiz-progress-track" aria-hidden="true">
+        <span style={{ width: `${(answeredQuestions / quizItems.length) * 100}%` }} />
+      </div>
+
+      {!isFinished ? (
+        <article className="quiz-play-card">
+          <h3>{currentQuestion.question}</h3>
+          <div className="quiz-choice-grid">
+            {currentQuestion.choices.map((choice, index) => {
+              const isSelected = selectedIndex === index;
+              const isCorrect = currentQuestion.correctIndex === index;
+              const showResult = selectedIndex !== undefined;
+
+              return (
+                <button
+                  type="button"
+                  className={`quiz-choice${isSelected ? " is-selected" : ""}${showResult && isCorrect ? " is-correct" : ""}${showResult && isSelected && !isCorrect ? " is-incorrect" : ""}`}
+                  onClick={() => handleAnswer(index)}
+                  disabled={showResult}
+                  key={choice}
+                >
+                  {choice}
+                </button>
+              );
+            })}
+          </div>
+          {selectedIndex !== undefined ? (
+            <div className="quiz-feedback" role="status">
+              <strong>
+                {selectedIndex === currentQuestion.correctIndex ? "Correct" : "Not quite"}
+              </strong>
+              <p>{currentQuestion.explanation}</p>
+              <button
+                type="button"
+                className="button-primary"
+                onClick={() =>
+                  isLastQuestion
+                    ? setIsFinished(true)
+                    : setCurrentIndex((index) => Math.min(index + 1, quizItems.length - 1))
+                }
+              >
+                {isLastQuestion ? "Show result" : "Next question"}
+              </button>
+            </div>
+          ) : null}
+        </article>
+      ) : (
+        <article className="quiz-result-card">
+          <span className="section-kicker">Final result</span>
+          <h3>{result.title}</h3>
+          <strong>{score} / {quizItems.length} correct</strong>
+          <p>{result.message}</p>
+          <div className="hero-actions">
+            <button type="button" className="button-secondary" onClick={() => setShowReview((value) => !value)}>
+              {showReview ? "Hide review" : "Review answers"}
+            </button>
+            <button type="button" className="button-secondary" onClick={handleReset}>
+              Try again
+            </button>
+            <a className="button-primary" href="/tracker">
+              Track the ISS live
+            </a>
+            <a className="button-secondary" href="/gallery">
+              Explore the gallery
+            </a>
+          </div>
+          {showReview ? (
+            <div className="quiz-review-list">
+              {quizItems.map((item, index) => {
+                const answerIndex = answers[index];
+                const isCorrect = answerIndex === item.correctIndex;
+
+                return (
+                  <article className={isCorrect ? "is-correct" : "is-incorrect"} key={item.question}>
+                    <h4>{item.question}</h4>
+                    <p>Your answer: {item.choices[answerIndex]}</p>
+                    <p>Correct answer: {item.choices[item.correctIndex]}</p>
+                    <small>{item.explanation}</small>
+                  </article>
+                );
+              })}
+            </div>
+          ) : null}
+        </article>
+      )}
+    </section>
+  );
+}
+
 export function LearnPage() {
+  const [activeModuleId, setActiveModuleId] = useState(learningQuestions[0].id);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visibleEntry?.target.id) {
+          setActiveModuleId(visibleEntry.target.id);
+        }
+      },
+      {
+        rootMargin: "-30% 0px -55% 0px",
+        threshold: [0.2, 0.4, 0.6]
+      }
+    );
+
+    learningQuestions.forEach((question) => {
+      const section = document.getElementById(question.id);
+
+      if (section) {
+        observer.observe(section);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <PageHero
+        compact
         kicker="Learning Modules"
         title="Learn About the ISS"
         actions={
-          <div className="learn-hero-chips" aria-label="Learning page summary">
-            <span>8 questions</span>
-            <span>Beginner friendly</span>
-            <span>10-15 min read</span>
-            <span>Student-friendly</span>
+          <div className="learn-hero-actions">
+            <div className="learn-hero-chips" aria-label="Learning page summary">
+              <span>8 learning modules</span>
+              <span>Beginner friendly</span>
+              <span>10-15 min</span>
+              <span>Includes quick quiz</span>
+            </div>
+            <div className="hero-actions">
+              <a className="button-primary" href="#what-is-the-iss">
+                Start learning
+              </a>
+              <a className="button-secondary" href="#quiz">
+                Take mini quiz
+              </a>
+            </div>
           </div>
         }
       >
-        Simple explanations about orbit, microgravity, station life, science,
-        spacecraft docking, and spacewalks.
+        Explore orbit, speed, microgravity, station life, science, docking, and
+        spacewalks.
       </PageHero>
 
       <section className="content-section learn-path-overview">
         <div className="section-heading-wide">
           <span className="section-kicker">Learning path</span>
-          <h2>Choose a question and start there.</h2>
+          <h2>Choose your first mission question.</h2>
           <p>
-            Each card links to the matching section below, so students can read
-            in order or jump straight to the idea they need.
+            Larger module cards make it easy to scan the journey and jump to
+            the question you want to answer first.
           </p>
         </div>
         <LearningPathCards />
       </section>
 
       <section className="content-section learn-guide-layout">
-        <aside className="learn-toc" aria-label="Learning table of contents">
-          <span className="section-kicker">Contents</span>
-          <nav>
-            {learningQuestions.map((question, index) => (
-              <a href={question.href} key={question.id}>
-                <span>{index + 1}</span>
-                {question.title}
-              </a>
-            ))}
-          </nav>
-        </aside>
+        <LearningPathSidebar activeId={activeModuleId} />
 
         <article className="learn-article">
-          {learningQuestions.map((question) => (
-            <LearningSection question={question} key={question.id} />
+          {learningQuestions.map((question, index) => (
+            <FragmentWithChallenge question={question} index={index} key={question.id} />
           ))}
 
-          <section className="learn-quiz-section" id="quiz">
-            <div className="section-heading-wide">
-              <span className="section-kicker">Quick quiz</span>
-              <h2>Check your understanding</h2>
-              <p>
-                Open each question to check the core ideas from the learning
-                modules.
-              </p>
-            </div>
-            <Accordion items={quizItems} />
-          </section>
+          <MiniQuiz />
         </article>
       </section>
 
