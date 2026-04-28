@@ -1,4 +1,5 @@
 const NASA_SEARCH_URL = "https://images-api.nasa.gov/search";
+const NASA_GALLERY_RESULT_COUNT = 18;
 
 export const FALLBACK_MEDIA_ITEMS = [
   {
@@ -119,7 +120,7 @@ export async function fetchIssMedia({ signal } = {}) {
   const params = new URLSearchParams({
     q: "International Space Station astronauts Earth science",
     media_type: "image",
-    page_size: "12"
+    page_size: "24"
   });
   const response = await fetch(`${NASA_SEARCH_URL}?${params.toString()}`, {
     signal,
@@ -140,5 +141,5 @@ export async function fetchIssMedia({ signal } = {}) {
     return FALLBACK_MEDIA_ITEMS;
   }
 
-  return normalizedItems.slice(0, 6);
+  return normalizedItems.slice(0, NASA_GALLERY_RESULT_COUNT);
 }

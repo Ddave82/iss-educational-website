@@ -1,5 +1,5 @@
 const ISS_STREAM_URL =
-  "https://www.youtube.com/embed/21X5lGlDOfg?rel=0&modestbranding=1";
+  "https://www.youtube.com/embed/zPH5KtjJFaQ?rel=0&modestbranding=1";
 
 export function LivestreamSection() {
   return (
@@ -37,11 +37,11 @@ export function LivestreamSection() {
             <a href="/tracker">Open live tracker</a>
             <a href="/gallery">Explore NASA imagery</a>
             <a
-              href="https://www.nasa.gov/live/"
+              href="https://www.youtube.com/watch?v=zPH5KtjJFaQ"
               target="_blank"
               rel="noreferrer"
             >
-              Open NASA Live
+              Open stream on YouTube
             </a>
           </div>
         </aside>

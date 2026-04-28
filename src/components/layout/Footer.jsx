@@ -30,23 +30,25 @@ export const dataSources = [
   }
 ];
 
-export function Footer() {
+export function Footer({ compact = false }) {
   return (
-    <footer className="source-section">
-      <div className="footer-hero">
-        <div>
-          <span className="section-kicker">Keep exploring</span>
-          <h2>Ready to explore the station?</h2>
-          <p>
-            Track the ISS live, learn the science behind orbit, and use the
-            classroom resources for a short activity or a full lesson.
-          </p>
+    <footer className={`source-section${compact ? " source-section-compact" : ""}`}>
+      {!compact ? (
+        <div className="footer-hero">
+          <div>
+            <span className="section-kicker">Keep exploring</span>
+            <h2>Ready to explore the station?</h2>
+            <p>
+              Track the ISS live, learn the science behind orbit, and use the
+              classroom resources for a short activity or a full lesson.
+            </p>
+          </div>
+          <div className="footer-actions" aria-label="Footer shortcuts">
+            <a href="/tracker">Track ISS live</a>
+            <a href="/learn">Start learning</a>
+          </div>
         </div>
-        <div className="footer-actions" aria-label="Footer shortcuts">
-          <a href="/tracker">Track ISS live</a>
-          <a href="/learn">Start learning</a>
-        </div>
-      </div>
+      ) : null}
 
       <div className="footer-lower">
         <div className="footer-link-row" aria-label="Footer navigation">
@@ -57,20 +59,22 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="source-grid">
-          {dataSources.map((source) => (
-            <a
-              className="source-card"
-              href={source.href}
-              target="_blank"
-              rel="noreferrer"
-              key={source.href}
-            >
-              <strong>{source.label}</strong>
-              <span>{source.description}</span>
-            </a>
-          ))}
-        </div>
+        {!compact ? (
+          <div className="source-grid">
+            {dataSources.map((source) => (
+              <a
+                className="source-card"
+                href={source.href}
+                target="_blank"
+                rel="noreferrer"
+                key={source.href}
+              >
+                <strong>{source.label}</strong>
+                <span>{source.description}</span>
+              </a>
+            ))}
+          </div>
+        ) : null}
 
         <p className="footer-note">
           NASA material is credited as source material and is not used to imply

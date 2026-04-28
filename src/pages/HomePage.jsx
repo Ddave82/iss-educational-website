@@ -6,53 +6,26 @@ import { FeatureCard } from "../components/ui/FeatureCard";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { StatusPill } from "../components/ui/StatusPill";
 import { formatWholeMetric } from "../lib/formatters";
+import { learningQuestions } from "../lib/learningQuestions";
 
 const HERO_IMAGE =
   "https://images-assets.nasa.gov/image/jsc2021e064215_alt/jsc2021e064215_alt~large.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1173&w=1920";
-
-const learningPreview = [
-  {
-    title: "What is the ISS?",
-    body: "A large spacecraft where astronauts live, work, and run experiments.",
-    facts: ["Built from many modules", "Shared by international partners"]
-  },
-  {
-    title: "Why does it not fall down?",
-    body: "It is falling around Earth, but moving forward fast enough to keep missing the ground.",
-    facts: ["About one orbit every 90 minutes", "Orbit is not standing still"]
-  },
-  {
-    title: "Why do astronauts float?",
-    body: "They float because they and the station are in continuous free fall together.",
-    facts: ["Not true zero gravity", "Called microgravity"]
-  },
-  {
-    title: "How fast is it?",
-    body: "The station travels at roughly 27,600 kilometers per hour.",
-    facts: ["Faster than any airplane", "About 16 orbits per day"]
-  },
-  {
-    title: "What happens inside?",
-    body: "Crew members sleep, exercise, repair equipment, talk to Earth, and do science.",
-    facts: ["Daily exercise", "Research in microgravity"]
-  }
-];
 
 const teacherPreview = [
   {
     title: "30-minute lesson plan",
     body: "A short class flow for orbit, microgravity, and live tracking.",
-    href: "/teachers"
+    href: "/teachers#lesson-plan"
   },
   {
     title: "ISS quiz",
     body: "Simple questions with expandable answers for review or warmups.",
-    href: "/teachers"
+    href: "/teachers#quiz"
   },
   {
     title: "Track one orbit activity",
     body: "Students observe how the ground track changes during one orbit.",
-    href: "/teachers"
+    href: "/teachers#track-one-orbit"
   }
 ];
 
@@ -119,18 +92,19 @@ export function HomePage({ telemetry, scene }) {
 
       <section className="learning-section">
         <SectionHeader kicker="Learn fast" title="Learn the ISS in 5 minutes">
-          Start with the ideas students ask about most: orbit, speed,
-          microgravity, visibility, and life inside the station.
+          Start with the questions students ask most: what the station is, why
+          orbit works, why astronauts float, and what people do there.
         </SectionHeader>
         <div className="feature-grid five-card-grid">
-          {learningPreview.map((topic) => (
+          {learningQuestions.map((topic) => (
             <FeatureCard
               title={topic.title}
               facts={topic.facts}
-              href="/learn"
+              href={topic.href}
+              cta="Open module"
               key={topic.title}
             >
-              {topic.body}
+              {topic.teaser}
             </FeatureCard>
           ))}
         </div>

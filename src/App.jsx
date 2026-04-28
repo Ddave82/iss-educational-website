@@ -30,7 +30,7 @@ const routeMetadata = {
   "/learn": {
     title: "Learn About the ISS – Orbit, Microgravity and Life in Space",
     description:
-      "Simple explanations about the International Space Station, orbit, microgravity, experiments, and astronaut life."
+      "Simple explanations about the International Space Station, orbit, microgravity, astronaut life, experiments, docking, and spacewalks."
   },
   "/see-the-iss": {
     title: "See the ISS from Earth – Viewing Guide",
@@ -45,7 +45,7 @@ const routeMetadata = {
   "/teachers": {
     title: "ISS Teacher Resources – Space Lessons and Classroom Activities",
     description:
-      "Lesson ideas, quiz questions, and classroom activities for learning about the International Space Station."
+      "Ready-to-use ISS lesson plans, quiz questions, worksheets, and classroom activities for learning about orbit, microgravity, astronaut life, and the International Space Station."
   },
   "/about-data": {
     title: "ISS Explorer Data Sources and Credits",
@@ -74,6 +74,21 @@ function setMeta(name, content, attribute = "name") {
   element.setAttribute("content", content);
 }
 
+function scrollToHash(hash = window.location.hash) {
+  if (!hash) {
+    return false;
+  }
+
+  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+
+  if (!target) {
+    return false;
+  }
+
+  target.scrollIntoView({ block: "start" });
+  return true;
+}
+
 function usePathRouting() {
   const [currentPath, setCurrentPath] = useState(() =>
     normalizePath(window.location.pathname)
@@ -82,7 +97,6 @@ function usePathRouting() {
   useEffect(() => {
     function handlePopState() {
       setCurrentPath(normalizePath(window.location.pathname));
-      window.scrollTo({ top: 0, behavior: "auto" });
     }
 
     function handleClick(event) {
@@ -99,16 +113,29 @@ function usePathRouting() {
 
       const url = new URL(anchor.href);
 
-      if (url.origin !== window.location.origin || url.hash) {
+      if (url.origin !== window.location.origin) {
         return;
       }
 
       const nextPath = normalizePath(url.pathname);
+      const currentPathBeforeNavigation = normalizePath(window.location.pathname);
+      const nextUrl = `${nextPath}${url.search}${url.hash}`;
+      const currentUrl = `${currentPathBeforeNavigation}${window.location.search}${window.location.hash}`;
+
       event.preventDefault();
 
-      if (nextPath !== normalizePath(window.location.pathname)) {
-        window.history.pushState({}, "", `${nextPath}${url.search}`);
+      if (nextUrl !== currentUrl) {
+        window.history.pushState({}, "", nextUrl);
+      }
+
+      if (nextPath !== currentPathBeforeNavigation) {
         setCurrentPath(nextPath);
+        return;
+      }
+
+      if (url.hash) {
+        window.requestAnimationFrame(() => scrollToHash(url.hash));
+      } else {
         window.scrollTo({ top: 0, behavior: "auto" });
       }
     }
@@ -172,6 +199,18 @@ function App() {
     setMeta("og:description", metadata.description, "property");
     setMeta("og:type", "website", "property");
   }, [metadata]);
+
+  useEffect(() => {
+    if (window.location.hash) {
+      window.requestAnimationFrame(() => {
+        if (!scrollToHash()) {
+          window.setTimeout(() => scrollToHash(), 80);
+        }
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [currentPath]);
 
   const page =
     currentPath === "/" ? (
