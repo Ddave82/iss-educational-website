@@ -811,9 +811,11 @@ export function LearnPage() {
           {learningQuestions.map((question, index) => (
             <FragmentWithChallenge question={question} index={index} key={question.id} />
           ))}
-
-          <MiniQuiz />
         </article>
+
+        <div className="learn-full-width">
+          <MiniQuiz />
+        </div>
       </section>
 
       <section className="content-section continue-section">

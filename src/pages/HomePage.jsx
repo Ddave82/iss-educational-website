@@ -1,11 +1,9 @@
 import { FactStrip } from "../components/sections/FactStrip";
 import { MediaGallery } from "../components/sections/MediaGallery";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
-import { FeatureCard } from "../components/ui/FeatureCard";
 import { SectionHeader } from "../components/ui/SectionHeader";
 import { StatusPill } from "../components/ui/StatusPill";
 import { formatWholeMetric } from "../lib/formatters";
-import { learningQuestions } from "../lib/learningQuestions";
 
 const HERO_IMAGE =
   "https://images-assets.nasa.gov/image/jsc2021e064215_alt/jsc2021e064215_alt~large.jpg?crop=faces%2Cfocalpoint&fit=clip&h=1173&w=1920";
@@ -14,6 +12,12 @@ const viewingTeasers = [
   "Best shortly after sunset or before sunrise",
   "Looks like a bright moving star",
   "Visibility depends on location, sky conditions, and orbit path"
+];
+
+const learningTeasers = [
+  "Orbit, speed, and why the station keeps missing the ground",
+  "Microgravity, floating astronauts, and daily life onboard",
+  "Science, docking, spacewalks, and station operations"
 ];
 
 export function HomePage({ telemetry, scene }) {
@@ -77,22 +81,22 @@ export function HomePage({ telemetry, scene }) {
         </div>
       </section>
 
-      <section className="learning-section">
-        <SectionHeader kicker="Learn fast" title="Learn the ISS in 5 minutes">
-          Start with the questions students ask most: what the station is, why
-          orbit works, why astronauts float, and what people do there.
-        </SectionHeader>
-        <div className="feature-grid five-card-grid">
-          {learningQuestions.map((topic) => (
-            <FeatureCard
-              title={topic.title}
-              facts={topic.facts}
-              href={topic.href}
-              cta="Open module"
-              key={topic.title}
-            >
-              {topic.teaser}
-            </FeatureCard>
+      <section className="learning-section homepage-learn-teaser">
+        <div>
+          <SectionHeader kicker="Learn fast" title="Learn the ISS in 5 minutes">
+            Start with a guided learning journey about orbit, microgravity,
+            station life, science, docking, and spacewalks.
+          </SectionHeader>
+          <a className="button-primary" href="/learn">
+            Open learning guide
+          </a>
+        </div>
+        <div className="homepage-teaser-grid" aria-label="Learning guide preview">
+          {learningTeasers.map((item) => (
+            <article className="panel homepage-teaser-card" key={item}>
+              <span aria-hidden="true" />
+              <p>{item}</p>
+            </article>
           ))}
         </div>
       </section>

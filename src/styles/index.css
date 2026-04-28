@@ -1860,8 +1860,25 @@ summary:focus-visible {
 .iss-viewing-teaser {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(360px, 1.15fr);
-  gap: 18px;
+  gap: 34px;
   align-items: stretch;
+}
+
+.homepage-learn-teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1.18fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.iss-viewing-teaser > div:first-child,
+.homepage-learn-teaser > div:first-child {
+  max-width: 560px;
+}
+
+.iss-viewing-teaser .button-primary,
+.homepage-learn-teaser .button-primary {
+  margin-top: 8px;
 }
 
 .split-section h2,
@@ -1886,22 +1903,25 @@ summary:focus-visible {
 }
 
 .viewing-teaser-grid,
+.homepage-teaser-grid,
 .look-for-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 .viewing-teaser-card,
+.homepage-teaser-card,
 .look-for-card {
   display: grid;
   align-content: start;
   gap: 14px;
-  min-height: 160px;
-  padding: 18px;
+  min-height: 178px;
+  padding: 22px;
 }
 
 .viewing-teaser-card span,
+.homepage-teaser-card span,
 .look-for-card span {
   display: block;
   width: 38px;
@@ -1911,6 +1931,7 @@ summary:focus-visible {
 }
 
 .viewing-teaser-card p,
+.homepage-teaser-card p,
 .look-for-card p {
   margin: 0;
   color: var(--text);
@@ -2444,6 +2465,11 @@ summary:focus-visible {
   gap: 24px;
   width: 100%;
   min-width: 0;
+}
+
+.learn-full-width {
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .learn-module,
@@ -3240,6 +3266,7 @@ summary:focus-visible {
 @media (max-width: 900px) {
   .split-section,
   .iss-viewing-teaser,
+  .homepage-learn-teaser,
   .note-grid,
   .lesson-grid,
   .three-card-grid,
@@ -3248,6 +3275,7 @@ summary:focus-visible {
   .continue-grid,
   .challenge-grid,
   .viewing-teaser-grid,
+  .homepage-teaser-grid,
   .look-for-grid,
   .teacher-split,
   .quiz-grid,
