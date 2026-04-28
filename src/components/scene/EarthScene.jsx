@@ -12,9 +12,9 @@ import {
 } from "../../lib/earthMath";
 
 const EARTH_RADIUS = 1.9;
-const CAMERA_DISTANCE = 8.8;
+const CAMERA_DISTANCE = 7.7;
 const VIEW_TARGET_Y = 0.08;
-const MOBILE_CAMERA_DISTANCE = 6.35;
+const MOBILE_CAMERA_DISTANCE = 5.9;
 const MOBILE_EARTH_POSITION_Y = -0.16;
 const SURFACE_NORMAL = new THREE.Vector3(0, 0, 1);
 const MOBILE_SCENE_BREAKPOINT = "(max-width: 900px)";
