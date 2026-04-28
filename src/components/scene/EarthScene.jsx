@@ -478,6 +478,8 @@ export function EarthScene({ telemetry }) {
   const statusText =
     status === "live"
       ? "Tracking in real time"
+      : status === "partial"
+        ? "Position-only feed"
       : status === "stale"
         ? "Last known position"
         : "Waiting for data";

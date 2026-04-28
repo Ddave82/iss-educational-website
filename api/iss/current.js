@@ -1,6 +1,6 @@
 const PRIMARY_SOURCE = "https://api.wheretheiss.at/v1/satellites/25544";
 const FALLBACK_SOURCE = "http://api.open-notify.org/iss-now.json";
-const REQUEST_TIMEOUT_MS = 7000;
+const REQUEST_TIMEOUT_MS = 12000;
 
 async function fetchJson(url) {
   const controller = new AbortController();
@@ -33,7 +33,8 @@ function normalizePrimaryPayload(payload) {
     velocity: Number(payload.velocity),
     visibility: payload.visibility,
     footprint: Number(payload.footprint),
-    timestamp: Number(payload.timestamp)
+    timestamp: Number(payload.timestamp),
+    source: "primary"
   };
 }
 
@@ -45,7 +46,8 @@ function normalizeFallbackPayload(payload) {
     velocity: null,
     visibility: null,
     footprint: null,
-    timestamp: Number(payload.timestamp)
+    timestamp: Number(payload.timestamp),
+    source: "fallback"
   };
 }
 

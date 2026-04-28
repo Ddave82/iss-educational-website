@@ -941,6 +941,10 @@ p {
   color: var(--warning);
 }
 
+.status-partial {
+  color: var(--warning);
+}
+
 .status-loading {
   color: var(--accent);
 }

@@ -6,6 +6,13 @@ const POLL_INTERVAL_MS = 10000;
 const MAX_HISTORY_POINTS = 72;
 let groundTrackModulePromise = null;
 
+function hasFullTelemetry(snapshot) {
+  return (
+    Number.isFinite(snapshot?.altitude) &&
+    Number.isFinite(snapshot?.velocity)
+  );
+}
+
 function resolveNumericTelemetry(nextValue, fallbackValue) {
   if (Number.isFinite(nextValue)) {
     return nextValue;
@@ -97,7 +104,7 @@ export function useIssTelemetry() {
             ? new Date(resolvedSnapshot.timestamp * 1000).toISOString()
             : new Date().toISOString()
         );
-        setStatus("live");
+        setStatus(hasFullTelemetry(enrichedSnapshot) ? "live" : "partial");
         setError("");
         setHistory((currentHistory) => {
           const recentPoint = currentHistory[currentHistory.length - 1];

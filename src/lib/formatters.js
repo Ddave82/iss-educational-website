@@ -92,6 +92,10 @@ export function getStatusLabel(status, error) {
     return "Offline";
   }
 
+  if (status === "partial") {
+    return "Partial";
+  }
+
   if (error) {
     return "Partial";
   }
