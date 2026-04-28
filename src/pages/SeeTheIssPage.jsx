@@ -1,10 +1,8 @@
 import { PassPredictionPanel } from "../components/PassPredictionPanel";
 import { LivestreamSection } from "../components/sections/LivestreamSection";
-import { MediaCard } from "../components/sections/MediaGallery";
 import { FeatureCard } from "../components/ui/FeatureCard";
 import { PageHero } from "../components/ui/PageHero";
 import { SectionHeader } from "../components/ui/SectionHeader";
-import { FALLBACK_MEDIA_ITEMS } from "../lib/nasaMedia";
 
 const viewingTips = [
   {
@@ -35,10 +33,6 @@ const whatToLookFor = [
   "It usually appears for a few minutes",
   "It may disappear when entering Earth's shadow"
 ];
-
-const viewingMedia = FALLBACK_MEDIA_ITEMS.filter((item) =>
-  ["jsc2021e064215_alt", "iss060e000604", "iss064e055946"].includes(item.id)
-);
 
 export function SeeTheIssPage() {
   return (
@@ -90,11 +84,6 @@ export function SeeTheIssPage() {
           The station can appear as a bright, steady point of light moving
           across the night sky.
         </SectionHeader>
-        <div className="media-grid viewing-media-grid">
-          {viewingMedia.map((item) => (
-            <MediaCard item={item} key={item.id} />
-          ))}
-        </div>
         <div className="look-for-grid" aria-label="What to look for when viewing the ISS">
           {whatToLookFor.map((item) => (
             <article className="panel look-for-card" key={item}>

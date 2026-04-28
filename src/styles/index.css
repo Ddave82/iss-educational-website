@@ -842,8 +842,31 @@ p {
   align-items: start;
 }
 
+.tracker-page-layout {
+  grid-template-columns: 1fr;
+}
+
 .tracker-scene {
   min-width: 0;
+}
+
+.tracker-page-layout .tracker-scene {
+  width: 100%;
+}
+
+.tracker-page-layout .sidebar-stack {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.tracker-page-layout .sidebar-stack > .panel {
+  min-height: 100%;
+}
+
+.tracker-page-layout .data-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .sidebar-stack {
@@ -1528,6 +1551,11 @@ p {
   .scene-stage {
     height: 640px;
     min-height: 0;
+  }
+
+  .tracker-page-layout .sidebar-stack,
+  .tracker-page-layout .data-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -2661,10 +2689,6 @@ summary:focus-visible {
   gap: 22px;
 }
 
-.viewing-media-grid {
-  margin-top: 6px;
-}
-
 .quick-challenge h2,
 .quick-challenge p {
   margin-bottom: 0;
@@ -3401,6 +3425,11 @@ summary:focus-visible {
   .learn-module,
   .learn-quiz-section {
     padding: 18px;
+  }
+
+  .tracker-page-layout .sidebar-stack,
+  .tracker-page-layout .data-grid {
+    grid-template-columns: 1fr;
   }
 
   .learn-module-header {

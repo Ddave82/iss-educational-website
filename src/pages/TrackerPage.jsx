@@ -30,7 +30,7 @@ export function TrackerPage({ telemetry, scene }) {
           </ErrorState>
         ) : null}
 
-        <div className="tracker-grid">
+        <div className="tracker-grid tracker-page-layout">
           <div className="tracker-scene">{scene}</div>
           <SidebarPanel telemetry={telemetry} />
         </div>
