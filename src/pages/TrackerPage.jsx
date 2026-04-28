@@ -1,38 +1,26 @@
 import { LivestreamSection } from "../components/sections/LivestreamSection";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
-import { PageHero } from "../components/ui/PageHero";
 import { ErrorState, LoadingSkeleton } from "../components/ui/StateCards";
-import { StatusPill } from "../components/ui/StatusPill";
-import { formatDataAge, formatTimestamp } from "../lib/formatters";
 
 export function TrackerPage({ telemetry, scene }) {
-  const { status, error, lastUpdated, snapshot, history } = telemetry;
+  const { status, error, snapshot, history } = telemetry;
   const isLoading = status === "loading" && !snapshot;
   const isStale = status === "stale";
 
   return (
     <>
-      <PageHero kicker="Live orbit" title="Live ISS Tracker">
-        Follow the International Space Station as it orbits Earth.
-      </PageHero>
-
       <section className="tracker-section tracker-page-section">
-        <div className="tracker-page-status">
-          <StatusPill status={status} error={error} />
-          <span>Last updated: {formatTimestamp(lastUpdated)}</span>
-          <span>Signal age: {formatDataAge(lastUpdated)}</span>
-        </div>
-
-        {isLoading ? <LoadingSkeleton label="Connecting to live ISS telemetry..." /> : null}
-        {error ? (
-          <ErrorState title={isStale ? "Showing last known position" : "Tracker feed offline"}>
-            {error}
-          </ErrorState>
-        ) : null}
-
         <div className="tracker-grid tracker-page-layout">
           <div className="tracker-scene">{scene}</div>
-          <SidebarPanel telemetry={telemetry} />
+          <div className="tracker-live-stack">
+            {isLoading ? <LoadingSkeleton label="Connecting to live ISS telemetry..." /> : null}
+            {error ? (
+              <ErrorState title={isStale ? "Showing last known position" : "Tracker feed offline"}>
+                {error}
+              </ErrorState>
+            ) : null}
+            <SidebarPanel telemetry={telemetry} />
+          </div>
         </div>
 
         <div className="note-grid">

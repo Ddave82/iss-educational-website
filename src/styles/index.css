@@ -844,6 +844,9 @@ p {
 
 .tracker-page-layout {
   grid-template-columns: 1fr;
+  width: min(1760px, calc(100% - 32px));
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .tracker-scene {
@@ -859,6 +862,14 @@ p {
   grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
   gap: 14px;
   align-items: stretch;
+}
+
+.tracker-live-stack {
+  display: grid;
+  gap: 14px;
+  width: min(1180px, 100%);
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .tracker-page-layout .sidebar-stack > .panel {
@@ -1822,7 +1833,6 @@ summary:focus-visible {
 }
 
 .hero-badge-row,
-.tracker-page-status,
 .section-cta-row,
 .footer-link-row,
 .stream-actions {
@@ -2100,17 +2110,11 @@ summary:focus-visible {
   padding-top: 42px;
 }
 
-.tracker-page-status {
-  margin-bottom: 16px;
-  color: var(--muted);
-}
-
 .tracker-page-section {
-  width: min(1760px, calc(100% - 32px));
+  width: 100%;
+  padding-top: 96px;
 }
 
-.tracker-page-section .tracker-page-status,
-.tracker-page-layout .sidebar-stack,
 .tracker-page-section .note-grid {
   width: min(1180px, 100%);
   margin-right: auto;
