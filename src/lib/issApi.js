@@ -3,16 +3,6 @@ const LOCAL_PRIMARY_SOURCE = "/api/iss/current";
 const LOCAL_FALLBACK_SOURCE = "/api/iss/fallback";
 const REQUEST_TIMEOUT_MS = 8000;
 
-function isLocalDevHost() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return ["localhost", "127.0.0.1", "0.0.0.0"].includes(
-    window.location.hostname
-  );
-}
-
 function withTimeout(resource, options = {}) {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -65,28 +55,20 @@ async function fetchJson(url) {
 
 export async function fetchIssSnapshot() {
   try {
-    const payload = await fetchJson(DIRECT_PRIMARY_SOURCE);
+    const payload = await fetchJson(LOCAL_PRIMARY_SOURCE);
     return normalizePrimaryPayload(payload);
-  } catch (primaryError) {
-    if (!isLocalDevHost()) {
-      if (primaryError.name === "AbortError") {
-        throw new Error("The ISS data feed timed out.");
-      }
-
-      throw new Error("ISS data is not reachable right now.");
-    }
-
+  } catch (localPrimaryError) {
     try {
-      const payload = await fetchJson(LOCAL_PRIMARY_SOURCE);
+      const payload = await fetchJson(DIRECT_PRIMARY_SOURCE);
       return normalizePrimaryPayload(payload);
-    } catch (localPrimaryError) {
+    } catch (directPrimaryError) {
       try {
         const payload = await fetchJson(LOCAL_FALLBACK_SOURCE);
         return normalizeFallbackPayload(payload);
       } catch (fallbackError) {
         if (
-          primaryError.name === "AbortError" ||
           localPrimaryError.name === "AbortError" ||
+          directPrimaryError.name === "AbortError" ||
           fallbackError.name === "AbortError"
         ) {
           throw new Error("The ISS data feed timed out.");

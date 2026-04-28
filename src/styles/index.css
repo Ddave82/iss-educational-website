@@ -866,7 +866,7 @@ p {
 
 .tracker-live-stack {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
   margin-right: auto;
   margin-left: auto;
@@ -1570,8 +1570,7 @@ p {
   }
 
   .tracker-page-layout .tracker-scene .scene-stage {
-    min-height: 0;
-    max-height: none;
+    height: 520px;
   }
 }
 
@@ -2112,7 +2111,7 @@ summary:focus-visible {
 
 .tracker-page-section {
   width: 100%;
-  padding-top: 96px;
+  padding-top: 88px;
 }
 
 .tracker-page-section .note-grid {
@@ -2122,8 +2121,9 @@ summary:focus-visible {
 }
 
 .tracker-page-layout .tracker-scene .scene-stage {
-  min-height: 680px;
-  max-height: 840px;
+  height: clamp(500px, 58vh, 650px);
+  min-height: 0;
+  max-height: none;
 }
 
 .note-grid,
@@ -2425,6 +2425,74 @@ summary:focus-visible {
   transform: translateY(-2px);
 }
 
+.learn-path-card.is-active {
+  border-color: var(--accent);
+  background:
+    linear-gradient(145deg, rgba(118, 226, 214, 0.16), transparent 44%),
+    radial-gradient(circle at 92% 12%, rgba(246, 191, 102, 0.18), transparent 32%),
+    var(--surface);
+}
+
+.learn-path-card.is-complete {
+  border-color: rgba(125, 227, 161, 0.36);
+}
+
+.learn-path-card.is-complete small::after {
+  content: " visited";
+}
+
+.quiz-checkpoint {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: 18px;
+  align-items: center;
+  padding: 28px;
+  border: 1px solid rgba(246, 191, 102, 0.26);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 96% 16%, rgba(246, 191, 102, 0.18), transparent 34%),
+    linear-gradient(135deg, rgba(118, 226, 214, 0.08), transparent 42%),
+    var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.quiz-checkpoint h2 {
+  margin: 10px 0 12px;
+  font-size: clamp(1.8rem, 3vw, 2.45rem);
+  line-height: 1.08;
+}
+
+.quiz-checkpoint p {
+  max-width: 700px;
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.quiz-checkpoint-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(192, 213, 231, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.quiz-checkpoint-card strong {
+  color: var(--accent-strong);
+  font-size: 1.2rem;
+}
+
+.quiz-checkpoint-card span {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.quiz-checkpoint-card .button-primary {
+  margin-top: 4px;
+  justify-content: center;
+}
+
 .learn-guide-layout {
   display: grid;
   grid-template-columns: minmax(200px, 230px) minmax(0, 900px);
@@ -2449,6 +2517,14 @@ summary:focus-visible {
   margin-top: 8px;
   color: var(--text);
   font-size: 0.95rem;
+}
+
+.learn-toc small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 
 .learn-progress-track,
@@ -2477,7 +2553,7 @@ summary:focus-visible {
 
 .learn-toc a {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 34px 1fr;
   gap: 10px;
   align-items: center;
   min-height: 42px;
@@ -2503,10 +2579,20 @@ summary:focus-visible {
   background: rgba(118, 226, 214, 0.1);
 }
 
+.learn-toc a.is-complete {
+  color: var(--text);
+}
+
+.learn-toc a.is-complete span {
+  background: rgba(125, 227, 161, 0.14);
+  color: var(--success);
+  font-size: 0.66rem;
+}
+
 .learn-toc a span {
   display: inline-grid;
   place-items: center;
-  width: 28px;
+  width: 34px;
   height: 28px;
   border-radius: 8px;
   background: rgba(118, 226, 214, 0.1);
@@ -3323,6 +3409,7 @@ summary:focus-visible {
   .learn-guide-layout,
   .learn-support-grid,
   .continue-grid,
+  .quiz-checkpoint,
   .challenge-grid,
   .viewing-teaser-grid,
   .homepage-teaser-grid,

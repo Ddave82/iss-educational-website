@@ -6,7 +6,7 @@ import { SectionHeader } from "../components/ui/SectionHeader";
 const notes = [
   {
     title: "Live ISS telemetry",
-    body: "The current position feed is requested from wheretheiss.at. In production the app calls the HTTPS endpoint directly. In local development, Vite proxy fallbacks are configured."
+    body: "The current position feed is requested through this site's /api/iss/current route, which proxies wheretheiss.at and falls back to a simpler ISS position source if needed."
   },
   {
     title: "Update frequency",

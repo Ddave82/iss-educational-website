@@ -397,11 +397,15 @@ const continueLinks = [
   { label: "About the data", href: "/about-data" }
 ];
 
-function LearningPathCards() {
+function LearningPathCards({ activeId, exploredIds }) {
   return (
     <div className="learn-path-grid">
       {learningQuestions.map((question, index) => (
-        <a className="learn-path-card" href={question.href} key={question.id}>
+        <a
+          className={`learn-path-card${question.id === activeId ? " is-active" : ""}${exploredIds.has(question.id) ? " is-complete" : ""}`}
+          href={question.href}
+          key={question.id}
+        >
           <div className="learn-path-card-top">
             <span>{question.category}</span>
             <strong aria-hidden="true">{question.icon}</strong>
@@ -480,35 +484,56 @@ function LearningSection({ question }) {
   );
 }
 
-function LearningPathSidebar({ activeId }) {
-  const activeIndex = Math.max(
-    0,
-    learningQuestions.findIndex((question) => question.id === activeId)
-  );
+function LearningPathSidebar({ activeId, exploredIds }) {
+  const exploredCount = exploredIds.size;
 
   return (
     <aside className="learn-toc" aria-label="Learning path">
-      <span className="section-kicker">Learning path</span>
+      <span className="section-kicker">Mission path</span>
       <strong className="learn-progress-text">
-        {activeIndex + 1} / {learningQuestions.length} explored
+        {exploredCount} / {learningQuestions.length} modules visited
       </strong>
+      <small>Reach a module and it stays marked.</small>
       <div className="learn-progress-track" aria-hidden="true">
-        <span style={{ width: `${((activeIndex + 1) / learningQuestions.length) * 100}%` }} />
+        <span style={{ width: `${(exploredCount / learningQuestions.length) * 100}%` }} />
       </div>
       <nav>
         {learningQuestions.map((question, index) => (
           <a
-            className={question.id === activeId ? "is-active" : ""}
+            className={`${question.id === activeId ? "is-active" : ""}${exploredIds.has(question.id) ? " is-complete" : ""}`}
             href={question.href}
             key={question.id}
             aria-current={question.id === activeId ? "location" : undefined}
           >
-            <span>{index + 1}</span>
+            <span>{exploredIds.has(question.id) ? "Read" : index + 1}</span>
             {question.title}
           </a>
         ))}
       </nav>
     </aside>
+  );
+}
+
+function QuizCheckpoint() {
+  return (
+    <section className="content-section quiz-checkpoint" aria-labelledby="quiz-checkpoint-title">
+      <div>
+        <span className="section-kicker">Mission checkpoint</span>
+        <h2 id="quiz-checkpoint-title">Think you can explain the ISS?</h2>
+        <p>
+          The mini quiz is always available. Read a few modules first or jump
+          straight into the station check.
+        </p>
+      </div>
+      <div className="quiz-checkpoint-card">
+        <strong>7 questions</strong>
+        <span>Instant feedback</span>
+        <span>Final rank card</span>
+        <a className="button-primary" href="#quiz">
+          Launch mini quiz
+        </a>
+      </div>
+    </section>
   );
 }
 
@@ -734,6 +759,7 @@ function MiniQuiz() {
 
 export function LearnPage() {
   const [activeModuleId, setActiveModuleId] = useState(learningQuestions[0].id);
+  const [exploredModuleIds, setExploredModuleIds] = useState(() => new Set());
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -744,6 +770,15 @@ export function LearnPage() {
 
         if (visibleEntry?.target.id) {
           setActiveModuleId(visibleEntry.target.id);
+          setExploredModuleIds((current) => {
+            if (current.has(visibleEntry.target.id)) {
+              return current;
+            }
+
+            const next = new Set(current);
+            next.add(visibleEntry.target.id);
+            return next;
+          });
         }
       },
       {
@@ -797,15 +832,17 @@ export function LearnPage() {
           <span className="section-kicker">Learning path</span>
           <h2>Choose your first mission question.</h2>
           <p>
-            Larger module cards make it easy to scan the journey and jump to
-            the question you want to answer first.
+            Use the mission map to jump between modules. Chapters stay marked
+            once you reach them.
           </p>
         </div>
-        <LearningPathCards />
+        <LearningPathCards activeId={activeModuleId} exploredIds={exploredModuleIds} />
       </section>
 
+      <QuizCheckpoint />
+
       <section className="content-section learn-guide-layout">
-        <LearningPathSidebar activeId={activeModuleId} />
+        <LearningPathSidebar activeId={activeModuleId} exploredIds={exploredModuleIds} />
 
         <article className="learn-article">
           {learningQuestions.map((question, index) => (
