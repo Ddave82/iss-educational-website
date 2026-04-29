@@ -3496,14 +3496,20 @@ summary:focus-visible {
 
   .learn-toc {
     position: static;
+    display: grid;
+    gap: 12px;
+    padding: 16px;
   }
 
   .learn-toc nav {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    gap: 8px;
+    margin-top: 0;
     overflow-x: auto;
-    padding-bottom: 4px;
+    padding: 2px 0 6px;
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
   }
 
@@ -3512,11 +3518,13 @@ summary:focus-visible {
   }
 
   .learn-toc a {
-    min-width: 220px;
+    min-width: min(220px, 76vw);
+    scroll-snap-align: start;
   }
 
   .learn-guide-layout {
     width: min(100% - 24px, 1180px);
+    gap: 18px;
   }
 
   .quick-challenge {
@@ -3575,17 +3583,118 @@ summary:focus-visible {
 
   .page-hero {
     width: min(100% - 24px, 1180px);
-    padding-top: 108px;
+    padding-top: 104px;
   }
 
   .page-hero h1 {
     font-size: 2.7rem;
   }
 
+  .page-hero p {
+    font-size: 1.04rem;
+    line-height: 1.55;
+  }
+
+  .page-hero .hero-actions,
+  .learn-hero-actions {
+    width: 100%;
+  }
+
+  .learn-hero-actions {
+    gap: 12px;
+  }
+
+  .learn-hero-actions > .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .learn-hero-actions > .hero-actions a {
+    min-width: 0;
+    padding-inline: 10px;
+  }
+
+  .learn-hero-chips {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .learn-hero-chips span {
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 10px;
+    text-align: center;
+  }
+
   .content-section,
   .final-cta {
     width: min(100% - 24px, 1180px);
     padding: 54px 0;
+  }
+
+  .learn-path-overview {
+    padding-top: 24px;
+  }
+
+  .learn-path-grid {
+    gap: 10px;
+  }
+
+  .learn-path-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: auto;
+    gap: 8px 12px;
+    padding: 16px;
+  }
+
+  .learn-path-card-top,
+  .learn-path-card h3,
+  .learn-path-card p,
+  .learn-path-card small {
+    grid-column: 1 / -1;
+  }
+
+  .learn-path-card h3 {
+    font-size: 1.14rem;
+  }
+
+  .learn-path-card p {
+    font-size: 0.88rem;
+  }
+
+  .quiz-checkpoint {
+    padding: 20px;
+  }
+
+  .quiz-checkpoint-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quiz-checkpoint-card strong,
+  .quiz-checkpoint-card .button-primary {
+    grid-column: 1 / -1;
+  }
+
+  .learn-module,
+  .learn-quiz-section,
+  .quick-challenge {
+    scroll-margin-top: 92px;
+  }
+
+  .learn-module h2 {
+    font-size: 2rem;
+  }
+
+  .key-idea-card p {
+    font-size: 1.02rem;
+  }
+
+  .quiz-result-card .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3610,13 +3719,20 @@ summary:focus-visible {
   }
 
   .learn-module,
-  .learn-quiz-section {
+  .learn-quiz-section,
+  .quick-challenge {
     padding: 18px;
   }
 
   .module-complete-row {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .module-complete-row .button-primary,
+  .module-complete-row .button-secondary,
+  .quiz-feedback .button-primary {
+    width: 100%;
   }
 
   .tracker-page-layout .sidebar-stack,
@@ -3626,10 +3742,66 @@ summary:focus-visible {
 
   .learn-module-header {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .learn-visual-grid {
     justify-content: flex-start;
+  }
+
+  .learn-path-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .learn-path-card-top {
+    grid-column: 1 / -1;
+  }
+
+  .learn-path-card p {
+    display: none;
+  }
+
+  .learn-path-card small {
+    align-self: center;
+  }
+
+  .learn-path-card-top strong {
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .learn-visual {
+    width: 76px;
+    min-height: 76px;
+  }
+
+  .learn-visual::before {
+    width: 52px;
+    height: 28px;
+  }
+
+  .learn-visual-grid span {
+    min-height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .learn-copy p {
+    font-size: 0.98rem;
+    line-height: 1.65;
+  }
+
+  .mini-fact-card,
+  .why-card,
+  .quiz-play-card,
+  .quiz-result-card {
+    padding: 16px;
+  }
+
+  .quiz-progress-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .teacher-timeline-step,
