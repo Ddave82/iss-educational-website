@@ -1,18 +1,46 @@
 {
   "redirects": [
     { "source": "/teachers", "destination": "/learn", "permanent": true },
-    { "source": "/teachers/", "destination": "/learn", "permanent": true }
+    { "source": "/teachers/", "destination": "/learn", "permanent": true },
+    { "source": "/de/teachers", "destination": "/de/learn", "permanent": true },
+    { "source": "/de/teachers/", "destination": "/de/learn", "permanent": true },
+    { "source": "/da/teachers", "destination": "/da/learn", "permanent": true },
+    { "source": "/da/teachers/", "destination": "/da/learn", "permanent": true }
   ],
   "rewrites": [
+    { "source": "/de", "destination": "/index.html" },
+    { "source": "/de/", "destination": "/index.html" },
+    { "source": "/da", "destination": "/index.html" },
+    { "source": "/da/", "destination": "/index.html" },
     { "source": "/tracker", "destination": "/index.html" },
     { "source": "/tracker/", "destination": "/index.html" },
+    { "source": "/de/tracker", "destination": "/index.html" },
+    { "source": "/de/tracker/", "destination": "/index.html" },
+    { "source": "/da/tracker", "destination": "/index.html" },
+    { "source": "/da/tracker/", "destination": "/index.html" },
     { "source": "/learn", "destination": "/index.html" },
     { "source": "/learn/", "destination": "/index.html" },
+    { "source": "/de/learn", "destination": "/index.html" },
+    { "source": "/de/learn/", "destination": "/index.html" },
+    { "source": "/da/learn", "destination": "/index.html" },
+    { "source": "/da/learn/", "destination": "/index.html" },
     { "source": "/see-the-iss", "destination": "/index.html" },
     { "source": "/see-the-iss/", "destination": "/index.html" },
+    { "source": "/de/see-the-iss", "destination": "/index.html" },
+    { "source": "/de/see-the-iss/", "destination": "/index.html" },
+    { "source": "/da/see-the-iss", "destination": "/index.html" },
+    { "source": "/da/see-the-iss/", "destination": "/index.html" },
     { "source": "/gallery", "destination": "/index.html" },
     { "source": "/gallery/", "destination": "/index.html" },
+    { "source": "/de/gallery", "destination": "/index.html" },
+    { "source": "/de/gallery/", "destination": "/index.html" },
+    { "source": "/da/gallery", "destination": "/index.html" },
+    { "source": "/da/gallery/", "destination": "/index.html" },
     { "source": "/about-data", "destination": "/index.html" },
-    { "source": "/about-data/", "destination": "/index.html" }
+    { "source": "/about-data/", "destination": "/index.html" },
+    { "source": "/de/about-data", "destination": "/index.html" },
+    { "source": "/de/about-data/", "destination": "/index.html" },
+    { "source": "/da/about-data", "destination": "/index.html" },
+    { "source": "/da/about-data/", "destination": "/index.html" }
   ]
 }

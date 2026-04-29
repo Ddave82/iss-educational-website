@@ -1,57 +1,59 @@
 import { formatTimestamp, formatWholeMetric } from "../../lib/formatters";
+import { useI18n } from "../../lib/i18n.jsx";
 import { StatCard } from "../ui/StatCard";
 
-function formatAltitude(value) {
+function formatAltitude(value, t) {
   if (!Number.isFinite(value)) {
-    return "About 400 km";
+    return t.common.aboutAltitude;
   }
 
   return `${value.toFixed(0)} km`;
 }
 
-function formatVelocity(value) {
+function formatVelocity(value, locale, t) {
   if (!Number.isFinite(value)) {
-    return "About 27,600 km/h";
+    return t.common.aboutVelocity;
   }
 
-  return formatWholeMetric(value, "km/h");
+  return formatWholeMetric(value, "km/h", locale, t);
 }
 
 export function FactStrip({ telemetry }) {
   const { snapshot, lastUpdated } = telemetry;
+  const { languageInfo, t } = useI18n();
   const facts = [
     {
-      value: formatAltitude(snapshot?.altitude),
-      label: "Current altitude",
-      detail: "The exact height changes as orbit maintenance adjusts the station.",
-      info: "Altitude is the station's height above Earth's surface."
+      value: formatAltitude(snapshot?.altitude, t),
+      label: t.factStrip.altitudeLabel,
+      detail: t.factStrip.altitudeDetail,
+      info: t.factStrip.altitudeInfo
     },
     {
-      value: formatVelocity(snapshot?.velocity),
-      label: "Orbital speed",
-      detail: "Fast enough to circle Earth in roughly 90 minutes.",
-      info: "Velocity means speed in a direction along the station's orbit."
+      value: formatVelocity(snapshot?.velocity, languageInfo.intlLocale, t),
+      label: t.factStrip.speedLabel,
+      detail: t.factStrip.speedDetail,
+      info: t.factStrip.speedInfo
     },
     {
-      value: "About 16",
-      label: "Orbits per day",
-      detail: "The crew sees day and night many times in one Earth day."
+      value: t.factStrip.orbitsValue,
+      label: t.factStrip.orbitsLabel,
+      detail: t.factStrip.orbitsDetail
     },
     {
-      value: "Crewed",
-      label: "Station status",
-      detail: "A continuously inhabited orbital laboratory since November 2000."
+      value: t.factStrip.statusValue,
+      label: t.factStrip.statusLabel,
+      detail: t.factStrip.statusDetail
     },
     {
-      value: formatTimestamp(lastUpdated),
-      label: "Last updated",
-      detail: "Live telemetry refreshes about every 10 seconds when reachable.",
-      info: "Telemetry is live measurement data from the station position feed."
+      value: formatTimestamp(lastUpdated, languageInfo.intlLocale, t),
+      label: t.factStrip.updatedLabel,
+      detail: t.factStrip.updatedDetail,
+      info: t.factStrip.updatedInfo
     }
   ];
 
   return (
-    <section className="fact-strip" aria-label="ISS quick facts">
+    <section className="fact-strip" aria-label={t.factStrip.aria}>
       {facts.map((fact) => (
         <StatCard
           key={fact.label}

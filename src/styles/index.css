@@ -221,6 +221,44 @@ p {
   font-size: 0.9rem;
 }
 
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 42px;
+  padding: 3px;
+  border: 1px solid rgba(192, 213, 231, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(118, 226, 214, 0.1), rgba(246, 191, 102, 0.08)),
+    rgba(255, 255, 255, 0.045);
+}
+
+.language-switcher a {
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 9px;
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.language-switcher a strong {
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 0.74rem;
+}
+
+.language-switcher a span {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.language-switcher a.is-active {
+  color: #211706;
+  background: var(--accent-strong);
+  box-shadow: 0 8px 24px rgba(246, 191, 102, 0.18);
+}
+
 .nav-links a:hover,
 .source-card:hover,
 .media-card-body a:hover {
@@ -3573,6 +3611,17 @@ summary:focus-visible {
   .nav-links a {
     min-height: 44px;
     padding-inline: 12px;
+  }
+
+  .language-switcher {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .language-switcher a {
+    flex: 1;
+    justify-content: center;
   }
 
   .home-hero {

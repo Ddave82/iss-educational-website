@@ -1,9 +1,11 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { useI18n } from "../../lib/i18n.jsx";
 
 export function InfoTip({ label, children }) {
   const [isOpen, setIsOpen] = useState(false);
   const id = useId();
   const wrapperRef = useRef(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!isOpen) {
@@ -47,7 +49,7 @@ export function InfoTip({ label, children }) {
       <button
         type="button"
         className="info-tip-trigger"
-        aria-label={label ? `More about ${label}` : "More information"}
+        aria-label={t.common.moreAbout(label)}
         aria-describedby={isOpen ? id : undefined}
         aria-expanded={isOpen}
         onClick={() => setIsOpen((current) => !current)}
@@ -60,7 +62,7 @@ export function InfoTip({ label, children }) {
           <button
             type="button"
             className="info-tip-close"
-            aria-label="Dismiss information"
+            aria-label={t.common.dismissInformation}
             onClick={() => setIsOpen(false)}
           >
             ×

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "../../lib/i18n.jsx";
 import { FALLBACK_MEDIA_ITEMS, fetchIssMedia } from "../../lib/nasaMedia";
 
 function normalizeGalleryKey(value) {
@@ -70,14 +71,23 @@ export function MediaCard({ item, cta = "View source" }) {
 
 export function MediaGallery({
   limit,
-  title = "Real station imagery for learning and wonder.",
-  intro = "These images are loaded from NASA's public Image and Video Library when available. If the API is unreachable, curated NASA gallery items remain visible.",
+  title,
+  intro,
   showHeader = true,
-  cta = "View source"
+  cta
 }) {
+  const { t } = useI18n();
   const [mediaItems, setMediaItems] = useState(FALLBACK_MEDIA_ITEMS);
   const [status, setStatus] = useState("loading");
-  const visibleItems = dedupeRenderedMedia(mediaItems).slice(0, limit || mediaItems.length);
+  const visibleItems = dedupeRenderedMedia(mediaItems)
+    .map((item) => ({
+      ...item,
+      ...(t.media.fallbackItems[item.id] || {})
+    }))
+    .slice(0, limit || mediaItems.length);
+  const resolvedTitle = title || t.media.defaultTitle;
+  const resolvedIntro = intro || t.media.defaultIntro;
+  const resolvedCta = cta || t.media.viewSource;
 
   useEffect(() => {
     const controller = new AbortController();
@@ -106,32 +116,30 @@ export function MediaGallery({
     <section className="media-section" id="media">
       {showHeader ? (
         <div className="section-heading-wide">
-          <span className="section-kicker">NASA media library</span>
-          <h2>{title}</h2>
-          <p>{intro}</p>
+          <span className="section-kicker">{t.media.kicker}</span>
+          <h2>{resolvedTitle}</h2>
+          <p>{resolvedIntro}</p>
         </div>
       ) : null}
 
       <div className="media-status-line" aria-live="polite">
         {status === "loading"
-          ? "Loading NASA media..."
+          ? t.media.loading
           : status === "fallback"
-            ? "Showing curated NASA gallery fallbacks."
-            : "Showing current NASA Image and Video Library results."}
+            ? t.media.fallback
+            : t.media.live}
       </div>
 
       {visibleItems.length ? (
         <div className="media-grid">
           {visibleItems.map((item) => (
-            <MediaCard item={item} key={item.id} cta={cta} />
+            <MediaCard item={item} key={item.id} cta={resolvedCta} />
           ))}
         </div>
       ) : (
         <article className="panel empty-filter-card">
-          <h3>No images available yet</h3>
-          <p>
-            NASA results can vary by request. Try again later.
-          </p>
+          <h3>{t.media.emptyTitle}</h3>
+          <p>{t.media.emptyBody}</p>
         </article>
       )}
     </section>

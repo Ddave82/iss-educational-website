@@ -10,23 +10,25 @@ import {
   formatVisibility,
   formatWholeMetric
 } from "../../lib/formatters";
+import { useI18n } from "../../lib/i18n.jsx";
 
 export function SidebarPanel({ telemetry }) {
   const { snapshot, status, error, lastUpdated, history } = telemetry;
-  const visibility = formatVisibility(snapshot?.visibility);
+  const { languageInfo, t } = useI18n();
+  const visibility = formatVisibility(snapshot?.visibility, t);
 
   const trailWindow =
     history.length > 1
-      ? `${history.length} points / ${(((history.length - 1) * 10) / 60).toFixed(1)} min trail`
-      : "Building trail";
+      ? t.sidebar.pointsTrail(history.length, (((history.length - 1) * 10) / 60).toFixed(1))
+      : t.sidebar.buildingTrail;
 
   return (
     <div className="sidebar-stack">
       <section id="live-data" className="panel hero-panel scroll-target">
         <div className="panel-header">
           <div>
-            <span className="panel-eyebrow">Mission Control</span>
-            <h2>Live Telemetry</h2>
+            <span className="panel-eyebrow">{t.sidebar.missionControl}</span>
+            <h2>{t.sidebar.liveTelemetry}</h2>
           </div>
           <StatusPill status={status} error={error} />
         </div>
@@ -37,67 +39,64 @@ export function SidebarPanel({ telemetry }) {
 
         {error ? (
           <div className="alert-card">
-            <strong>Data feed unstable</strong>
+            <strong>{t.sidebar.unstable}</strong>
             <p>{error}</p>
           </div>
         ) : null}
 
         <div className="data-grid">
           <DataField
-            label="Latitude"
-            value={formatCoordinate(snapshot?.latitude, "N", "S")}
+            label={t.sidebar.labels.latitude}
+            value={formatCoordinate(snapshot?.latitude, "N", "S", 2, t)}
             emphasized
           />
           <DataField
-            label="Longitude"
-            value={formatCoordinate(snapshot?.longitude, "E", "W")}
+            label={t.sidebar.labels.longitude}
+            value={formatCoordinate(snapshot?.longitude, "E", "W", 2, t)}
             emphasized
           />
           <DataField
-            label="Altitude"
-            value={formatMetric(snapshot?.altitude, "km")}
+            label={t.sidebar.labels.altitude}
+            value={formatMetric(snapshot?.altitude, "km", 1, languageInfo.intlLocale, t)}
             info={
-              <InfoTip label="Altitude">
-                Altitude is the station's height above Earth's surface. It
-                changes slightly as the orbit is adjusted.
+              <InfoTip label={t.sidebar.labels.altitude}>
+                {t.sidebar.altitudeInfo}
               </InfoTip>
             }
           />
           <DataField
-            label="Speed"
-            value={formatWholeMetric(snapshot?.velocity, "km/h")}
+            label={t.sidebar.labels.speed}
+            value={formatWholeMetric(snapshot?.velocity, "km/h", languageInfo.intlLocale, t)}
             info={
-              <InfoTip label="Velocity">
-                Velocity means speed plus direction. The station moves fast
-                enough to circle Earth in roughly 90 minutes.
+              <InfoTip label={t.sidebar.velocityLabel}>
+                {t.sidebar.velocityInfo}
               </InfoTip>
             }
           />
-          <DataField label="Visibility" value={visibility} />
+          <DataField label={t.sidebar.labels.visibility} value={visibility} />
           <DataField
-            label="Ground track"
-            value={snapshot?.groundTrack || "Not available"}
+            label={t.sidebar.labels.groundTrack}
+            value={snapshot?.groundTrack || t.sidebar.groundTrackFallback}
             hint={
               snapshot?.footprint
-                ? `Footprint ${formatMetric(snapshot.footprint, "km", 0)}`
+                ? t.sidebar.footprint(formatMetric(snapshot.footprint, "km", 0, languageInfo.intlLocale, t))
                 : undefined
             }
             info={
-              <InfoTip label="Ground track">
-                Ground track is the place on Earth directly under the station's
-                path.
+              <InfoTip label={t.sidebar.labels.groundTrack}>
+                {t.sidebar.groundTrackInfo}
               </InfoTip>
             }
           />
           <DataField
-            label="Direction"
-            value={formatHeading(snapshot?.heading)}
-            hint="Calculated from the latest live points"
+            label={t.sidebar.labels.direction}
+            value={formatHeading(snapshot?.heading, t)}
+            hint={t.sidebar.directionHint}
           />
           <DataField
-            label="Last update"
-            value={formatTimestamp(lastUpdated)}
-            hint={formatDataAge(lastUpdated)}
+            label={t.sidebar.labels.lastUpdate}
+            value={formatTimestamp(lastUpdated, languageInfo.intlLocale, t)}
+            hint={formatDataAge(lastUpdated, t)}
           />
         </div>
       </section>

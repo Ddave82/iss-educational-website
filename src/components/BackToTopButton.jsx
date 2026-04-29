@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "../lib/i18n.jsx";
 
 const SHOW_AFTER_PX = 720;
 
 export function BackToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     function updateVisibility() {
@@ -30,7 +32,7 @@ export function BackToTopButton() {
       type="button"
       className={`back-to-top${isVisible ? " is-visible" : ""}`}
       onClick={handleClick}
-      aria-label="Back to top"
+      aria-label={t.common.backToTop}
     >
       ↑
     </button>

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { InfoTip } from "../components/ui/InfoTip";
 import { PageHero } from "../components/ui/PageHero";
+import { useI18n } from "../lib/i18n.jsx";
 import { learningQuestions } from "../lib/learningQuestions";
 
 const moduleContent = {
@@ -293,6 +294,235 @@ const moduleContent = {
   }
 };
 
+translatedLearnContent.da.modules = {
+  "what-is-the-iss": {
+    keyIdea: "Den Internationale Rumstation er et stort rumfartøj, hvor astronauter bor, arbejder og laver forskning i kredsløb om Jorden.",
+    paragraphs: [
+      "ISS er et rigtigt rumfartøj, ikke en bygning på himlen. Den kredser om Jorden, mens besætninger bor i den i måneder ad gangen.",
+      "Den er også et forskningslaboratorium. Astronauter bruger stationen til at undersøge, hvordan mennesker, planter, væsker, materialer og udstyr opfører sig i rummet.",
+      "Stationen består af sammenkoblede trykmoduler, solpaneler, dockingporte, robotarme, radiatorer og udvendigt udstyr."
+    ],
+    whyItMatters: "ISS viser, hvordan ingeniørkunst, forskning og internationalt samarbejde kan holde mennesker sikkert boende i kredsløb i lang tid.",
+    supportTitle: "Vidste du det?",
+    facts: ["Den er et laboratorium i rummet.", "Den kredser om Jorden mange gange om dagen.", "Den har moduler, solpaneler, dockingporte, radiatorer og udvendigt udstyr."],
+    action: "Åbn live-tracker"
+  },
+  "how-fast-is-the-iss": {
+    keyIdea: "ISS bevæger sig hurtigt nok til at kredse om Jorden omtrent hvert 90. minut.",
+    paragraphs: [
+      "Stationen flyver med orbital hastighed. Den er meget hurtigere end et fly og krydser oceaner og kontinenter på få minutter.",
+      "Den står ikke stille over én by. Dens jordspor flytter sig, fordi Jorden drejer under den.",
+      "Den præcise hastighed og højde er en del af live-telemetrien i trackeren og ændrer sig lidt, når banen vedligeholdes."
+    ],
+    whyItMatters: "Hastigheden forklarer, hvorfor ISS kan passere hurtigt over himlen, og hvorfor besætningen ser mange solopgange hver dag.",
+    supportTitle: "Hurtigt faktum",
+    facts: ["Ét kredsløb tager cirka 90 minutter.", "ISS gennemfører omkring 16 kredsløb om dagen.", "Ruten over Jorden ændrer sig fra kredsløb til kredsløb."],
+    action: "Følg aktuel hastighed"
+  },
+  "why-does-it-not-fall": {
+    keyIdea: "Tyngdekraften trækker i ISS, men dens fremadrettede hastighed får den til hele tiden at ramme ved siden af Jorden.",
+    paragraphs: [
+      "ISS bliver ikke oppe, fordi tyngdekraften forsvinder. Tyngdekraften trækker stadig i stationen og alt indeni.",
+      "Nøglen er kredsløb: Stationen falder konstant mod Jorden, men bevæger sig sidelæns så hurtigt, at Jorden krummer væk under den.",
+      "Balancen mellem fald og fremadbevægelse holder ISS rundt om Jorden i stedet for lige ned."
+    ],
+    whyItMatters: "Kredsløb er en af de vigtigste idéer i rumfart. Det forklarer satellitter, bemandede rumfartøjer og trackerens skiftende kort.",
+    supportTitle: "Almindelig misforståelse",
+    facts: ["Tyngdekraften virker stadig på ISS.", "Stationen falder rundt om Jorden.", "Fremadrettet hastighed får den til at ramme ved siden af."],
+    action: "Se kredsløbsruten"
+  },
+  "why-do-astronauts-float": {
+    keyIdea: "Astronauter svæver, fordi ISS og alt indeni er i kontinuerligt frit fald sammen.",
+    paragraphs: [
+      "At svæve i stationen er ikke ægte nul tyngdekraft. Tyngdekraften er stadig til stede i kredsløb.",
+      "Mikrogravitation opstår, fordi stationen, astronauter, værktøj, mad og vand falder rundt om Jorden sammen.",
+      "Astronauter bruger håndlister, fodløkker og faste rutiner, så svævning bliver nyttig i stedet for kaotisk."
+    ],
+    whyItMatters: "Mikrogravitation ændrer menneskekroppe og eksperimenter. Derfor er stationen værdifuld for forskning, og besætningen træner hver dag.",
+    supportTitle: "Almindelig misforståelse",
+    facts: ["Mikrogravitation er ikke ægte nul tyngdekraft.", "Alt indeni falder rundt om Jorden sammen.", "Effekten får mennesker og ting til at svæve."],
+    action: "Lær om stationsforskning"
+  },
+  "what-happens-inside": {
+    keyIdea: "Inde i ISS har astronauter planlagte dage med forskning, vedligeholdelse, træning, måltider, søvn og kontakt med Jorden.",
+    paragraphs: [
+      "Besætningsmedlemmer sover i små kabiner, spiser nøje forberedt mad og bruger udstyr designet til et svævende miljø.",
+      "En stor del af dagen går med eksperimenter, reparationer, systemtjek og samtaler med missionskontrol på Jorden.",
+      "Træning er en del af arbejdsdagen, fordi muskler og knogler svækkes i mikrogravitation."
+    ],
+    whyItMatters: "Stationen er både hjem og arbejdsplads, så rutiner holder besætningen sund og rumfartøjet sikkert i drift.",
+    supportTitle: "Hvorfor det betyder noget",
+    facts: ["Astronauter sover, spiser, træner, arbejder og taler med Jorden.", "Vedligeholdelse er en del af stationslivet.", "Dagsrutiner er nøje planlagt."],
+    action: "Åbn live-tracker",
+    visualItems: ["Søvn", "Mad", "Træning", "Forskning", "Reparation", "Kontakt Jorden"]
+  },
+  "what-science-happens-there": {
+    keyIdea: "ISS lader forskere undersøge systemer, der opfører sig anderledes, når tyngdekraften er stærkt reduceret.",
+    paragraphs: [
+      "Forskning på stationen omfatter biologi, menneskers sundhed, fysik, væsker, materialer, plantevækst, Jordobservation og teknologitest.",
+      "I mikrogravitation kan flammer, væsker, celler, krystaller og muskler opføre sig anderledes end på Jorden.",
+      "Stationen ser også tilbage på Jorden og hjælper med at observere storme, kyster, byer, brande, gletsjere og atmosfæren."
+    ],
+    whyItMatters: "ISS-forskning forbereder fremtidige rummissioner og kan forbedre medicin, materialer, teknologi og Jordobservation.",
+    supportTitle: "Hvorfor det betyder noget",
+    facts: ["Sundhedsforskning studerer kroppe i rummet.", "Plante- og biologiforsøg tester liv i mikrogravitation.", "Jordobservation forbinder rumforskning med vores planet."],
+    action: "Udforsk NASA-billeder",
+    visualItems: ["Biologi", "Sundhed", "Fysik", "Væsker", "Materialer", "Planter", "Jorden", "Teknologi"]
+  },
+  "how-do-spacecraft-dock": {
+    keyIdea: "Besætnings- og fragtrumfartøjer kobler til ISS-dockingporte med omhyggelig styring og præcis kontrol.",
+    paragraphs: [
+      "Besøgende rumfartøjer bringer astronauter, mad, vand, eksperimenter, udstyr og forsyninger.",
+      "En dockingtilgang skal være langsom og præcis. Rumfartøjet retter sig ind, kobler mekanisk til, og forbindelsen kontrolleres.",
+      "Dockingporte er stationens trafiksystem og gør det muligt at modtage besøgende og forsyninger uden at lande på Jorden."
+    ],
+    whyItMatters: "Docking holder stationen forsynet og gør besætningsskift mulige, så ISS kan være en permanent arbejdsstation.",
+    supportTitle: "Hurtigt faktum",
+    facts: ["Besætnings- og fragtrumfartøjer besøger ISS.", "Dockingporte forbinder fartøjer med stationen.", "Docking er præcis og nøje kontrolleret."],
+    action: "Se stationsbilleder"
+  },
+  "what-are-spacewalks": {
+    keyIdea: "En rumvandring er arbejde uden for stationen i en rumdragt.",
+    paragraphs: [
+      "En rumvandring kaldes også EVA. Astronauter forlader stationens sikre indvendige moduler.",
+      "Rumvandringer bruges til reparationer, opgraderinger, inspektioner, installation af udstyr og enkelte eksperimenter.",
+      "EVA'er planlægges nøje, fordi de er svære og farlige. Rumdragter skal give ilt, køling, kommunikation, tryk og beskyttelse."
+    ],
+    whyItMatters: "Rumvandringer lader besætninger vedligeholde og forbedre stationen, når robotarme eller indvendige reparationer ikke er nok.",
+    supportTitle: "Hvorfor det betyder noget",
+    facts: ["EVA betyder extravehicular activity.", "Astronauter arbejder udenfor i rumdragter.", "Rumvandringer understøtter reparationer, opgraderinger, inspektioner og eksperimenter."],
+    action: "Åbn NASA-galleri"
+  }
+};
+
+function getLearnText(language) {
+  const translated = translatedLearnContent[language];
+
+  if (!translated) {
+    return {
+      questions: learningQuestions,
+      modules: moduleContent,
+      challengeQuestions,
+      quizItems,
+      continueLinks,
+      resultTiers: null,
+      hero: {
+        kicker: "Learning Modules",
+        title: "Learn About the ISS",
+        intro: "Explore orbit, speed, microgravity, station life, science, docking, and spacewalks.",
+        chips: ["8 learning modules", "Beginner friendly", "10-15 min", "Includes quick quiz"],
+        start: "Start learning",
+        quiz: "Jump to quiz",
+        note: "Read the modules or test yourself right away."
+      },
+      overview: {
+        kicker: "Learning path",
+        title: "Choose your first mission question.",
+        intro: "Use the mission map to jump between modules. Mark a module as learned when you finish it."
+      },
+      ui: {
+        learned: "Learned",
+        openModule: "Open module",
+        learningQuestion: "Learning question",
+        keyIdea: "Key idea",
+        miniFacts: "Mini facts",
+        whyItMatters: "Why it matters",
+        marked: "Marked as learned. This module now counts toward your mission progress.",
+        markPrompt: "Finished this module? Mark it so your Mission Path updates.",
+        markButton: "Mark as learned",
+        missionPath: "Mission path",
+        progress: (count, total) => `${count} / ${total} modules marked as learned`,
+        progressHint: "Use each module's Mark as learned button to complete it.",
+        done: "Done",
+        reset: "Reset progress",
+        checkpointKicker: "Mission checkpoint",
+        checkpointTitle: "Ready for a quick challenge?",
+        checkpointIntro: "Test what you know about orbit, microgravity, speed, and life on the station.",
+        sixQuestions: "6 questions",
+        instantFeedback: "Instant feedback",
+        finalRank: "Final rank",
+        startQuiz: "Start mini quiz",
+        quickKicker: "Quick challenge",
+        quickTitle: "Orbit check-in",
+        quickIntro: "Try these before the final quiz. Each tap gives immediate feedback.",
+        trueLabel: "True",
+        falseLabel: "False",
+        answered: (count, total) => `${count} / ${total} answered`,
+        miniQuizKicker: "Mini quiz",
+        miniQuizTitle: "Mini Quiz: Are you ready for orbit?",
+        miniQuizIntro: "Answer one question at a time and get instant feedback as you go.",
+        questionOf: (current, total) => `Question ${current} of ${total}`,
+        score: (score) => `Score: ${score}`,
+        correct: "Correct",
+        notQuite: "Not quite",
+        showResult: "Show result",
+        nextQuestion: "Next question",
+        finalResult: "Final result",
+        correctCount: (score, total) => `${score} / ${total} correct`,
+        hideReview: "Hide review",
+        reviewAnswers: "Review answers",
+        tryAgain: "Try again",
+        reviewModules: "Review learning modules",
+        openTracker: "Open Live Tracker",
+        yourAnswer: "Your answer",
+        correctAnswer: "Correct answer",
+        continueKicker: "Continue exploring",
+        continueTitle: "Next steps after the learning guide."
+      }
+    };
+  }
+
+  const localizedQuestions = learningQuestions.map((question, index) => ({
+    ...question,
+    title: translated.questions[index][0],
+    teaser: translated.questions[index][1],
+    category: translated.questions[index][2]
+  }));
+  const localizedModules = Object.fromEntries(
+    Object.entries(moduleContent).map(([id, module]) => {
+      const translatedModule = translated.modules[id];
+
+      return [
+        id,
+        {
+          ...module,
+          ...translatedModule,
+          action: module.action
+            ? {
+                ...module.action,
+                label: translatedModule.action
+              }
+            : undefined
+        }
+      ];
+    })
+  );
+  const localizedChallengeQuestions = translated.challengeQuestions.map(
+    ([prompt, answer, feedback]) => ({ prompt, answer, feedback })
+  );
+  const localizedQuizItems = translated.quizItems.map(
+    ([question, choices, correctIndex, explanation]) => ({
+      question,
+      choices,
+      correctIndex,
+      explanation
+    })
+  );
+  const localizedContinueLinks = continueLinks.map((link, index) => ({
+    ...link,
+    label: translated.continueLinks[index]
+  }));
+
+  return {
+    ...translated,
+    questions: localizedQuestions,
+    modules: localizedModules,
+    challengeQuestions: localizedChallengeQuestions,
+    quizItems: localizedQuizItems,
+    continueLinks: localizedContinueLinks
+  };
+}
+
 const challengeQuestions = [
   {
     prompt: "True or false: the ISS floats because there is no gravity.",
@@ -386,6 +616,298 @@ const continueLinks = [
   { label: "About the data", href: "/about-data" }
 ];
 
+const translatedLearnContent = {
+  de: {
+    hero: {
+      kicker: "Lernmodule",
+      title: "Über die ISS lernen",
+      intro: "Erkunde Orbit, Geschwindigkeit, Mikrogravitation, Stationsleben, Wissenschaft, Andocken und Weltraumspaziergänge.",
+      chips: ["8 Lernmodule", "Für Einsteiger", "10-15 Min.", "Mit Kurzquiz"],
+      start: "Lernen starten",
+      quiz: "Zum Quiz springen",
+      note: "Lies die Module oder teste dich direkt."
+    },
+    overview: {
+      kicker: "Lernpfad",
+      title: "Wähle deine erste Missionsfrage.",
+      intro: "Nutze die Missionskarte, um zwischen Modulen zu springen. Markiere ein Modul als gelernt, wenn du fertig bist."
+    },
+    ui: {
+      learned: "Gelernt",
+      openModule: "Modul öffnen",
+      learningQuestion: "Lernfrage",
+      keyIdea: "Kernidee",
+      miniFacts: "Mini-Fakten",
+      whyItMatters: "Warum es wichtig ist",
+      marked: "Als gelernt markiert. Dieses Modul zählt jetzt zu deinem Missionsfortschritt.",
+      markPrompt: "Mit diesem Modul fertig? Markiere es, damit dein Missionspfad aktualisiert wird.",
+      markButton: "Als gelernt markieren",
+      missionPath: "Missionspfad",
+      progress: (count, total) => `${count} / ${total} Module als gelernt markiert`,
+      progressHint: "Nutze in jedem Modul die Taste Als gelernt markieren.",
+      done: "Fertig",
+      reset: "Fortschritt zurücksetzen",
+      checkpointKicker: "Missions-Checkpoint",
+      checkpointTitle: "Bereit für eine kurze Herausforderung?",
+      checkpointIntro: "Teste, was du über Orbit, Mikrogravitation, Geschwindigkeit und Leben auf der Station weißt.",
+      sixQuestions: "6 Fragen",
+      instantFeedback: "Sofortiges Feedback",
+      finalRank: "Endrang",
+      startQuiz: "Miniquiz starten",
+      quickKicker: "Schnelltest",
+      quickTitle: "Orbit-Check-in",
+      quickIntro: "Probiere diese Fragen vor dem finalen Quiz. Jede Auswahl gibt sofort Feedback.",
+      trueLabel: "Wahr",
+      falseLabel: "Falsch",
+      answered: (count, total) => `${count} / ${total} beantwortet`,
+      miniQuizKicker: "Miniquiz",
+      miniQuizTitle: "Miniquiz: Bist du bereit für den Orbit?",
+      miniQuizIntro: "Beantworte eine Frage nach der anderen und bekomme direkt Feedback.",
+      questionOf: (current, total) => `Frage ${current} von ${total}`,
+      score: (score) => `Punkte: ${score}`,
+      correct: "Richtig",
+      notQuite: "Nicht ganz",
+      showResult: "Ergebnis anzeigen",
+      nextQuestion: "Nächste Frage",
+      finalResult: "Endergebnis",
+      correctCount: (score, total) => `${score} / ${total} richtig`,
+      hideReview: "Auswertung ausblenden",
+      reviewAnswers: "Antworten prüfen",
+      tryAgain: "Erneut versuchen",
+      reviewModules: "Lernmodule wiederholen",
+      openTracker: "Live-Tracker öffnen",
+      yourAnswer: "Deine Antwort",
+      correctAnswer: "Richtige Antwort",
+      continueKicker: "Weiter erkunden",
+      continueTitle: "Nächste Schritte nach dem Lernführer."
+    },
+    questions: [
+      ["Was ist die ISS?", "Ein großes Raumfahrzeug, in dem Astronauten leben, arbeiten und forschen.", "Grundlagen"],
+      ["Wie schnell ist die ISS?", "Sie umrundet die Erde mit Orbitgeschwindigkeit ungefähr alle 90 Minuten.", "Geschwindigkeit"],
+      ["Warum fällt die ISS nicht herunter?", "Sie fällt um die Erde herum und bewegt sich schnell genug, um den Boden zu verfehlen.", "Orbit"],
+      ["Warum schweben Astronauten?", "Astronauten schweben, weil alles in der Station gemeinsam fällt.", "Mikrogravitation"],
+      ["Was passiert in der ISS?", "Crewmitglieder schlafen, essen, trainieren, reparieren Systeme und führen Experimente aus.", "Leben"],
+      ["Welche Wissenschaft passiert dort?", "Mikrogravitation hilft, Körper, Materialien, Pflanzen, Flüssigkeiten und die Erde zu untersuchen.", "Wissenschaft"],
+      ["Wie docken Raumfahrzeuge an?", "Crew- und Frachtraumfahrzeuge verbinden sich präzise mit Andockports der Station.", "Andocken"],
+      ["Was sind Weltraumspaziergänge?", "Astronauten verlassen die Station in Raumanzügen für Reparaturen, Inspektionen und Upgrades.", "EVA"]
+    ],
+    modules: {
+      "what-is-the-iss": {
+        keyIdea: "Die Internationale Raumstation ist ein großes Raumfahrzeug, in dem Astronauten im Orbit um die Erde leben, arbeiten und forschen.",
+        paragraphs: [
+          "Die ISS ist ein echtes Raumfahrzeug, kein Gebäude am Himmel. Sie umrundet die Erde, während Crews monatelang in ihr leben.",
+          "Sie ist auch ein Wissenschaftslabor. Astronauten untersuchen dort, wie Menschen, Pflanzen, Flüssigkeiten, Materialien und Geräte im All reagieren.",
+          "Die Station besteht aus verbundenen Druckmodulen, Solarpaneelen, Andockports, Roboterarmen, Radiatoren und Außengeräten."
+        ],
+        whyItMatters: "Die ISS zeigt, wie Ingenieurkunst, Wissenschaft und internationale Zusammenarbeit Menschen lange sicher im Orbit leben lassen.",
+        supportTitle: "Wusstest du schon?",
+        facts: ["Sie ist ein Labor im All.", "Sie umrundet die Erde viele Male pro Tag.", "Sie hat Module, Solarpaneele, Andockports, Radiatoren und Außengeräte."],
+        action: "Live-Tracker öffnen"
+      },
+      "how-fast-is-the-iss": {
+        keyIdea: "Die ISS bewegt sich schnell genug, um die Erde ungefähr alle 90 Minuten zu umrunden.",
+        paragraphs: [
+          "Die Station fliegt mit Orbitgeschwindigkeit. Sie ist viel schneller als ein Flugzeug und überquert Ozeane und Kontinente in Minuten.",
+          "Sie steht nicht fest über einer Stadt. Ihre Bodenspur verschiebt sich, weil sich die Erde unter ihr dreht.",
+          "Exakte Geschwindigkeit und Höhe sind Teil der Live-Telemetrie im Tracker und ändern sich leicht durch Orbitpflege."
+        ],
+        whyItMatters: "Die Geschwindigkeit erklärt, warum die ISS schnell über deinen Himmel zieht und die Crew viele Sonnenaufgänge pro Tag sieht.",
+        supportTitle: "Schneller Fakt",
+        facts: ["Ein Orbit dauert etwa 90 Minuten.", "Die ISS schafft ungefähr 16 Orbits pro Tag.", "Der Pfad über der Erde ändert sich von Orbit zu Orbit."],
+        action: "Aktuelle Geschwindigkeit verfolgen"
+      },
+      "why-does-it-not-fall": {
+        keyIdea: "Die Schwerkraft zieht an der ISS, aber ihre Vorwärtsgeschwindigkeit lässt sie den Boden immer verfehlen.",
+        paragraphs: [
+          "Die ISS bleibt nicht oben, weil die Schwerkraft verschwindet. Die Schwerkraft wirkt weiterhin auf die Station und alles darin.",
+          "Der Schlüssel ist der Orbit: Die Station fällt ständig zur Erde, bewegt sich aber seitwärts so schnell, dass die Erde unter ihr wegkrümmt.",
+          "Dieses Gleichgewicht aus Fallen und Vorwärtsbewegung hält die ISS im Umlauf statt sie gerade nach unten fallen zu lassen."
+        ],
+        whyItMatters: "Orbit ist eine der wichtigsten Ideen der Raumfahrt. Er erklärt Satelliten, bemannte Raumfahrzeuge und die wechselnde Trackerkarte.",
+        supportTitle: "Häufiger Irrtum",
+        facts: ["Schwerkraft wirkt weiter auf die ISS.", "Die Station fällt um die Erde herum.", "Vorwärtsgeschwindigkeit lässt sie den Boden verfehlen."],
+        action: "Orbitpfad ansehen"
+      },
+      "why-do-astronauts-float": {
+        keyIdea: "Astronauten schweben, weil die ISS und alles darin gemeinsam im freien Fall sind.",
+        paragraphs: [
+          "Schweben in der Station ist keine echte Schwerelosigkeit. Schwerkraft ist im Orbit noch vorhanden.",
+          "Mikrogravitation entsteht, weil Station, Menschen, Werkzeuge, Nahrung und Wasser gemeinsam um die Erde fallen.",
+          "Astronauten nutzen Handläufe, Fußschlaufen und Routinen, damit Schweben nützlich statt chaotisch ist."
+        ],
+        whyItMatters: "Mikrogravitation verändert Körper und Experimente. Darum ist die Station wertvoll für Forschung und Crews trainieren täglich.",
+        supportTitle: "Häufiger Irrtum",
+        facts: ["Mikrogravitation ist nicht echte Nullgravitation.", "Alles im Inneren fällt gemeinsam um die Erde.", "Der Effekt lässt Menschen und Objekte schweben."],
+        action: "Stationswissenschaft lernen"
+      },
+      "what-happens-inside": {
+        keyIdea: "In der ISS folgen Astronauten geplanten Tagen mit Forschung, Wartung, Training, Mahlzeiten, Schlaf und Kommunikation mit der Erde.",
+        paragraphs: [
+          "Crewmitglieder schlafen in kleinen Crewquartieren, essen vorbereitete Nahrung und nutzen Ausrüstung für eine schwebende Umgebung.",
+          "Ein großer Teil des Tages besteht aus Experimenten, Reparaturen, Systemchecks und Gesprächen mit Missionskontrollteams.",
+          "Training gehört zum Arbeitstag, weil Muskeln und Knochen in Mikrogravitation schwächer werden."
+        ],
+        whyItMatters: "Die Station ist Zuhause und Arbeitsplatz zugleich. Routinen halten Crews gesund und das Raumfahrzeug sicher in Betrieb.",
+        supportTitle: "Warum es wichtig ist",
+        facts: ["Astronauten schlafen, essen, trainieren, arbeiten und sprechen mit der Erde.", "Wartung gehört zum Stationsleben.", "Tagesabläufe sind genau geplant."],
+        action: "Live-Tracker öffnen",
+        visualItems: ["Schlafen", "Essen", "Training", "Wissenschaft", "Reparatur", "Zur Erde sprechen"]
+      },
+      "what-science-happens-there": {
+        keyIdea: "Die ISS lässt Wissenschaftler Systeme untersuchen, die sich bei stark reduzierter Schwerkraft anders verhalten.",
+        paragraphs: [
+          "Forschung auf der Station umfasst Biologie, Gesundheit, Physik, Flüssigkeiten, Materialien, Pflanzenwachstum, Erdbeobachtung und Technologietests.",
+          "In Mikrogravitation verhalten sich Flammen, Flüssigkeiten, Zellen, Kristalle und Muskeln anders.",
+          "Die Station blickt auch zurück zur Erde und hilft, Stürme, Küsten, Städte, Feuer, Gletscher und Atmosphäre zu beobachten."
+        ],
+        whyItMatters: "ISS-Forschung bereitet zukünftige Missionen vor und kann Medizin, Materialien, Technologie und Erdbeobachtung verbessern.",
+        supportTitle: "Warum es wichtig ist",
+        facts: ["Gesundheitsforschung untersucht Körper im All.", "Pflanzen- und Biologieexperimente testen Leben in Mikrogravitation.", "Erdbeobachtung verbindet Raumfahrt mit unserem Planeten."],
+        action: "NASA-Bilder erkunden",
+        visualItems: ["Biologie", "Gesundheit", "Physik", "Flüssigkeiten", "Materialien", "Pflanzen", "Erde", "Technologie"]
+      },
+      "how-do-spacecraft-dock": {
+        keyIdea: "Crew- und Frachtraumfahrzeuge verbinden sich mit sorgfältiger Führung und präziser Kontrolle mit Andockports der ISS.",
+        paragraphs: [
+          "Besuchende Raumfahrzeuge bringen Astronauten, Nahrung, Wasser, Experimente, Ausrüstung und Vorräte.",
+          "Ein Andockanflug muss langsam und genau sein. Das Raumfahrzeug richtet sich aus, verbindet mechanisch und die Verbindung wird geprüft.",
+          "Andockports sind Teil des Verkehrssystems der Station und ermöglichen Besuche und Versorgung ohne Landung auf der Erde."
+        ],
+        whyItMatters: "Andocken versorgt die Station und ermöglicht Crewwechsel. So bleibt die ISS ein dauerhaft arbeitender Außenposten.",
+        supportTitle: "Schneller Fakt",
+        facts: ["Crew- und Frachtraumfahrzeuge besuchen die ISS.", "Andockports verbinden Fahrzeuge mit der Station.", "Andocken ist präzise und streng kontrolliert."],
+        action: "Stationsbilder ansehen"
+      },
+      "what-are-spacewalks": {
+        keyIdea: "Ein Weltraumspaziergang ist Arbeit außerhalb der Station in einem Raumanzug.",
+        paragraphs: [
+          "Ein Weltraumspaziergang heißt auch EVA. Astronauten verlassen dabei die sicheren Innenmodule der Station.",
+          "EVAs dienen Reparaturen, Upgrades, Inspektionen, Installation von Ausrüstung und einigen Experimenten.",
+          "Sie sind sorgfältig geplant, weil sie schwierig und gefährlich sind. Raumanzüge liefern Sauerstoff, Kühlung, Kommunikation, Druck und Schutz."
+        ],
+        whyItMatters: "Weltraumspaziergänge ermöglichen Wartung und Verbesserungen, wenn Roboterarme oder Innenreparaturen nicht ausreichen.",
+        supportTitle: "Warum es wichtig ist",
+        facts: ["EVA bedeutet Außenbordeinsatz.", "Astronauten arbeiten draußen in Raumanzügen.", "Weltraumspaziergänge unterstützen Reparaturen, Upgrades, Inspektionen und Experimente."],
+        action: "NASA-Galerie öffnen"
+      }
+    },
+    challengeQuestions: [
+      ["Wahr oder falsch: Die ISS schwebt, weil es keine Schwerkraft gibt.", false, "Falsch. Schwerkraft ist weiterhin vorhanden. Die Station und alles darin fallen gemeinsam."],
+      ["Wahr oder falsch: Die ISS schafft einen Orbit in ungefähr 90 Minuten.", true, "Wahr. Dieser schnelle Orbit lässt ihre Bodenspur rasch wechseln."],
+      ["Wahr oder falsch: Die ISS bleibt den ganzen Tag über derselben Stadt.", false, "Falsch. Die Erde dreht sich unter ihr, während die Station um den Planeten fliegt."]
+    ],
+    quizItems: [
+      ["Warum schweben Astronauten in der ISS?", ["Weil es im Orbit keine Schwerkraft gibt", "Weil Station und alles darin gemeinsam fallen", "Weil Luft sie nach oben drückt"], 1, "Schwerkraft ist vorhanden. Astronauten schweben, weil Station, Menschen und Objekte gemeinsam um die Erde fallen."],
+      ["Wie lange dauert ein ISS-Orbit?", ["Etwa 9 Minuten", "Etwa 90 Minuten", "Etwa 9 Stunden"], 1, "Die ISS umrundet die Erde ungefähr alle 90 Minuten, also etwa 16 Mal pro Tag."],
+      ["Warum fällt die ISS nicht gerade zur Erde?", ["Ihre Vorwärtsgeschwindigkeit lässt sie den Boden verfehlen", "Solarpaneele halten sie oben", "Sie ist außerhalb der Erdschwerkraft"], 0, "Die Station fällt, aber ihre Vorwärtsbewegung trägt sie um die Erde herum."],
+      ["Was machen Solarpaneele?", ["Strom erzeugen", "Künstliche Schwerkraft machen", "Die Station wie Flügel steuern"], 0, "Solarpaneele wandeln Sonnenlicht in Strom für Stationssysteme und Experimente um."],
+      ["Was ist Andocken?", ["Ein Weltraumspaziergang außerhalb der ISS", "Ein Raumfahrzeug verbindet sich mit der Station", "Ein Teleskop macht Erdaufnahmen"], 1, "Andocken lässt Crew- und Frachtraumfahrzeuge sicher mit der Station verbinden."],
+      ["Was bedeutet EVA?", ["Erdbeobachtungswinkel", "Außenbordeinsatz", "Notfallfahrzeug-Ankunft"], 1, "EVA bedeutet extravehicular activity, meist Weltraumspaziergang genannt."]
+    ],
+    resultTiers: [
+      ["ISS-Neuling", "Du hast die ersten Teile. Wiederhole Orbit und Mikrogravitation und versuche es erneut."],
+      ["Orbit-Explorer", "Starker Fortschritt. Du verstehst die großen Ideen hinter der Station."],
+      ["Stationsspezialist", "Ausgezeichnet. Du kannst die ISS wie ein Missionsguide erklären."]
+    ],
+    continueLinks: ["ISS live verfolgen", "ISS von der Erde sehen", "NASA-Galerie erkunden", "Über die Daten"]
+  },
+  da: {
+    hero: {
+      kicker: "Læringsmoduler",
+      title: "Lær om ISS",
+      intro: "Udforsk kredsløb, hastighed, mikrogravitation, livet på stationen, forskning, docking og rumvandringer.",
+      chips: ["8 læringsmoduler", "Begyndervenlig", "10-15 min", "Med hurtig quiz"],
+      start: "Start læring",
+      quiz: "Hop til quiz",
+      note: "Læs modulerne eller test dig selv med det samme."
+    },
+    overview: {
+      kicker: "Læringssti",
+      title: "Vælg dit første missionsspørgsmål.",
+      intro: "Brug missionskortet til at hoppe mellem moduler. Markér et modul som lært, når du er færdig."
+    },
+    ui: {
+      learned: "Lært",
+      openModule: "Åbn modul",
+      learningQuestion: "Læringsspørgsmål",
+      keyIdea: "Hovedidé",
+      miniFacts: "Mini-fakta",
+      whyItMatters: "Hvorfor det betyder noget",
+      marked: "Markeret som lært. Modulet tæller nu med i din missionsfremgang.",
+      markPrompt: "Færdig med modulet? Markér det, så din missionssti opdateres.",
+      markButton: "Markér som lært",
+      missionPath: "Missionssti",
+      progress: (count, total) => `${count} / ${total} moduler markeret som lært`,
+      progressHint: "Brug hvert moduls Markér som lært-knap for at gennemføre det.",
+      done: "Klar",
+      reset: "Nulstil fremgang",
+      checkpointKicker: "Missionscheckpoint",
+      checkpointTitle: "Klar til en hurtig udfordring?",
+      checkpointIntro: "Test hvad du ved om kredsløb, mikrogravitation, hastighed og livet på stationen.",
+      sixQuestions: "6 spørgsmål",
+      instantFeedback: "Øjeblikkelig feedback",
+      finalRank: "Slutrang",
+      startQuiz: "Start mini-quiz",
+      quickKicker: "Hurtig udfordring",
+      quickTitle: "Orbit check-in",
+      quickIntro: "Prøv disse før den afsluttende quiz. Hvert tryk giver straks feedback.",
+      trueLabel: "Sandt",
+      falseLabel: "Falsk",
+      answered: (count, total) => `${count} / ${total} besvaret`,
+      miniQuizKicker: "Mini-quiz",
+      miniQuizTitle: "Mini-quiz: Er du klar til kredsløb?",
+      miniQuizIntro: "Svar på ét spørgsmål ad gangen og få straks feedback.",
+      questionOf: (current, total) => `Spørgsmål ${current} af ${total}`,
+      score: (score) => `Score: ${score}`,
+      correct: "Korrekt",
+      notQuite: "Ikke helt",
+      showResult: "Vis resultat",
+      nextQuestion: "Næste spørgsmål",
+      finalResult: "Slutresultat",
+      correctCount: (score, total) => `${score} / ${total} korrekte`,
+      hideReview: "Skjul gennemgang",
+      reviewAnswers: "Gennemgå svar",
+      tryAgain: "Prøv igen",
+      reviewModules: "Gennemgå læringsmoduler",
+      openTracker: "Åbn live-tracker",
+      yourAnswer: "Dit svar",
+      correctAnswer: "Korrekt svar",
+      continueKicker: "Udforsk videre",
+      continueTitle: "Næste skridt efter læringsguiden."
+    },
+    questions: [
+      ["Hvad er ISS?", "Et stort rumfartøj hvor astronauter bor, arbejder og forsker.", "Grundlag"],
+      ["Hvor hurtigt flyver ISS?", "Den kredser om Jorden cirka hvert 90. minut med orbital hastighed.", "Hastighed"],
+      ["Hvorfor falder ISS ikke ned?", "Den falder rundt om Jorden, mens den bevæger sig hurtigt nok til at ramme ved siden af.", "Kredsløb"],
+      ["Hvorfor svæver astronauter?", "Astronauter svæver, fordi alt inde i stationen falder sammen.", "Mikrogravitation"],
+      ["Hvad sker der inde i ISS?", "Besætningen sover, spiser, træner, reparerer systemer og udfører eksperimenter.", "Liv"],
+      ["Hvilken forskning foregår der?", "Mikrogravitation hjælper forskere med at studere kroppe, materialer, planter, væsker og Jorden.", "Forskning"],
+      ["Hvordan docker rumfartøjer?", "Besætnings- og fragtrumfartøjer kobler præcist til stationens dockingporte.", "Docking"],
+      ["Hvad er rumvandringer?", "Astronauter forlader stationen i rumdragter for reparationer, inspektioner og opgraderinger.", "EVA"]
+    ],
+    modules: {},
+    challengeQuestions: [
+      ["Sandt eller falsk: ISS svæver, fordi der ikke er tyngdekraft.", false, "Falsk. Tyngdekraften er stadig til stede. Stationen og alt indeni falder sammen."],
+      ["Sandt eller falsk: ISS fuldfører et kredsløb på cirka 90 minutter.", true, "Sandt. Det hurtige kredsløb får jordsporet til at skifte hurtigt."],
+      ["Sandt eller falsk: ISS bliver over den samme by hele dagen.", false, "Falsk. Jorden drejer under stationen, mens den kredser om planeten."]
+    ],
+    quizItems: [
+      ["Hvorfor svæver astronauter inde i ISS?", ["Fordi der ikke er tyngdekraft i kredsløb", "Fordi stationen og alt indeni falder sammen", "Fordi luften presser dem opad"], 1, "Tyngdekraften er stadig til stede. Astronauter svæver, fordi stationen, mennesker og ting falder rundt om Jorden sammen."],
+      ["Hvor lang tid tager ét ISS-kredsløb?", ["Cirka 9 minutter", "Cirka 90 minutter", "Cirka 9 timer"], 1, "ISS kredser om Jorden cirka hvert 90. minut, omtrent 16 kredsløb om dagen."],
+      ["Hvorfor falder ISS ikke lige ned på Jorden?", ["Dens fremadrettede hastighed får den til at ramme ved siden af", "Solpanelerne holder den oppe", "Den er uden for Jordens tyngdekraft"], 0, "Stationen falder, men dens fremadrettede bevægelse bærer den rundt om Jorden."],
+      ["Hvad gør solpaneler?", ["Producerer elektricitet", "Laver kunstig tyngdekraft", "Styrer stationen som vinger"], 0, "Solpaneler omdanner sollys til elektricitet til stationens systemer og eksperimenter."],
+      ["Hvad er docking?", ["En rumvandring uden for ISS", "Et rumfartøj kobler sig til stationen", "Et teleskop tager billeder af Jorden"], 1, "Docking gør det muligt for besætnings- og fragtrumfartøjer at koble sikkert til stationen."],
+      ["Hvad betyder EVA?", ["Earth viewing angle", "Extravehicular activity", "Emergency vehicle arrival"], 1, "EVA betyder extravehicular activity, normalt kaldet en rumvandring."]
+    ],
+    resultTiers: [
+      ["ISS-rookie", "Du har de første brikker. Gennemgå kredsløb og mikrogravitation, og prøv igen."],
+      ["Orbit-udforsker", "Stærk fremgang. Du forstår de store idéer bag stationen."],
+      ["Stationsspecialist", "Fremragende. Du kan forklare ISS som en missionsguide."]
+    ],
+    continueLinks: ["Følg ISS live", "Se ISS fra Jorden", "Udforsk NASA-galleri", "Om data"]
+  }
+};
+
 const LEARN_PROGRESS_STORAGE_KEY = "iss-explorer-learn-progress";
 
 function readStoredLearnProgress() {
@@ -408,13 +930,13 @@ function readStoredLearnProgress() {
   }
 }
 
-function LearningPathCards({ activeId, learnedIds }) {
+function LearningPathCards({ questions, activeId, learnedIds, localizedPath, ui }) {
   return (
     <div className="learn-path-grid">
-      {learningQuestions.map((question, index) => (
+      {questions.map((question, index) => (
         <a
           className={`learn-path-card${question.id === activeId ? " is-active" : ""}${learnedIds.has(question.id) ? " is-complete" : ""}`}
-          href={question.href}
+          href={localizedPath(question.href)}
           key={question.id}
         >
           <div className="learn-path-card-top">
@@ -423,7 +945,7 @@ function LearningPathCards({ activeId, learnedIds }) {
           </div>
           <h3>{question.title}</h3>
           <p>{question.teaser}</p>
-          <small>{learnedIds.has(question.id) ? "Learned" : "Open module"}</small>
+          <small>{learnedIds.has(question.id) ? ui.learned : ui.openModule}</small>
         </a>
       ))}
     </div>
@@ -448,21 +970,20 @@ function VisualSupport({ module }) {
   );
 }
 
-function LearningSection({ question, isLearned, onMarkLearned }) {
-  const module = moduleContent[question.id];
+function LearningSection({ question, module, isLearned, onMarkLearned, ui, localizedPath }) {
 
   return (
     <section className="learn-module" id={question.id}>
       <div className="learn-module-header">
         <div>
-          <span className="section-kicker">Learning question</span>
+          <span className="section-kicker">{ui.learningQuestion}</span>
           <h2>{question.title}</h2>
         </div>
         <VisualSupport module={module} />
       </div>
 
       <div className="key-idea-card">
-        <span>Key idea</span>
+        <span>{ui.keyIdea}</span>
         <p>{module.keyIdea}</p>
       </div>
 
@@ -474,7 +995,7 @@ function LearningSection({ question, isLearned, onMarkLearned }) {
 
       <div className="learn-support-grid">
         <article className="mini-fact-card">
-          <h3>Mini facts</h3>
+          <h3>{ui.miniFacts}</h3>
           <ul>
             {module.facts.map((fact) => (
               <li key={fact}>{fact}</li>
@@ -482,10 +1003,10 @@ function LearningSection({ question, isLearned, onMarkLearned }) {
           </ul>
         </article>
         <article className="why-card">
-          <h3>{module.supportTitle || "Why it matters"}</h3>
+          <h3>{module.supportTitle || ui.whyItMatters}</h3>
           <p>{module.whyItMatters}</p>
           {module.action ? (
-            <a className="card-link" href={module.action.href}>
+            <a className="card-link" href={localizedPath(module.action.href)}>
               {module.action.label}
             </a>
           ) : null}
@@ -493,92 +1014,87 @@ function LearningSection({ question, isLearned, onMarkLearned }) {
       </div>
 
       <div className="module-complete-row">
-        <p>{isLearned ? "Marked as learned. This module now counts toward your mission progress." : "Finished this module? Mark it so your Mission Path updates."}</p>
+        <p>{isLearned ? ui.marked : ui.markPrompt}</p>
         <button type="button" className={isLearned ? "button-secondary" : "button-primary"} onClick={onMarkLearned}>
-          {isLearned ? "Learned" : "Mark as learned"}
+          {isLearned ? ui.learned : ui.markButton}
         </button>
       </div>
     </section>
   );
 }
 
-function LearningPathSidebar({ activeId, learnedIds, onResetProgress }) {
+function LearningPathSidebar({ questions, activeId, learnedIds, onResetProgress, localizedPath, ui }) {
   const learnedCount = learnedIds.size;
 
   return (
     <aside className="learn-toc" aria-label="Learning path">
-      <span className="section-kicker">Mission path</span>
+      <span className="section-kicker">{ui.missionPath}</span>
       <strong className="learn-progress-text">
-        {learnedCount} / {learningQuestions.length} modules marked as learned
+        {ui.progress(learnedCount, questions.length)}
       </strong>
-      <small>Use each module's Mark as learned button to complete it.</small>
+      <small>{ui.progressHint}</small>
       <div className="learn-progress-track" aria-hidden="true">
-        <span style={{ width: `${(learnedCount / learningQuestions.length) * 100}%` }} />
+        <span style={{ width: `${(learnedCount / questions.length) * 100}%` }} />
       </div>
       <nav>
-        {learningQuestions.map((question, index) => (
+        {questions.map((question, index) => (
           <a
             className={`${question.id === activeId ? "is-active" : ""}${learnedIds.has(question.id) ? " is-complete" : ""}`}
-            href={question.href}
+            href={localizedPath(question.href)}
             key={question.id}
             aria-current={question.id === activeId ? "location" : undefined}
           >
-            <span>{learnedIds.has(question.id) ? "Done" : index + 1}</span>
+            <span>{learnedIds.has(question.id) ? ui.done : index + 1}</span>
             {question.title}
           </a>
         ))}
       </nav>
       <button type="button" className="learn-reset-button" onClick={onResetProgress}>
-        Reset progress
+        {ui.reset}
       </button>
     </aside>
   );
 }
 
-function QuizCheckpoint() {
+function QuizCheckpoint({ ui }) {
   return (
     <section className="content-section quiz-checkpoint" aria-labelledby="quiz-checkpoint-title">
       <div>
-        <span className="section-kicker">Mission checkpoint</span>
-        <h2 id="quiz-checkpoint-title">Ready for a quick challenge?</h2>
-        <p>
-          Test what you know about orbit, microgravity, speed, and life on the
-          station.
-        </p>
+        <span className="section-kicker">{ui.checkpointKicker}</span>
+        <h2 id="quiz-checkpoint-title">{ui.checkpointTitle}</h2>
+        <p>{ui.checkpointIntro}</p>
       </div>
       <div className="quiz-checkpoint-card">
-        <strong>6 questions</strong>
-        <span>Instant feedback</span>
-        <span>Final rank</span>
+        <strong>{ui.sixQuestions}</strong>
+        <span>{ui.instantFeedback}</span>
+        <span>{ui.finalRank}</span>
         <a className="button-primary" href="#quiz">
-          Start mini quiz
+          {ui.startQuiz}
         </a>
       </div>
     </section>
   );
 }
 
-function FragmentWithChallenge({ question, index, isLearned, onMarkLearned }) {
+function FragmentWithChallenge({ question, module, index, isLearned, onMarkLearned, challengeQuestions, ui, localizedPath }) {
   return (
     <>
-      <LearningSection question={question} isLearned={isLearned} onMarkLearned={onMarkLearned} />
-      {index === 2 ? <QuickChallenge /> : null}
+      <LearningSection question={question} module={module} isLearned={isLearned} onMarkLearned={onMarkLearned} ui={ui} localizedPath={localizedPath} />
+      {index === 2 ? <QuickChallenge challengeQuestions={challengeQuestions} ui={ui} /> : null}
     </>
   );
 }
 
-function QuickChallenge() {
+function QuickChallenge({ challengeQuestions, ui }) {
   const [answers, setAnswers] = useState({});
   const answeredCount = Object.keys(answers).length;
 
   return (
     <section className="quick-challenge" id="quick-challenge">
       <div>
-        <span className="section-kicker">Quick challenge</span>
-        <h2>Orbit check-in</h2>
-        <p>
-          Try these before the final quiz. Each tap gives immediate feedback.
-        </p>
+        <span className="section-kicker">{ui.quickKicker}</span>
+        <h2>{ui.quickTitle}</h2>
+        <p>{ui.quickIntro}</p>
       </div>
       <div className="challenge-grid">
         {challengeQuestions.map((question, index) => {
@@ -604,7 +1120,7 @@ function QuickChallenge() {
                     }
                     key={String(value)}
                   >
-                    {value ? "True" : "False"}
+                    {value ? ui.trueLabel : ui.falseLabel}
                   </button>
                 ))}
               </div>
@@ -613,12 +1129,21 @@ function QuickChallenge() {
           );
         })}
       </div>
-      <span className="challenge-progress">{answeredCount} / {challengeQuestions.length} answered</span>
+      <span className="challenge-progress">{ui.answered(answeredCount, challengeQuestions.length)}</span>
     </section>
   );
 }
 
-function getResultTier(score) {
+function getResultTier(score, resultTiers) {
+  if (resultTiers) {
+    const tier = score <= 2 ? resultTiers[0] : score <= 4 ? resultTiers[1] : resultTiers[2];
+
+    return {
+      title: tier[0],
+      message: tier[1]
+    };
+  }
+
   if (score <= 2) {
     return {
       title: "ISS Rookie",
@@ -639,7 +1164,7 @@ function getResultTier(score) {
   };
 }
 
-function MiniQuiz() {
+function MiniQuiz({ quizItems, resultTiers, ui, localizedPath }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isFinished, setIsFinished] = useState(false);
@@ -655,7 +1180,7 @@ function MiniQuiz() {
       }, 0),
     [answers]
   );
-  const result = getResultTier(score);
+  const result = getResultTier(score, resultTiers);
 
   function handleAnswer(answerIndex) {
     if (selectedIndex !== undefined) {
@@ -678,16 +1203,14 @@ function MiniQuiz() {
   return (
     <section className="learn-quiz-section gamified-quiz" id="quiz">
       <div className="section-heading-wide">
-        <span className="section-kicker">Mini quiz</span>
-        <h2>Mini Quiz: Are you ready for orbit?</h2>
-        <p>
-          Answer one question at a time and get instant feedback as you go.
-        </p>
+        <span className="section-kicker">{ui.miniQuizKicker}</span>
+        <h2>{ui.miniQuizTitle}</h2>
+        <p>{ui.miniQuizIntro}</p>
       </div>
 
       <div className="quiz-progress-row">
-        <span>Question {Math.min(answeredQuestions + 1, quizItems.length)} of {quizItems.length}</span>
-        <strong>Score: {score}</strong>
+        <span>{ui.questionOf(Math.min(answeredQuestions + 1, quizItems.length), quizItems.length)}</span>
+        <strong>{ui.score(score)}</strong>
       </div>
       <div className="quiz-progress-track" aria-hidden="true">
         <span style={{ width: `${(answeredQuestions / quizItems.length) * 100}%` }} />
@@ -718,7 +1241,7 @@ function MiniQuiz() {
           {selectedIndex !== undefined ? (
             <div className="quiz-feedback" role="status">
               <strong>
-                {selectedIndex === currentQuestion.correctIndex ? "Correct" : "Not quite"}
+                {selectedIndex === currentQuestion.correctIndex ? ui.correct : ui.notQuite}
               </strong>
               <p>{currentQuestion.explanation}</p>
               <button
@@ -730,29 +1253,29 @@ function MiniQuiz() {
                     : setCurrentIndex((index) => Math.min(index + 1, quizItems.length - 1))
                 }
               >
-                {isLastQuestion ? "Show result" : "Next question"}
+                {isLastQuestion ? ui.showResult : ui.nextQuestion}
               </button>
             </div>
           ) : null}
         </article>
       ) : (
         <article className="quiz-result-card">
-          <span className="section-kicker">Final result</span>
+          <span className="section-kicker">{ui.finalResult}</span>
           <h3>{result.title}</h3>
-          <strong>{score} / {quizItems.length} correct</strong>
+          <strong>{ui.correctCount(score, quizItems.length)}</strong>
           <p>{result.message}</p>
           <div className="hero-actions">
             <button type="button" className="button-secondary" onClick={() => setShowReview((value) => !value)}>
-              {showReview ? "Hide review" : "Review answers"}
+              {showReview ? ui.hideReview : ui.reviewAnswers}
             </button>
             <button type="button" className="button-secondary" onClick={handleReset}>
-              Try again
+              {ui.tryAgain}
             </button>
             <a className="button-secondary" href="#what-is-the-iss">
-              Review learning modules
+              {ui.reviewModules}
             </a>
-            <a className="button-primary" href="/tracker">
-              Open Live Tracker
+            <a className="button-primary" href={localizedPath("/tracker")}>
+              {ui.openTracker}
             </a>
           </div>
           {showReview ? (
@@ -764,8 +1287,8 @@ function MiniQuiz() {
                 return (
                   <article className={isCorrect ? "is-correct" : "is-incorrect"} key={item.question}>
                     <h4>{item.question}</h4>
-                    <p>Your answer: {item.choices[answerIndex]}</p>
-                    <p>Correct answer: {item.choices[item.correctIndex]}</p>
+                    <p>{ui.yourAnswer}: {item.choices[answerIndex]}</p>
+                    <p>{ui.correctAnswer}: {item.choices[item.correctIndex]}</p>
                     <small>{item.explanation}</small>
                   </article>
                 );
@@ -779,6 +1302,10 @@ function MiniQuiz() {
 }
 
 export function LearnPage() {
+  const { language, localizedPath } = useI18n();
+  const learnText = useMemo(() => getLearnText(language), [language]);
+  const questions = learnText.questions;
+  const ui = learnText.ui;
   const [activeModuleId, setActiveModuleId] = useState(learningQuestions[0].id);
   const [learnedModuleIds, setLearnedModuleIds] = useState(readStoredLearnProgress);
 
@@ -810,7 +1337,7 @@ export function LearnPage() {
       }
     );
 
-    learningQuestions.forEach((question) => {
+    questions.forEach((question) => {
       const section = document.getElementById(question.id);
 
       if (section) {
@@ -819,7 +1346,7 @@ export function LearnPage() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [questions]);
 
   function markModuleLearned(moduleId) {
     setLearnedModuleIds((current) => {
@@ -841,78 +1368,80 @@ export function LearnPage() {
     <>
       <PageHero
         compact
-        kicker="Learning Modules"
-        title="Learn About the ISS"
+        kicker={learnText.hero.kicker}
+        title={learnText.hero.title}
         actions={
           <div className="learn-hero-actions">
             <div className="learn-hero-chips" aria-label="Learning page summary">
-              <span>8 learning modules</span>
-              <span>Beginner friendly</span>
-              <span>10-15 min</span>
-              <span>Includes quick quiz</span>
+              {learnText.hero.chips.map((chip) => (
+                <span key={chip}>{chip}</span>
+              ))}
             </div>
             <div className="hero-actions">
               <a className="button-primary" href="#what-is-the-iss">
-                Start learning
+                {learnText.hero.start}
               </a>
               <a className="button-secondary" href="#quiz">
-                Jump to quiz
+                {learnText.hero.quiz}
               </a>
             </div>
-            <p className="learn-hero-note">Read the modules or test yourself right away.</p>
+            <p className="learn-hero-note">{learnText.hero.note}</p>
           </div>
         }
       >
-        Explore orbit, speed, microgravity, station life, science, docking, and
-        spacewalks.
+        {learnText.hero.intro}
       </PageHero>
 
       <section className="content-section learn-path-overview">
         <div className="section-heading-wide">
-          <span className="section-kicker">Learning path</span>
-          <h2>Choose your first mission question.</h2>
-          <p>
-            Use the mission map to jump between modules. Mark a module as
-            learned when you finish it.
-          </p>
+          <span className="section-kicker">{learnText.overview.kicker}</span>
+          <h2>{learnText.overview.title}</h2>
+          <p>{learnText.overview.intro}</p>
         </div>
-        <LearningPathCards activeId={activeModuleId} learnedIds={learnedModuleIds} />
+        <LearningPathCards questions={questions} activeId={activeModuleId} learnedIds={learnedModuleIds} localizedPath={localizedPath} ui={ui} />
       </section>
 
-      <QuizCheckpoint />
+      <QuizCheckpoint ui={ui} />
 
       <section className="content-section learn-guide-layout">
         <LearningPathSidebar
+          questions={questions}
           activeId={activeModuleId}
           learnedIds={learnedModuleIds}
           onResetProgress={resetProgress}
+          localizedPath={localizedPath}
+          ui={ui}
         />
 
         <article className="learn-article">
-          {learningQuestions.map((question, index) => (
+          {questions.map((question, index) => (
             <FragmentWithChallenge
               question={question}
+              module={learnText.modules[question.id]}
               index={index}
               isLearned={learnedModuleIds.has(question.id)}
               onMarkLearned={() => markModuleLearned(question.id)}
+              challengeQuestions={learnText.challengeQuestions}
+              ui={ui}
+              localizedPath={localizedPath}
               key={question.id}
             />
           ))}
         </article>
 
         <div className="learn-full-width">
-          <MiniQuiz />
+          <MiniQuiz quizItems={learnText.quizItems} resultTiers={learnText.resultTiers} ui={ui} localizedPath={localizedPath} />
         </div>
       </section>
 
       <section className="content-section continue-section">
         <div className="section-heading-wide compact-heading">
-          <span className="section-kicker">Continue exploring</span>
-          <h2>Next steps after the learning guide.</h2>
+          <span className="section-kicker">{ui.continueKicker}</span>
+          <h2>{ui.continueTitle}</h2>
         </div>
         <div className="continue-grid">
-          {continueLinks.map((link) => (
-            <a className="continue-card" href={link.href} key={link.href}>
+          {learnText.continueLinks.map((link) => (
+            <a className="continue-card" href={localizedPath(link.href)} key={link.href}>
               {link.label}
             </a>
           ))}

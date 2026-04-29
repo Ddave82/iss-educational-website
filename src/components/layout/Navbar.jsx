@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react";
-
-const navItems = [
-  { label: "Home", href: "/" },
-  { label: "Live Tracker", href: "/tracker" },
-  { label: "Learn", href: "/learn" },
-  { label: "See the ISS", href: "/see-the-iss" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "About Data", href: "/about-data" }
-];
+import { localizePath, useI18n } from "../../lib/i18n.jsx";
 
 export function Navbar({ currentPath }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { language, languages, localizedPath, t } = useI18n();
 
   useEffect(() => {
     setIsOpen(false);
-  }, [currentPath]);
+  }, [currentPath, language]);
 
   return (
     <nav className="site-nav" aria-label="Primary navigation">
-      <a className="brand-mark" href="/" aria-label="ISS Explorer home">
+      <a className="brand-mark" href={localizedPath("/")} aria-label="ISS Explorer home">
         <span className="brand-orbit" />
-        <span>ISS Explorer</span>
+        <span>{t.common.brand}</span>
       </a>
       <button
         type="button"
@@ -32,18 +25,32 @@ export function Navbar({ currentPath }) {
         <span />
         <span />
         <span />
-        <span className="sr-only">Menu</span>
+        <span className="sr-only">{t.common.menu}</span>
       </button>
       <div className={`nav-links${isOpen ? " is-open" : ""}`} id="primary-menu">
-        {navItems.map((item) => (
+        {t.nav.map((item) => (
           <a
-            href={item.href}
+            href={localizedPath(item.href)}
             key={item.href}
             aria-current={currentPath === item.href ? "page" : undefined}
           >
             {item.label}
           </a>
         ))}
+        <div className="language-switcher" aria-label="Language switcher">
+          {languages.map((item) => (
+            <a
+              className={item.code === language ? "is-active" : ""}
+              href={localizePath(currentPath, item.code)}
+              hrefLang={item.htmlLang}
+              key={item.code}
+              aria-current={item.code === language ? "true" : undefined}
+            >
+              <span aria-hidden="true">{item.flag}</span>
+              <strong>{item.shortLabel}</strong>
+            </a>
+          ))}
+        </div>
       </div>
     </nav>
   );

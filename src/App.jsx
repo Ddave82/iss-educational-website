@@ -9,6 +9,15 @@ import { LearnPage } from "./pages/LearnPage";
 import { SeeTheIssPage } from "./pages/SeeTheIssPage";
 import { TrackerPage } from "./pages/TrackerPage";
 import {
+  I18nProvider,
+  languageMap,
+  localizePath,
+  parseLocalizedPath,
+  translations,
+  useI18n
+} from "./lib/i18n.jsx";
+import {
+  alternateUrls,
   canonicalUrl,
   createRouteSchema,
   createWebsiteSchema,
@@ -22,14 +31,6 @@ const EarthScene = lazy(() =>
     default: module.EarthScene
   }))
 );
-
-function normalizePath(pathname) {
-  if (pathname.length > 1 && pathname.endsWith("/")) {
-    return pathname.slice(0, -1);
-  }
-
-  return pathname || "/";
-}
 
 function setMeta(name, content, attribute = "name") {
   let element = document.head.querySelector(`meta[${attribute}="${name}"]`);
@@ -53,6 +54,28 @@ function setLink(rel, href) {
   }
 
   element.setAttribute("href", href);
+}
+
+function setAlternateLinks(path) {
+  document.head
+    .querySelectorAll('link[rel="alternate"][hreflang]')
+    .forEach((element) => element.remove());
+
+  alternateUrls(path).forEach((alternate) => {
+    const element = document.createElement("link");
+    element.setAttribute("rel", "alternate");
+    element.setAttribute("hreflang", alternate.language);
+    element.setAttribute("href", alternate.href);
+    element.setAttribute("data-managed-alternate", "true");
+    document.head.appendChild(element);
+  });
+
+  const defaultElement = document.createElement("link");
+  defaultElement.setAttribute("rel", "alternate");
+  defaultElement.setAttribute("hreflang", "x-default");
+  defaultElement.setAttribute("href", canonicalUrl(path, "en"));
+  defaultElement.setAttribute("data-managed-alternate", "true");
+  document.head.appendChild(defaultElement);
 }
 
 function setJsonLd(id, data) {
@@ -84,28 +107,35 @@ function scrollToHash(hash = window.location.hash) {
 }
 
 function usePathRouting() {
-  const [currentPath, setCurrentPath] = useState(() => {
-    const initialPath = normalizePath(window.location.pathname);
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    const initialRoute = parseLocalizedPath(window.location.pathname);
 
-    if (initialPath === "/teachers") {
-      window.history.replaceState({}, "", "/learn");
-      return "/learn";
+    if (initialRoute.path === "/learn" && window.location.pathname.includes("teachers")) {
+      window.history.replaceState(
+        {},
+        "",
+        `${localizePath("/learn", initialRoute.language)}${window.location.hash}`
+      );
     }
 
-    return initialPath;
+    return initialRoute;
   });
 
   useEffect(() => {
     function handlePopState() {
-      const nextPath = normalizePath(window.location.pathname);
+      const nextRoute = parseLocalizedPath(window.location.pathname);
 
-      if (nextPath === "/teachers") {
-        window.history.replaceState({}, "", "/learn");
-        setCurrentPath("/learn");
+      if (nextRoute.path === "/learn" && window.location.pathname.includes("teachers")) {
+        window.history.replaceState(
+          {},
+          "",
+          `${localizePath("/learn", nextRoute.language)}${window.location.hash}`
+        );
+        setCurrentRoute({ ...nextRoute, path: "/learn" });
         return;
       }
 
-      setCurrentPath(nextPath);
+      setCurrentRoute(nextRoute);
     }
 
     function handleClick(event) {
@@ -126,12 +156,15 @@ function usePathRouting() {
         return;
       }
 
-      const nextPath = normalizePath(url.pathname);
-      const currentPathBeforeNavigation = normalizePath(window.location.pathname);
-      const resolvedPath = nextPath === "/teachers" ? "/learn" : nextPath;
-      const resolvedHash = nextPath === "/teachers" ? "" : url.hash;
-      const nextUrl = `${resolvedPath}${url.search}${resolvedHash}`;
-      const currentUrl = `${currentPathBeforeNavigation}${window.location.search}${window.location.hash}`;
+      const nextRoute = parseLocalizedPath(url.pathname);
+      const currentRouteBeforeNavigation = parseLocalizedPath(window.location.pathname);
+      const resolvedPath = nextRoute.path === "/teachers" ? "/learn" : nextRoute.path;
+      const resolvedHash = url.pathname.includes("teachers") ? "" : url.hash;
+      const nextUrl = `${localizePath(resolvedPath, nextRoute.language)}${url.search}${resolvedHash}`;
+      const currentUrl = `${localizePath(
+        currentRouteBeforeNavigation.path,
+        currentRouteBeforeNavigation.language
+      )}${window.location.search}${window.location.hash}`;
 
       event.preventDefault();
 
@@ -139,8 +172,11 @@ function usePathRouting() {
         window.history.pushState({}, "", nextUrl);
       }
 
-      if (resolvedPath !== currentPathBeforeNavigation) {
-        setCurrentPath(resolvedPath);
+      if (
+        resolvedPath !== currentRouteBeforeNavigation.path ||
+        nextRoute.language !== currentRouteBeforeNavigation.language
+      ) {
+        setCurrentRoute({ ...nextRoute, path: resolvedPath });
         return;
       }
 
@@ -160,21 +196,23 @@ function usePathRouting() {
     };
   }, []);
 
-  return currentPath;
+  return currentRoute;
 }
 
 function SceneLoadingState() {
+  const { t } = useI18n();
+
   return (
     <section className="scene-panel scene-loading">
       <div className="scene-copy">
         <div>
-          <span className="panel-eyebrow">Orbital View</span>
-          <h2>Earth / ISS</h2>
+          <span className="panel-eyebrow">{t.scene.kicker}</span>
+          <h2>{t.scene.title}</h2>
         </div>
       </div>
       <div className="scene-stage scene-stage-loading">
         <div className="scene-fallback">
-          <span>Loading the 3D scene...</span>
+          <span>{t.scene.loading}</span>
         </div>
       </div>
     </section>
@@ -182,18 +220,24 @@ function SceneLoadingState() {
 }
 
 function NotFoundPage() {
+  const { t } = useI18n();
+
   return (
-    <PageHero kicker="Route not found" title="This page is not on the station map">
-      Use the navigation to return to the live tracker, learning modules,
-      viewing guide, gallery, or data notes.
+    <PageHero kicker={t.notFound.kicker} title={t.notFound.title}>
+      {t.notFound.body}
     </PageHero>
   );
 }
 
 function App() {
   const telemetry = useIssTelemetry();
-  const currentPath = usePathRouting();
-  const metadata = getRouteMetadata(currentPath);
+  const currentRoute = usePathRouting();
+  const currentPath = currentRoute.path;
+  const language = currentRoute.language;
+  const metadata = useMemo(
+    () => getRouteMetadata(currentPath, language),
+    [currentPath, language]
+  );
   const trackerScene = useMemo(
     () => (
       <Suspense fallback={<SceneLoadingState />}>
@@ -204,30 +248,35 @@ function App() {
   );
 
   useEffect(() => {
-    const pageUrl = canonicalUrl(metadata.path);
+    const languageInfo = languageMap[language] || languageMap.en;
+    const activeTranslations = translations[language] || translations.en;
+    const pageUrl = canonicalUrl(metadata.path, language);
 
+    document.documentElement.lang = languageInfo.htmlLang;
     document.title = metadata.title;
     setLink("canonical", pageUrl);
+    setAlternateLinks(metadata.path);
     setMeta("robots", "index,follow");
     setMeta("description", metadata.description);
     setMeta("og:site_name", SITE_NAME, "property");
     setMeta("og:title", metadata.title, "property");
     setMeta("og:description", metadata.description, "property");
+    setMeta("og:locale", languageInfo.locale, "property");
     setMeta("og:type", "website", "property");
     setMeta("og:url", pageUrl, "property");
     setMeta("og:image", OG_IMAGE_URL, "property");
     setMeta("og:image:type", "image/png", "property");
     setMeta("og:image:width", "1200", "property");
     setMeta("og:image:height", "630", "property");
-    setMeta("og:image:alt", "ISS Explorer live tracker and learning guide", "property");
+    setMeta("og:image:alt", activeTranslations.seo.ogImageAlt, "property");
     setMeta("twitter:card", "summary_large_image");
     setMeta("twitter:title", metadata.title);
     setMeta("twitter:description", metadata.description);
     setMeta("twitter:image", OG_IMAGE_URL);
-    setMeta("twitter:image:alt", "ISS Explorer live tracker and learning guide");
-    setJsonLd("website-structured-data", createWebsiteSchema());
-    setJsonLd("route-structured-data", createRouteSchema(metadata.path));
-  }, [metadata]);
+    setMeta("twitter:image:alt", activeTranslations.seo.ogImageAlt);
+    setJsonLd("website-structured-data", createWebsiteSchema(language));
+    setJsonLd("route-structured-data", createRouteSchema(metadata.path, language));
+  }, [metadata, language]);
 
   useEffect(() => {
     if (window.location.hash) {
@@ -258,7 +307,11 @@ function App() {
       <NotFoundPage />
     );
 
-  return <Layout currentPath={currentPath}>{page}</Layout>;
+  return (
+    <I18nProvider language={language}>
+      <Layout currentPath={currentPath}>{page}</Layout>
+    </I18nProvider>
+  );
 }
 
 export default App;

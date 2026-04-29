@@ -10,6 +10,7 @@ import {
   latLonToVector3,
   toTrailSegments
 } from "../../lib/earthMath";
+import { useI18n } from "../../lib/i18n.jsx";
 
 const EARTH_RADIUS = 1.9;
 const CAMERA_DISTANCE = 7.7;
@@ -416,23 +417,29 @@ function SceneLighting() {
 }
 
 function SceneFallback() {
+  const { t } = useI18n();
+
   return (
     <div className="scene-fallback">
-      <span>The 3D view could not be loaded.</span>
+      <span>{t.scene.fallback}</span>
     </div>
   );
 }
 
 function SceneHeading() {
+  const { t } = useI18n();
+
   return (
     <div>
-      <span className="panel-eyebrow">Orbital View</span>
-      <h2>Earth / ISS</h2>
+      <span className="panel-eyebrow">{t.scene.kicker}</span>
+      <h2>{t.scene.title}</h2>
     </div>
   );
 }
 
 function SceneToolbar({ isFullscreen, isFullscreenAvailable, onToggleFullscreen }) {
+  const { t } = useI18n();
+
   if (!isFullscreenAvailable) {
     return null;
   }
@@ -446,21 +453,23 @@ function SceneToolbar({ isFullscreen, isFullscreenAvailable, onToggleFullscreen 
         aria-pressed={isFullscreen}
         aria-label={
           isFullscreen
-            ? "Close Orbital View fullscreen"
-            : "Open Orbital View fullscreen"
+            ? t.scene.closeFullscreen
+            : t.scene.openFullscreen
         }
       >
-        {isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+        {isFullscreen ? t.scene.exitFullscreen : t.scene.fullscreen}
       </button>
     </div>
   );
 }
 
 function SceneHudCard({ groundTrack, statusText, interactionHint, inline = false }) {
+  const { t } = useI18n();
+
   return (
     <div className={`scene-hud-card${inline ? " scene-hud-card-inline" : ""}`}>
-      <span className="scene-card-label">Ground Track</span>
-      <strong>{groundTrack || "Finding position"}</strong>
+      <span className="scene-card-label">{t.scene.groundTrack}</span>
+      <strong>{groundTrack || t.scene.findingPosition}</strong>
       <span>{statusText}</span>
       <span>{interactionHint}</span>
     </div>
@@ -469,6 +478,7 @@ function SceneHudCard({ groundTrack, statusText, interactionHint, inline = false
 
 export function EarthScene({ telemetry }) {
   const { snapshot, history, status } = telemetry;
+  const { t } = useI18n();
   const isMobile = useIsMobileScene();
   const stageRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -477,15 +487,15 @@ export function EarthScene({ telemetry }) {
   const earthPositionY = isMobile ? MOBILE_EARTH_POSITION_Y : viewTargetY;
   const statusText =
     status === "live"
-      ? "Tracking in real time"
+      ? t.scene.status.live
       : status === "partial"
-        ? "Position-only feed"
+        ? t.scene.status.partial
       : status === "stale"
-        ? "Last known position"
-        : "Waiting for data";
+        ? t.scene.status.stale
+        : t.scene.status.waiting;
   const interactionHint = isMobile
-    ? "Drag: orbit view / Pinch: zoom / Dashed line: orbit preview"
-    : "Mouse wheel: zoom / Drag: orbit view / Dashed line: orbit preview";
+    ? t.scene.mobileHint
+    : t.scene.desktopHint;
 
   useEffect(() => {
     const stageElement = stageRef.current;

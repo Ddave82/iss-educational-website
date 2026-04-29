@@ -3,102 +3,109 @@ export const DATE_TIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
   timeStyle: "medium"
 });
 
-export function formatCoordinate(value, positiveLabel, negativeLabel, digits = 2) {
+export function createDateTimeFormatter(locale = "en-US") {
+  return new Intl.DateTimeFormat(locale, {
+    dateStyle: "medium",
+    timeStyle: "medium"
+  });
+}
+
+export function formatCoordinate(value, positiveLabel, negativeLabel, digits = 2, t) {
   if (!Number.isFinite(value)) {
-    return "Not available";
+    return t?.common.notAvailable || "Not available";
   }
 
   const direction = value >= 0 ? positiveLabel : negativeLabel;
-  return `${Math.abs(value).toFixed(digits)} deg ${direction}`;
+  return `${Math.abs(value).toFixed(digits)} ${t?.common.degree || "deg"} ${direction}`;
 }
 
-export function formatMetric(value, suffix, digits = 1) {
+export function formatMetric(value, suffix, digits = 1, locale = "en-US", t) {
   if (!Number.isFinite(value)) {
-    return "Not available";
+    return t?.common.notAvailable || "Not available";
   }
 
-  return `${value.toLocaleString("en-US", {
+  return `${value.toLocaleString(locale, {
     maximumFractionDigits: digits,
     minimumFractionDigits: digits
   })} ${suffix}`;
 }
 
-export function formatWholeMetric(value, suffix) {
+export function formatWholeMetric(value, suffix, locale = "en-US", t) {
   if (!Number.isFinite(value)) {
-    return "Not available";
+    return t?.common.notAvailable || "Not available";
   }
 
-  return `${value.toLocaleString("en-US", {
+  return `${value.toLocaleString(locale, {
     maximumFractionDigits: 0
   })} ${suffix}`;
 }
 
-export function formatTimestamp(timestamp) {
+export function formatTimestamp(timestamp, locale = "en-US", t) {
   if (!timestamp) {
-    return "No update yet";
+    return t?.common.noUpdateYet || "No update yet";
   }
 
-  return DATE_TIME_FORMATTER.format(new Date(timestamp));
+  return createDateTimeFormatter(locale).format(new Date(timestamp));
 }
 
-export function formatDataAge(timestamp) {
+export function formatDataAge(timestamp, t) {
   if (!timestamp) {
-    return "Waiting for first update";
+    return t?.common.waitingForFirstUpdate || "Waiting for first update";
   }
 
   const ageSeconds = Math.max(0, Math.round((Date.now() - new Date(timestamp).getTime()) / 1000));
 
   if (ageSeconds < 60) {
-    return `${ageSeconds}s old`;
+    return t?.common.secondsOld?.(ageSeconds) || `${ageSeconds}s old`;
   }
 
   const ageMinutes = Math.round(ageSeconds / 60);
-  return `${ageMinutes} min old`;
+  return t?.common.minutesOld?.(ageMinutes) || `${ageMinutes} min old`;
 }
 
-export function formatHeading(heading) {
+export function formatHeading(heading, t) {
   if (!Number.isFinite(heading)) {
-    return "Not available";
+    return t?.common.notAvailable || "Not available";
   }
 
   const normalized = (heading + 360) % 360;
   const sectors = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
   const sector = sectors[Math.round(normalized / 45) % sectors.length];
-  return `${normalized.toFixed(0)} deg ${sector}`;
+  return `${normalized.toFixed(0)} ${t?.common.degree || "deg"} ${sector}`;
 }
 
-export function formatVisibility(visibility) {
+export function formatVisibility(visibility, t) {
   if (visibility === "daylight") {
-    return "Sunlit";
+    return t?.sidebar.visibility.daylight || "Sunlit";
   }
 
   if (visibility === "eclipsed") {
-    return "In Earth's shadow";
+    return t?.sidebar.visibility.eclipsed || "In Earth's shadow";
   }
 
-  return "Not available";
+  return t?.sidebar.visibility.unknown || "Not available";
 }
 
-export function getStatusLabel(status, error) {
+export function getStatusLabel(status, error, t) {
   if (status === "loading") {
-    return "Connecting";
+    return t?.common.status.loading || "Connecting";
   }
 
   if (status === "stale") {
-    return "Cached";
+    return t?.common.status.stale || "Cached";
   }
 
   if (status === "offline") {
-    return "Offline";
+    return t?.common.status.offline || "Offline";
   }
 
   if (status === "partial") {
-    return "Partial";
+    return t?.common.status.partial || "Partial";
   }
 
   if (error) {
-    return "Partial";
+    return t?.common.status.partial || "Partial";
   }
 
-  return "Live";
+  return t?.common.status.live || "Live";
 }

@@ -1,17 +1,19 @@
 import { LivestreamSection } from "../components/sections/LivestreamSection";
 import { MediaGallery } from "../components/sections/MediaGallery";
 import { PageHero } from "../components/ui/PageHero";
+import { useI18n } from "../lib/i18n.jsx";
 
 export function GalleryPage() {
+  const { t } = useI18n();
+
   return (
     <>
-      <PageHero kicker="NASA imagery" title="ISS Gallery">
-        Explore real NASA imagery of the station, Earth views, astronauts,
-        research, and station operations.
+      <PageHero kicker={t.gallery.kicker} title={t.gallery.title}>
+        {t.gallery.intro}
       </PageHero>
       <MediaGallery
-        title="NASA images and station visuals."
-        intro="The gallery loads NASA Image and Video Library results when available and falls back to curated NASA station imagery if the API cannot be reached."
+        title={t.gallery.mediaTitle}
+        intro={t.gallery.mediaIntro}
       />
       <LivestreamSection />
     </>
