@@ -1764,6 +1764,11 @@ p {
     height: 420px;
   }
 
+  .tracker-page-layout .tracker-scene .scene-stage:not(:fullscreen):not(.scene-stage-fullscreen) {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
   .scene-hud-card-inline {
     padding: 13px 14px;
   }
