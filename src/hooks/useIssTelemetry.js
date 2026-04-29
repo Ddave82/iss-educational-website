@@ -8,6 +8,8 @@ let groundTrackModulePromise = null;
 
 function hasFullTelemetry(snapshot) {
   return (
+    Number.isFinite(snapshot?.latitude) &&
+    Number.isFinite(snapshot?.longitude) &&
     Number.isFinite(snapshot?.altitude) &&
     Number.isFinite(snapshot?.velocity)
   );
@@ -23,6 +25,38 @@ function resolveNumericTelemetry(nextValue, fallbackValue) {
   }
 
   return null;
+}
+
+function normalizeLongitudeDelta(delta) {
+  return ((((delta + 180) % 360) + 360) % 360) - 180;
+}
+
+function hasMovedEnough(previousSnapshot, nextSnapshot) {
+  const latitudeDelta = Math.abs(nextSnapshot.latitude - previousSnapshot.latitude);
+  const longitudeDelta = Math.abs(
+    normalizeLongitudeDelta(nextSnapshot.longitude - previousSnapshot.longitude)
+  );
+
+  return latitudeDelta + longitudeDelta > 0.001;
+}
+
+function isNewerSample(previousSnapshot, nextSnapshot) {
+  if (
+    Number.isFinite(previousSnapshot?.timestamp) &&
+    Number.isFinite(nextSnapshot?.timestamp)
+  ) {
+    return nextSnapshot.timestamp > previousSnapshot.timestamp;
+  }
+
+  return hasMovedEnough(previousSnapshot, nextSnapshot);
+}
+
+function canUseForOrbitHeading(previousSnapshot, nextSnapshot) {
+  return (
+    previousSnapshot &&
+    isNewerSample(previousSnapshot, nextSnapshot) &&
+    hasMovedEnough(previousSnapshot, nextSnapshot)
+  );
 }
 
 async function resolveGroundTrack(latitude, longitude) {
@@ -57,6 +91,7 @@ export function useIssTelemetry() {
         }
 
         const previousSnapshot = previousSnapshotRef.current;
+        const incomingHasFullTelemetry = hasFullTelemetry(nextSnapshot);
         const resolvedSnapshot = {
           ...nextSnapshot,
           altitude: resolveNumericTelemetry(
@@ -72,14 +107,21 @@ export function useIssTelemetry() {
             previousSnapshot?.footprint
           )
         };
-        const heading = previousSnapshot
+        const canUpdateOrbitHeading = canUseForOrbitHeading(
+          previousSnapshot,
+          resolvedSnapshot
+        );
+        const shouldStoreStableSample =
+          incomingHasFullTelemetry &&
+          (!previousSnapshot || canUpdateOrbitHeading);
+        const heading = incomingHasFullTelemetry && canUpdateOrbitHeading
           ? calculateHeading(
               previousSnapshot.latitude,
               previousSnapshot.longitude,
               resolvedSnapshot.latitude,
               resolvedSnapshot.longitude
             )
-          : null;
+          : latestSnapshotRef.current?.heading ?? null;
 
         const groundTrack = await resolveGroundTrack(
           resolvedSnapshot.latitude,
@@ -96,7 +138,10 @@ export function useIssTelemetry() {
           groundTrack
         };
 
-        previousSnapshotRef.current = resolvedSnapshot;
+        if (shouldStoreStableSample) {
+          previousSnapshotRef.current = resolvedSnapshot;
+        }
+
         latestSnapshotRef.current = enrichedSnapshot;
         setSnapshot(enrichedSnapshot);
         setLastUpdated(
@@ -104,9 +149,13 @@ export function useIssTelemetry() {
             ? new Date(resolvedSnapshot.timestamp * 1000).toISOString()
             : new Date().toISOString()
         );
-        setStatus(hasFullTelemetry(enrichedSnapshot) ? "live" : "partial");
+        setStatus(incomingHasFullTelemetry ? "live" : "partial");
         setError("");
         setHistory((currentHistory) => {
+          if (!shouldStoreStableSample) {
+            return currentHistory;
+          }
+
           const recentPoint = currentHistory[currentHistory.length - 1];
 
           if (recentPoint?.timestamp === enrichedSnapshot.timestamp) {

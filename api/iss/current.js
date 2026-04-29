@@ -53,25 +53,29 @@ function normalizeFallbackPayload(payload) {
 
 export default async function handler(request, response) {
   response.setHeader("Access-Control-Allow-Origin", "*");
-  response.setHeader("Cache-Control", "s-maxage=5, stale-while-revalidate=25");
 
   if (request.method === "OPTIONS") {
     response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    response.setHeader("Cache-Control", "no-store, max-age=0");
     return response.status(204).end();
   }
 
   if (request.method !== "GET") {
+    response.setHeader("Cache-Control", "no-store, max-age=0");
     return response.status(405).json({ error: "Method not allowed" });
   }
 
   try {
     const payload = await fetchJson(PRIMARY_SOURCE);
+    response.setHeader("Cache-Control", "s-maxage=5, stale-while-revalidate=10");
     return response.status(200).json(normalizePrimaryPayload(payload));
   } catch (primaryError) {
     try {
       const payload = await fetchJson(FALLBACK_SOURCE);
+      response.setHeader("Cache-Control", "no-store, max-age=0");
       return response.status(200).json(normalizeFallbackPayload(payload));
     } catch {
+      response.setHeader("Cache-Control", "no-store, max-age=0");
       return response.status(502).json({
         error: "ISS telemetry feed unavailable",
         detail: primaryError.message
