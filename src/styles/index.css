@@ -325,6 +325,7 @@ p {
   position: relative;
   margin: 0;
   overflow: hidden;
+  aspect-ratio: 16 / 10.5;
   border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: var(--shadow);
@@ -332,9 +333,26 @@ p {
 
 .hero-visual img {
   width: 100%;
-  aspect-ratio: 16 / 10.5;
+  height: 100%;
   object-fit: cover;
   background: #000;
+}
+
+.home-hero .hero-visual-compact img {
+  animation: heroIssFloat 10s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@keyframes heroIssFloat {
+  0%,
+  100% {
+    transform: translateX(-2px) rotate(-0.3deg) scale(1.01);
+  }
+
+  50% {
+    transform: translateX(2px) rotate(0.3deg) scale(1.01);
+  }
 }
 
 .hero-visual figcaption {
@@ -1861,6 +1879,10 @@ summary:focus-visible {
 }
 
 .hero-visual-compact img {
+  aspect-ratio: auto;
+}
+
+.hero-visual-compact {
   aspect-ratio: 16 / 9.5;
 }
 

@@ -54,8 +54,6 @@ export function HomePage({ telemetry, scene }) {
             <img
               src={HERO_IMAGE}
               alt="The International Space Station photographed in orbit"
-              width="1920"
-              height="1173"
               fetchPriority="high"
               decoding="async"
             />
