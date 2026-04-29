@@ -294,7 +294,7 @@ const moduleContent = {
   }
 };
 
-translatedLearnContent.da.modules = {
+const danishLearnModules = {
   "what-is-the-iss": {
     keyIdea: "Den Internationale Rumstation er et stort rumfartøj, hvor astronauter bor, arbejder og laver forskning i kredsløb om Jorden.",
     paragraphs: [
@@ -885,7 +885,7 @@ const translatedLearnContent = {
       ["Hvordan docker rumfartøjer?", "Besætnings- og fragtrumfartøjer kobler præcist til stationens dockingporte.", "Docking"],
       ["Hvad er rumvandringer?", "Astronauter forlader stationen i rumdragter for reparationer, inspektioner og opgraderinger.", "EVA"]
     ],
-    modules: {},
+    modules: danishLearnModules,
     challengeQuestions: [
       ["Sandt eller falsk: ISS svæver, fordi der ikke er tyngdekraft.", false, "Falsk. Tyngdekraften er stadig til stede. Stationen og alt indeni falder sammen."],
       ["Sandt eller falsk: ISS fuldfører et kredsløb på cirka 90 minutter.", true, "Sandt. Det hurtige kredsløb får jordsporet til at skifte hurtigt."],
