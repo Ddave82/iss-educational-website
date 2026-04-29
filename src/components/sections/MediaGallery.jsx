@@ -48,7 +48,10 @@ export function MediaCard({ item, cta = "View source" }) {
           <img
             src={item.imageUrl}
             alt={item.title}
+            width="1024"
+            height="768"
             loading="lazy"
+            decoding="async"
             onError={() => setImageFailed(true)}
           />
         )}

@@ -8,50 +8,20 @@ import { HomePage } from "./pages/HomePage";
 import { LearnPage } from "./pages/LearnPage";
 import { SeeTheIssPage } from "./pages/SeeTheIssPage";
 import { TrackerPage } from "./pages/TrackerPage";
+import {
+  canonicalUrl,
+  createRouteSchema,
+  createWebsiteSchema,
+  getRouteMetadata,
+  OG_IMAGE_URL,
+  SITE_NAME
+} from "./lib/seo";
 
 const EarthScene = lazy(() =>
   import("./components/scene/EarthScene").then((module) => ({
     default: module.EarthScene
   }))
 );
-
-const routeMetadata = {
-  "/": {
-    title: "ISS Explorer – Live Tracker and Educational Space Station Guide",
-    description:
-      "Track the International Space Station live, learn how it works, and discover when you can see it from Earth."
-  },
-  "/tracker": {
-    title: "Live ISS Tracker – Where Is the Space Station Now?",
-    description:
-      "Follow the International Space Station live with current position, altitude, speed, and telemetry."
-  },
-  "/learn": {
-    title: "Learn About the ISS – Orbit, Microgravity and Life in Space",
-    description:
-      "Simple explanations about the International Space Station, orbit, microgravity, astronaut life, experiments, docking, and spacewalks."
-  },
-  "/see-the-iss": {
-    title: "See the ISS from Earth – Viewing Guide",
-    description:
-      "Learn when and how to see the International Space Station from Earth."
-  },
-  "/gallery": {
-    title: "ISS Gallery – NASA Images and Space Station Views",
-    description:
-      "Explore real NASA imagery of the International Space Station, Earth views, astronauts, and experiments."
-  },
-  "/teachers": {
-    title: "Learn About the ISS – Orbit, Microgravity and Life in Space",
-    description:
-      "Simple explanations about the International Space Station, orbit, microgravity, astronaut life, experiments, docking, and spacewalks."
-  },
-  "/about-data": {
-    title: "ISS Explorer Data Sources and Credits",
-    description:
-      "Learn where ISS Explorer gets its live data, imagery, and educational references."
-  }
-};
 
 function normalizePath(pathname) {
   if (pathname.length > 1 && pathname.endsWith("/")) {
@@ -71,6 +41,31 @@ function setMeta(name, content, attribute = "name") {
   }
 
   element.setAttribute("content", content);
+}
+
+function setLink(rel, href) {
+  let element = document.head.querySelector(`link[rel="${rel}"]`);
+
+  if (!element) {
+    element = document.createElement("link");
+    element.setAttribute("rel", rel);
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute("href", href);
+}
+
+function setJsonLd(id, data) {
+  let element = document.getElementById(id);
+
+  if (!element) {
+    element = document.createElement("script");
+    element.id = id;
+    element.type = "application/ld+json";
+    document.head.appendChild(element);
+  }
+
+  element.textContent = JSON.stringify(data);
 }
 
 function scrollToHash(hash = window.location.hash) {
@@ -198,7 +193,7 @@ function NotFoundPage() {
 function App() {
   const telemetry = useIssTelemetry();
   const currentPath = usePathRouting();
-  const metadata = routeMetadata[currentPath] || routeMetadata["/"];
+  const metadata = getRouteMetadata(currentPath);
   const trackerScene = useMemo(
     () => (
       <Suspense fallback={<SceneLoadingState />}>
@@ -209,11 +204,29 @@ function App() {
   );
 
   useEffect(() => {
+    const pageUrl = canonicalUrl(metadata.path);
+
     document.title = metadata.title;
+    setLink("canonical", pageUrl);
+    setMeta("robots", "index,follow");
     setMeta("description", metadata.description);
+    setMeta("og:site_name", SITE_NAME, "property");
     setMeta("og:title", metadata.title, "property");
     setMeta("og:description", metadata.description, "property");
     setMeta("og:type", "website", "property");
+    setMeta("og:url", pageUrl, "property");
+    setMeta("og:image", OG_IMAGE_URL, "property");
+    setMeta("og:image:type", "image/png", "property");
+    setMeta("og:image:width", "1200", "property");
+    setMeta("og:image:height", "630", "property");
+    setMeta("og:image:alt", "ISS Explorer live tracker and learning guide", "property");
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", metadata.title);
+    setMeta("twitter:description", metadata.description);
+    setMeta("twitter:image", OG_IMAGE_URL);
+    setMeta("twitter:image:alt", "ISS Explorer live tracker and learning guide");
+    setJsonLd("website-structured-data", createWebsiteSchema());
+    setJsonLd("route-structured-data", createRouteSchema(metadata.path));
   }, [metadata]);
 
   useEffect(() => {

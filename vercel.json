@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/teachers", "destination": "/learn", "permanent": true },
+    { "source": "/teachers/", "destination": "/learn", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/tracker", "destination": "/index.html" },
     { "source": "/tracker/", "destination": "/index.html" },
@@ -8,8 +12,6 @@
     { "source": "/see-the-iss/", "destination": "/index.html" },
     { "source": "/gallery", "destination": "/index.html" },
     { "source": "/gallery/", "destination": "/index.html" },
-    { "source": "/teachers", "destination": "/index.html" },
-    { "source": "/teachers/", "destination": "/index.html" },
     { "source": "/about-data", "destination": "/index.html" },
     { "source": "/about-data/", "destination": "/index.html" }
   ]

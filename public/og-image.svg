@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">ISS Explorer social preview</title>
+  <desc id="desc">Dark space style ISS Explorer preview image for live tracking and learning.</desc>
+  <defs>
+    <radialGradient id="earthGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#76e2d6" stop-opacity="0.95" />
+      <stop offset="45%" stop-color="#145d72" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#071019" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0b1016" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#11110c" stop-opacity="0.94" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#05060a" />
+  <g opacity="0.75">
+    <circle cx="74" cy="78" r="2" fill="#f3f7f2" />
+    <circle cx="214" cy="132" r="1.7" fill="#a7b5b6" />
+    <circle cx="344" cy="64" r="1.5" fill="#f3f7f2" />
+    <circle cx="514" cy="116" r="1.8" fill="#a7b5b6" />
+    <circle cx="784" cy="80" r="1.6" fill="#f3f7f2" />
+    <circle cx="996" cy="142" r="2" fill="#f3f7f2" />
+    <circle cx="1108" cy="68" r="1.6" fill="#a7b5b6" />
+    <circle cx="106" cy="482" r="1.8" fill="#f3f7f2" />
+    <circle cx="278" cy="554" r="1.6" fill="#a7b5b6" />
+    <circle cx="566" cy="520" r="2" fill="#f3f7f2" />
+    <circle cx="1094" cy="512" r="1.7" fill="#a7b5b6" />
+  </g>
+  <path d="M0 470 C210 398 350 432 538 390 C760 340 900 218 1200 246 L1200 630 L0 630 Z" fill="#071019" />
+  <circle cx="860" cy="396" r="258" fill="url(#earthGlow)" opacity="0.9" />
+  <circle cx="860" cy="396" r="178" fill="#071019" opacity="0.72" />
+  <ellipse cx="860" cy="396" rx="314" ry="96" fill="none" stroke="#76e2d6" stroke-width="3" opacity="0.5" transform="rotate(-18 860 396)" />
+  <g transform="translate(722 250) rotate(-18)">
+    <rect x="0" y="49" width="278" height="18" rx="6" fill="#f3f7f2" />
+    <rect x="104" y="32" width="70" height="52" rx="8" fill="#d7e8ea" />
+    <rect x="-84" y="28" width="78" height="60" rx="4" fill="#76e2d6" opacity="0.86" />
+    <rect x="284" y="28" width="78" height="60" rx="4" fill="#76e2d6" opacity="0.86" />
+    <line x1="-6" y1="58" x2="104" y2="58" stroke="#0b1016" stroke-width="5" opacity="0.6" />
+    <line x1="174" y1="58" x2="284" y2="58" stroke="#0b1016" stroke-width="5" opacity="0.6" />
+  </g>
+  <rect x="72" y="96" width="552" height="390" rx="18" fill="url(#panel)" stroke="#20313d" />
+  <text x="112" y="224" fill="#76e2d6" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="3">ISS EXPLORER</text>
+  <text x="112" y="300" fill="#f3f7f2" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700">Live ISS Tracker</text>
+  <text x="112" y="364" fill="#f3f7f2" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">and Learning Guide</text>
+  <text x="112" y="432" fill="#a7b5b6" font-family="Arial, Helvetica, sans-serif" font-size="28">Track the station, read live telemetry,</text>
+  <text x="112" y="474" fill="#a7b5b6" font-family="Arial, Helvetica, sans-serif" font-size="28">and learn how orbit works.</text>
+  <rect x="112" y="506" width="220" height="6" rx="3" fill="#f6bf66" />
+</svg>

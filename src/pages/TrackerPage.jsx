@@ -10,6 +10,7 @@ export function TrackerPage({ telemetry, scene }) {
   return (
     <>
       <section className="tracker-section tracker-page-section">
+        <h1 className="sr-only">Live ISS Tracker</h1>
         <div className="tracker-grid tracker-page-layout">
           <div className="tracker-scene">{scene}</div>
           <div className="tracker-live-stack">

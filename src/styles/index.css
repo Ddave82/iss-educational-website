@@ -337,6 +337,27 @@ p {
   background: #000;
 }
 
+.home-hero .hero-visual-compact {
+  perspective: 1200px;
+}
+
+.home-hero .hero-visual-compact img {
+  animation: heroIssFloat 9s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+@keyframes heroIssFloat {
+  0%,
+  100% {
+    transform: translateX(-3px) rotate(-0.55deg) scale(1.025);
+  }
+
+  50% {
+    transform: translateX(3px) rotate(0.55deg) scale(1.025);
+  }
+}
+
 .hero-visual figcaption {
   position: absolute;
   left: 12px;
