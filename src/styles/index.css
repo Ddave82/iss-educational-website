@@ -3410,42 +3410,6 @@ summary:focus-visible {
   border-color: rgba(192, 213, 231, 0.14);
 }
 
-.gallery-filter-section {
-  padding-top: 0;
-  padding-bottom: 18px;
-}
-
-.gallery-filter-chips {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.gallery-filter-chips button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid rgba(192, 213, 231, 0.14);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.045);
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 0.88rem;
-  font-weight: 700;
-  transition:
-    border-color 160ms ease,
-    background 160ms ease,
-    color 160ms ease;
-}
-
-.gallery-filter-chips button:hover,
-.gallery-filter-chips button.is-active {
-  border-color: var(--border-strong);
-  background: rgba(118, 226, 214, 0.1);
-  color: var(--text);
-}
-
 .empty-filter-card {
   max-width: 620px;
   padding: 22px;

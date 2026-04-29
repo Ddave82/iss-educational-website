@@ -70,16 +70,11 @@ export function MediaGallery({
   title = "Real station imagery for learning and wonder.",
   intro = "These images are loaded from NASA's public Image and Video Library when available. If the API is unreachable, curated NASA gallery items remain visible.",
   showHeader = true,
-  cta = "View source",
-  activeFilter = "All"
+  cta = "View source"
 }) {
   const [mediaItems, setMediaItems] = useState(FALLBACK_MEDIA_ITEMS);
   const [status, setStatus] = useState("loading");
-  const filteredItems =
-    activeFilter === "All"
-      ? mediaItems
-      : mediaItems.filter((item) => item.category === activeFilter);
-  const visibleItems = dedupeRenderedMedia(filteredItems).slice(0, limit || filteredItems.length);
+  const visibleItems = dedupeRenderedMedia(mediaItems).slice(0, limit || mediaItems.length);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -119,7 +114,7 @@ export function MediaGallery({
           ? "Loading NASA media..."
           : status === "fallback"
             ? "Showing curated NASA gallery fallbacks."
-            : `Showing current NASA Image and Video Library results${activeFilter === "All" ? "" : ` for ${activeFilter.toLowerCase()}`}.`}
+            : "Showing current NASA Image and Video Library results."}
       </div>
 
       {visibleItems.length ? (
@@ -130,10 +125,9 @@ export function MediaGallery({
         </div>
       ) : (
         <article className="panel empty-filter-card">
-          <h3>No images in this category yet</h3>
+          <h3>No images available yet</h3>
           <p>
-            NASA results can vary by request. Choose another category or try
-            again later.
+            NASA results can vary by request. Try again later.
           </p>
         </article>
       )}
