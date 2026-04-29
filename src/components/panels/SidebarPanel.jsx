@@ -22,7 +22,7 @@ export function SidebarPanel({ telemetry }) {
 
   return (
     <div className="sidebar-stack">
-      <section className="panel hero-panel">
+      <section id="live-data" className="panel hero-panel scroll-target">
         <div className="panel-header">
           <div>
             <span className="panel-eyebrow">Mission Control</span>
@@ -30,19 +30,17 @@ export function SidebarPanel({ telemetry }) {
           </div>
           <StatusPill status={status} error={error} />
         </div>
+
+        <div className="section-heading telemetry-subheading">
+          <span>{trailWindow}</span>
+        </div>
+
         {error ? (
           <div className="alert-card">
             <strong>Data feed unstable</strong>
             <p>{error}</p>
           </div>
         ) : null}
-      </section>
-
-      <section id="live-data" className="panel scroll-target">
-        <div className="section-heading">
-          <h2>Live Data</h2>
-          <span>{trailWindow}</span>
-        </div>
 
         <div className="data-grid">
           <DataField
