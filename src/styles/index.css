@@ -2446,6 +2446,7 @@ summary:focus-visible {
   min-height: 238px;
   padding: 22px;
   overflow: hidden;
+  min-width: 0;
   background:
     linear-gradient(145deg, rgba(118, 226, 214, 0.1), transparent 42%),
     radial-gradient(circle at 92% 12%, rgba(246, 191, 102, 0.16), transparent 32%),
@@ -2483,6 +2484,7 @@ summary:focus-visible {
   margin: 0;
   font-size: 1.32rem;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .learn-path-card p {
@@ -2490,6 +2492,7 @@ summary:focus-visible {
   color: var(--muted);
   font-size: 0.92rem;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .learn-path-card small {
@@ -3691,7 +3694,6 @@ summary:focus-visible {
   }
 
   .learn-path-card {
-    grid-template-columns: minmax(0, 1fr) auto;
     min-height: auto;
     gap: 8px 12px;
     padding: 16px;
@@ -3706,10 +3708,12 @@ summary:focus-visible {
 
   .learn-path-card h3 {
     font-size: 1.14rem;
+    line-height: 1.28;
   }
 
   .learn-path-card p {
     font-size: 0.88rem;
+    line-height: 1.5;
   }
 
   .quiz-checkpoint {
@@ -3798,23 +3802,53 @@ summary:focus-visible {
   .learn-path-card {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 12px;
+    padding: 14px;
   }
 
   .learn-path-card-top {
+    display: contents;
+  }
+
+  .learn-path-card-top span {
+    align-self: center;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .learn-path-card-top strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    min-width: 38px;
+    height: 38px;
+  }
+
+  .learn-path-card h3 {
+    grid-column: 1;
+    font-size: 1.05rem;
+  }
+
+  .learn-path-card p,
+  .learn-path-card small {
     grid-column: 1 / -1;
   }
 
   .learn-path-card p {
-    display: none;
+    display: block;
+    font-size: 0.86rem;
+    line-height: 1.45;
   }
 
   .learn-path-card small {
-    align-self: center;
-  }
-
-  .learn-path-card-top strong {
-    min-width: 38px;
-    height: 38px;
+    align-self: start;
+    width: fit-content;
+    min-height: 34px;
+    padding: 8px 10px;
+    border: 1px solid rgba(118, 226, 214, 0.22);
+    border-radius: 8px;
+    background: rgba(118, 226, 214, 0.08);
+    line-height: 1.2;
   }
 
   .learn-visual {
