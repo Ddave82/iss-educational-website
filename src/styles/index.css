@@ -2442,6 +2442,7 @@ summary:focus-visible {
 
 .learn-path-card {
   display: grid;
+  width: 100%;
   gap: 14px;
   min-height: 238px;
   padding: 22px;
@@ -2453,11 +2454,16 @@ summary:focus-visible {
     var(--surface);
 }
 
+.learn-path-card > * {
+  min-width: 0;
+}
+
 .learn-path-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-width: 0;
 }
 
 .learn-path-card-top span,
@@ -2466,10 +2472,17 @@ summary:focus-visible {
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.learn-path-card-top span {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .learn-path-card-top strong {
   display: inline-grid;
+  flex: 0 0 auto;
   place-items: center;
   min-width: 48px;
   height: 48px;
@@ -2638,9 +2651,10 @@ summary:focus-visible {
 
 .learn-toc a {
   display: grid;
-  grid-template-columns: 34px 1fr;
+  grid-template-columns: 34px minmax(0, 1fr);
   gap: 10px;
   align-items: center;
+  min-width: 0;
   min-height: 42px;
   padding: 8px;
   border: 1px solid transparent;
@@ -2650,6 +2664,7 @@ summary:focus-visible {
   font-size: 0.92rem;
   font-weight: 700;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .learn-toc a:hover {
