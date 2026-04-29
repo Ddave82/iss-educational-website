@@ -2845,6 +2845,10 @@ summary:focus-visible {
 
 .learn-quiz-section {
   margin-top: 10px;
+  border-color: rgba(246, 191, 102, 0.68);
+  box-shadow:
+    0 0 0 1px rgba(246, 191, 102, 0.18),
+    var(--shadow);
 }
 
 .learn-quiz-section .section-heading-wide {
