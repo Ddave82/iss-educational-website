@@ -2426,6 +2426,7 @@ summary:focus-visible {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+  min-width: 0;
 }
 
 .learn-path-card,
@@ -2443,6 +2444,7 @@ summary:focus-visible {
 .learn-path-card {
   display: grid;
   width: 100%;
+  max-width: 100%;
   gap: 14px;
   min-height: 238px;
   padding: 22px;
@@ -2510,6 +2512,7 @@ summary:focus-visible {
 
 .learn-path-card small {
   align-self: end;
+  max-width: 100%;
   color: var(--accent-strong);
 }
 
@@ -2716,6 +2719,9 @@ summary:focus-visible {
 .learn-quiz-section,
 .quick-challenge {
   scroll-margin-top: 118px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   padding: 26px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -2742,10 +2748,15 @@ summary:focus-visible {
   align-items: start;
 }
 
+.learn-module-header > div {
+  min-width: 0;
+}
+
 .learn-module h2 {
   margin: 10px 0 0;
   font-size: clamp(1.85rem, 3vw, 2.5rem);
   line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .learn-visual {
@@ -2825,6 +2836,7 @@ summary:focus-visible {
   color: var(--text);
   font-size: 1.12rem;
   line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .learn-copy {
@@ -2897,6 +2909,7 @@ summary:focus-visible {
   color: var(--text);
   font-weight: 700;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .learn-quiz-section {
