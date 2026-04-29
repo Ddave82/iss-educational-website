@@ -403,10 +403,10 @@ const en = {
       "NASA Live carries agency programming and links to Space Station Views when live ISS video is available. During signal handovers, station video may pause or show a holding screen.",
     watchLive: "Watch live",
     iframeTitle: "NASA Live stream",
-    signalNotes: "Signal notes",
-    unavailable: "NASA livestream is temporarily unavailable",
+    signalNotes: "About the stream",
+    unavailable: "Live views from orbit",
     body:
-      "Live station feeds are not always active. The station may be switching cameras, passing through signal gaps, or the stream may be offline.",
+      "When station video is available, NASA shows views from cameras mounted on the outside of the ISS. The picture comes from about 400 kilometers above Earth as the station circles the planet roughly every 90 minutes.",
     fallbackActions: [
       { label: "Open live tracker", href: "/tracker" },
       { label: "Explore NASA imagery", href: "/gallery" },
@@ -816,10 +816,10 @@ const de = {
       "NASA Live zeigt Agenturprogramme und verlinkt zu Space Station Views, wenn Live-ISS-Video verfügbar ist. Bei Signalübergaben kann das Stationsvideo pausieren oder einen Wartebildschirm zeigen.",
     watchLive: "Live ansehen",
     iframeTitle: "NASA-Livestream",
-    signalNotes: "Signalhinweise",
-    unavailable: "NASA-Livestream ist vorübergehend nicht verfügbar",
+    signalNotes: "Zum Stream",
+    unavailable: "Livebilder aus dem Orbit",
     body:
-      "Live-Feeds der Station sind nicht immer aktiv. Die Station kann Kameras wechseln, durch Signallücken fliegen oder der Stream kann offline sein.",
+      "Wenn Stationsvideo verfügbar ist, zeigt NASA Ansichten von Kameras an der Außenseite der ISS. Das Bild kommt aus rund 400 Kilometern Höhe, während die Raumstation die Erde etwa alle 90 Minuten umrundet.",
     fallbackActions: [
       { label: "Live-Tracker öffnen", href: "/tracker" },
       { label: "NASA-Bilder erkunden", href: "/gallery" },
@@ -1219,10 +1219,10 @@ const da = {
       "NASA Live viser agenturprogrammer og linker til Space Station Views, når live ISS-video er tilgængelig. Under signalovergange kan stationsvideoen pause eller vise en venteskærm.",
     watchLive: "Se live",
     iframeTitle: "NASA-livestream",
-    signalNotes: "Signalnoter",
-    unavailable: "NASA-livestream er midlertidigt utilgængelig",
+    signalNotes: "Om streamen",
+    unavailable: "Livebilleder fra kredsløb",
     body:
-      "Livefeeds fra stationen er ikke altid aktive. Stationen kan skifte kamera, passere gennem signalhuller, eller streamen kan være offline.",
+      "Når stationsvideo er tilgængelig, viser NASA udsigter fra kameraer monteret på ydersiden af ISS. Billedet kommer fra cirka 400 kilometers højde, mens rumstationen kredser om Jorden omtrent hvert 90. minut.",
     fallbackActions: [
       { label: "Åbn live-tracker", href: "/tracker" },
       { label: "Udforsk NASA-billeder", href: "/gallery" },
