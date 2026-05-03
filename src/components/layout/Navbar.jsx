@@ -12,7 +12,7 @@ export function Navbar({ currentPath }) {
   return (
     <nav className="site-nav" aria-label="Primary navigation">
       <a className="brand-mark" href={localizedPath("/")} aria-label="ISS Explorer home">
-        <img className="brand-logo" src="/isseducationlogo.png" alt="" aria-hidden="true" />
+        <img className="brand-logo" src="/isslogo.png" alt="" aria-hidden="true" />
       </a>
       <button
         type="button"
