@@ -33,7 +33,6 @@ export function HeroSection({ telemetry }) {
       <nav className="site-nav" aria-label="Primary navigation">
         <a className="brand-mark" href="#top" aria-label="ISS learning site home">
           <img className="brand-logo" src="/isseducationlogo.png" alt="" aria-hidden="true" />
-          <span>ISS Explorer</span>
         </a>
         <div className="nav-links">
           <a href="#learn">Learn</a>

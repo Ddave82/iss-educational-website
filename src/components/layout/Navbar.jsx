@@ -13,7 +13,6 @@ export function Navbar({ currentPath }) {
     <nav className="site-nav" aria-label="Primary navigation">
       <a className="brand-mark" href={localizedPath("/")} aria-label="ISS Explorer home">
         <img className="brand-logo" src="/isseducationlogo.png" alt="" aria-hidden="true" />
-        <span>{t.common.brand}</span>
       </a>
       <button
         type="button"
