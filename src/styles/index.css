@@ -176,24 +176,14 @@ p {
   font-weight: 700;
 }
 
-.brand-orbit {
-  position: relative;
+.brand-logo {
   width: 34px;
   height: 34px;
-  border: 1px solid var(--accent);
+  flex: 0 0 34px;
   border-radius: 999px;
-}
-
-.brand-orbit::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: var(--accent-strong);
-  transform: translate(-50%, -50%);
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 1px rgba(124, 211, 255, 0.22);
 }
 
 .nav-links {
