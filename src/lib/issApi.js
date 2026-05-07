@@ -13,6 +13,7 @@ function withTimeout(resource, options = {}) {
   const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   return fetch(resource, {
+    cache: "no-store",
     ...options,
     signal: controller.signal,
     headers: {

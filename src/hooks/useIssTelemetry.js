@@ -3,6 +3,8 @@ import { fetchIssSnapshot } from "../lib/issApi";
 import { calculateHeading } from "../lib/telemetryMath";
 
 const POLL_INTERVAL_MS = 10000;
+const HEADING_BOOTSTRAP_DELAY_MS = 1250;
+const HEADING_BOOTSTRAP_MAX_ATTEMPTS = 3;
 const MAX_HISTORY_POINTS = 72;
 let groundTrackModulePromise = null;
 
@@ -81,6 +83,26 @@ export function useIssTelemetry() {
   useEffect(() => {
     let active = true;
     let timeoutId = 0;
+    let headingBootstrapTimeoutId = 0;
+    let headingBootstrapAttempts = 0;
+
+    function clearHeadingBootstrap() {
+      window.clearTimeout(headingBootstrapTimeoutId);
+      headingBootstrapTimeoutId = 0;
+    }
+
+    function scheduleHeadingBootstrap() {
+      if (headingBootstrapAttempts >= HEADING_BOOTSTRAP_MAX_ATTEMPTS) {
+        return;
+      }
+
+      clearHeadingBootstrap();
+      headingBootstrapAttempts += 1;
+      headingBootstrapTimeoutId = window.setTimeout(() => {
+        headingBootstrapTimeoutId = 0;
+        updateSnapshot();
+      }, HEADING_BOOTSTRAP_DELAY_MS);
+    }
 
     async function updateSnapshot() {
       try {
@@ -142,6 +164,17 @@ export function useIssTelemetry() {
           previousSnapshotRef.current = resolvedSnapshot;
         }
 
+        if (Number.isFinite(heading)) {
+          headingBootstrapAttempts = 0;
+          clearHeadingBootstrap();
+        } else if (
+          incomingHasFullTelemetry &&
+          previousSnapshotRef.current &&
+          active
+        ) {
+          scheduleHeadingBootstrap();
+        }
+
         latestSnapshotRef.current = enrichedSnapshot;
         setSnapshot(enrichedSnapshot);
         setLastUpdated(
@@ -188,6 +221,7 @@ export function useIssTelemetry() {
     return () => {
       active = false;
       window.clearTimeout(timeoutId);
+      clearHeadingBootstrap();
     };
   }, []);
 
