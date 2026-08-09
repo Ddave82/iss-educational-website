@@ -891,8 +891,8 @@ p {
 }
 
 .tracker-page-layout {
-  grid-template-columns: 1fr;
-  width: min(1760px, calc(100% - 32px));
+  grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+  width: calc(100% - 32px);
   margin-right: auto;
   margin-left: auto;
 }
@@ -902,10 +902,12 @@ p {
 }
 
 .tracker-page-layout .tracker-scene {
+  grid-column: 2;
   width: 100%;
 }
 
 .tracker-page-layout .sidebar-stack {
+  grid-column: 1;
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
@@ -1587,7 +1589,6 @@ p {
 
 @media (max-width: 1100px) {
   .hero-grid,
-  .tracker-grid,
   .explorer-grid,
   .timeline-grid,
   .extras-grid,
@@ -1620,6 +1621,10 @@ p {
   .scene-stage {
     height: 640px;
     min-height: 0;
+  }
+
+  .tracker-page-layout {
+    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
   }
 
   .tracker-page-layout .data-grid {
@@ -1665,6 +1670,7 @@ p {
     padding-top: 82px;
   }
 
+  .tracker-grid,
   .hero-grid,
   .fact-strip,
   .learning-grid,
