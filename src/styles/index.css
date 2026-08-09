@@ -897,6 +897,7 @@ p {
   margin-right: auto;
   margin-left: auto;
   align-items: stretch;
+  overflow: hidden;
 }
 
 .tracker-scene {
@@ -906,6 +907,7 @@ p {
 .tracker-page-layout .tracker-scene {
   grid-column: 2;
   grid-row: 1;
+  min-height: 0;
   height: 100%;
   width: 100%;
 }
@@ -932,7 +934,7 @@ p {
 }
 
 .tracker-page-layout .sidebar-stack > .panel {
-  min-height: 100%;
+  min-height: 0;
   height: 100%;
   overflow: auto;
 }
@@ -1100,6 +1102,7 @@ p {
   flex-direction: column;
   width: 100%;
   min-height: 0;
+  height: 100%;
   padding: 0;
 }
 
