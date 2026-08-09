@@ -891,9 +891,9 @@ p {
 }
 
 .tracker-page-layout {
-  grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+  grid-template-columns: minmax(420px, 500px) minmax(0, 1fr);
   width: calc(100% - 32px);
-  min-height: calc(100svh - 148px);
+  height: calc(100svh - 132px);
   margin-right: auto;
   margin-left: auto;
   align-items: stretch;
@@ -914,6 +914,7 @@ p {
   grid-column: 1;
   grid-row: 1;
   min-height: 0;
+  height: 100%;
 }
 
 .tracker-live-stack {
@@ -937,7 +938,7 @@ p {
 }
 
 .tracker-page-layout .data-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .sidebar-stack {
@@ -1634,8 +1635,8 @@ p {
   }
 
   .tracker-page-layout {
-    grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
-    min-height: calc(100svh - 132px);
+    grid-template-columns: minmax(360px, 420px) minmax(0, 1fr);
+    height: calc(100svh - 124px);
   }
 
   .tracker-page-layout .data-grid {
@@ -1705,6 +1706,7 @@ p {
   }
 
   .tracker-page-layout {
+    height: auto;
     min-height: 0;
     align-items: start;
   }
@@ -1717,6 +1719,10 @@ p {
   .tracker-page-layout .sidebar-stack > .panel {
     height: auto;
     overflow: visible;
+  }
+
+  .tracker-page-section {
+    padding-top: 88px;
   }
 
   .section-heading-wide h2,
@@ -2215,7 +2221,7 @@ summary:focus-visible {
 
 .tracker-page-section {
   width: 100%;
-  padding-top: 88px;
+  padding-top: 106px;
 }
 
 .tracker-page-section .note-grid {
