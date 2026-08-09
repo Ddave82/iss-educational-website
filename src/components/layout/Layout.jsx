@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 
 export function Layout({ currentPath, children }) {
   return (
-    <div className="site-shell">
+    <div className={`site-shell${currentPath === "/tracker" ? " site-shell-tracker" : ""}`}>
       <Navbar currentPath={currentPath} />
       <main>{children}</main>
       <Footer compact={currentPath !== "/"} />

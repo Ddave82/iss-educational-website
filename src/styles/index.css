@@ -162,6 +162,28 @@ p {
   transform: translateX(-50%);
 }
 
+.site-shell-tracker .site-nav {
+  gap: 18px;
+  padding: 4px 12px;
+}
+
+.site-shell-tracker .brand-logo {
+  height: 54px;
+}
+
+.site-shell-tracker .nav-links a {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+.site-shell-tracker .language-switcher {
+  min-height: 36px;
+}
+
+.site-shell-tracker .language-switcher a {
+  min-height: 30px;
+}
+
 .brand-mark,
 .nav-links,
 .hero-actions,
@@ -2224,11 +2246,12 @@ summary:focus-visible {
 
 .tracker-page-section {
   width: 100%;
-  padding-top: 106px;
+  padding-top: 132px;
 }
 
 .tracker-page-section .note-grid {
   width: min(1180px, 100%);
+  margin-top: 32px;
   margin-right: auto;
   margin-left: auto;
 }
