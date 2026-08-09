@@ -2251,7 +2251,7 @@ summary:focus-visible {
 
 .tracker-page-section .note-grid {
   width: min(1180px, 100%);
-  margin-top: 32px;
+  margin-top: 72px;
   margin-right: auto;
   margin-left: auto;
 }
