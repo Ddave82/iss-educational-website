@@ -1,7 +1,7 @@
 import { useI18n } from "../../lib/i18n.jsx";
 
 const ISS_STREAM_URL =
-  "https://www.youtube.com/embed/uwXgcTc8oY8?autoplay=1&mute=1&rel=0&modestbranding=1";
+  "https://www.youtube.com/embed/M3HKLzjvKPc?autoplay=1&mute=1&rel=0&modestbranding=1";
 
 export function LivestreamSection({
   title,

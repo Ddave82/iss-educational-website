@@ -412,7 +412,7 @@ const en = {
       { label: "Explore NASA imagery", href: "/gallery" },
       {
         label: "Open stream on YouTube",
-        href: "https://www.youtube.com/watch?v=zPH5KtjJFaQ",
+        href: "https://www.youtube.com/watch?v=M3HKLzjvKPc",
         external: true
       }
     ]
@@ -825,7 +825,7 @@ const de = {
       { label: "NASA-Bilder erkunden", href: "/gallery" },
       {
         label: "Stream auf YouTube öffnen",
-        href: "https://www.youtube.com/watch?v=zPH5KtjJFaQ",
+        href: "https://www.youtube.com/watch?v=M3HKLzjvKPc",
         external: true
       }
     ]
@@ -1228,7 +1228,7 @@ const da = {
       { label: "Udforsk NASA-billeder", href: "/gallery" },
       {
         label: "Åbn stream på YouTube",
-        href: "https://www.youtube.com/watch?v=zPH5KtjJFaQ",
+        href: "https://www.youtube.com/watch?v=M3HKLzjvKPc",
         external: true
       }
     ]
