@@ -38,7 +38,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .stat-card strong { font-family: "Avenir Next", "Segoe UI", sans-serif; color: var(--text); font-size: clamp(1.2rem,2vw,1.7rem); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .stat-card-label-row { font-size: .75rem; }
 .stat-card p { font-size: .72rem; }
-.mission-brief { width: min(1180px, calc(100% - 40px)); margin: 0 auto 80px; }
+.mission-brief { width: min(var(--content-width), calc(100% - 40px)); margin: 0 auto 80px; }
 .mission-brief-heading { display: flex; justify-content: space-between; gap: 30px; align-items: center; margin-bottom: 25px; }
 .mission-brief h2 { font-size: clamp(1.8rem,3vw,2.6rem); margin: 12px 0; }
 .mission-brief p { color: var(--muted); line-height: 1.7; font-size: .9rem; }
@@ -175,7 +175,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .tracker-page-layout .data-field-hint { font-size: .65rem; line-height: 1.5; }
 .tracker-page-layout .panel-header h2 { font-size: 1.25rem; }
 .tracker-page-layout .telemetry-subheading { margin-bottom: 18px; font-size: .7rem; }
-.tracker-page-section .note-grid { width: min(1180px,calc(100% - 40px)); margin-top: 38px; }
+.tracker-page-section .note-grid { width: min(var(--content-width),calc(100% - 40px)); margin-top: 38px; }
 .orbit-controls-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); background: #0e1721; }
 .orbit-controls-bar button { font-family: inherit; font-size: .72rem; color: var(--text); border: 1px solid #40505e; background: #192330; padding: 9px 13px; border-radius: 6px; cursor: pointer; }
 .orbit-controls-bar button[aria-pressed="true"] { color: var(--accent); border-color: #687a47; }

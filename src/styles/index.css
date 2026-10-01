@@ -1,5 +1,6 @@
 :root {
   color-scheme: dark;
+  --content-width: 1320px;
   --bg: #05060a;
   --bg-soft: #0b1016;
   --surface: rgba(13, 18, 25, 0.82);
@@ -150,7 +151,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0;
   padding: 10px 14px;
   border: 1px solid var(--border);
@@ -288,7 +289,7 @@ p {
   grid-template-columns: minmax(380px, 0.92fr) minmax(460px, 1.08fr);
   align-items: center;
   gap: 64px;
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
   padding-top: 42px;
 }
@@ -430,7 +431,7 @@ p {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr;
   gap: 1px;
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 38px auto 0;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -474,7 +475,7 @@ p {
 .media-section,
 .livestream-section,
 .source-section {
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
 }
 
@@ -1524,7 +1525,7 @@ p {
 
 .footer-hero,
 .footer-lower {
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
 }
 
@@ -1990,7 +1991,7 @@ summary:focus-visible {
 }
 
 .page-hero {
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
   padding: 146px 0 48px;
 }
@@ -2018,7 +2019,7 @@ summary:focus-visible {
 
 .content-section,
 .final-cta {
-  width: min(1180px, calc(100% - 40px));
+  width: min(var(--content-width), calc(100% - 40px));
   margin: 0 auto;
   padding: 72px 0;
 }
@@ -2250,7 +2251,7 @@ summary:focus-visible {
 }
 
 .tracker-page-section .note-grid {
-  width: min(1180px, 100%);
+  width: min(var(--content-width), 100%);
   margin-top: 72px;
   margin-right: auto;
   margin-left: auto;
