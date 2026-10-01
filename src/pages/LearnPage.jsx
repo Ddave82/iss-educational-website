@@ -1307,9 +1307,16 @@ export function LearnPage() {
   const questions = learnText.questions;
   const ui = learnText.ui;
   const [activeModuleId, setActiveModuleId] = useState(learningQuestions[0].id);
-  const [learnedModuleIds, setLearnedModuleIds] = useState(readStoredLearnProgress);
+  const [learnedModuleIds, setLearnedModuleIds] = useState(() => new Set());
+  const [progressLoaded, setProgressLoaded] = useState(false);
 
   useEffect(() => {
+    setLearnedModuleIds(readStoredLearnProgress());
+    setProgressLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!progressLoaded) return;
     try {
       window.localStorage.setItem(
         LEARN_PROGRESS_STORAGE_KEY,
@@ -1318,7 +1325,7 @@ export function LearnPage() {
     } catch {
       // Progress still works for the current session if browser storage is blocked.
     }
-  }, [learnedModuleIds]);
+  }, [learnedModuleIds, progressLoaded]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

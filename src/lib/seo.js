@@ -23,15 +23,7 @@ export const routeMetadata = Object.fromEntries(
   ])
 );
 
-export const sitemapRoutes = [
-  { path: "/", priority: "1.0", changefreq: "weekly" },
-  { path: "/station", priority: "0.9", changefreq: "daily" },
-  { path: "/tracker", priority: "0.9", changefreq: "daily" },
-  { path: "/learn", priority: "0.9", changefreq: "monthly" },
-  { path: "/see-the-iss", priority: "0.8", changefreq: "weekly" },
-  { path: "/gallery", priority: "0.7", changefreq: "weekly" },
-  { path: "/about-data", priority: "0.5", changefreq: "monthly" }
-];
+export const sitemapRoutes = routePaths.map(path => ({ path }));
 
 export function canonicalUrl(path = "/", language = DEFAULT_LANGUAGE) {
   const localizedPath = localizePath(path, language);
@@ -45,7 +37,14 @@ export function canonicalUrl(path = "/", language = DEFAULT_LANGUAGE) {
 
 export function getRouteMetadata(path, language = DEFAULT_LANGUAGE) {
   const activeTranslations = translations[language] || translations[DEFAULT_LANGUAGE];
-  const route = activeTranslations.seo.routes[path] || activeTranslations.seo.routes["/"];
+  const route = activeTranslations.seo.routes[path];
+  if (!route) return {
+    title: `${activeTranslations.notFound.title} – ${SITE_NAME}`,
+    description: activeTranslations.notFound.body,
+    path,
+    language,
+    noindex: true
+  };
 
   return {
     ...route,
@@ -102,6 +101,7 @@ function baseWebPageSchema(metadata, language = DEFAULT_LANGUAGE, type = "WebPag
 
 export function createRouteSchema(path, language = DEFAULT_LANGUAGE) {
   const metadata = getRouteMetadata(path, language);
+  if (metadata.noindex) return [];
   const languageInfo = languageMap[language] || languageMap[DEFAULT_LANGUAGE];
 
   if (path === "/learn") {

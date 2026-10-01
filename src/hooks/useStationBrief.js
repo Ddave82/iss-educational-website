@@ -18,11 +18,12 @@ function restore() {
 }
 
 export function useStationBrief() {
-  const [data, setData] = useState(restore);
+  const [data, setData] = useState(empty);
   const [loading, setLoading] = useState(true);
   const [revision, setRevision] = useState(0);
   const refresh = useCallback(() => { setLoading(true); setRevision(value => value + 1); }, []);
   useEffect(() => {
+    setData(previous => previous === empty ? restore() : previous);
     let active = true;
     let controller;
     let busy = false;

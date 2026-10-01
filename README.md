@@ -112,7 +112,7 @@ No paid API key is required for the current version.
 
 ### Visitor analytics
 
-Vercel Web Analytics is mounted once in `src/main.jsx` using its React integration.
+Vercel Web Analytics is mounted once in `src/Root.jsx` using its React integration.
 Enable Analytics in the Vercel project dashboard, then deploy this repository.
 Page views (including client-side navigation) and visitors appear in that project's
 Analytics view. Vite development uses Analytics' development mode, which logs
@@ -120,6 +120,13 @@ events locally without recording production visits. No analytics API key is need
 See the [Vercel setup guide](https://vercel.com/docs/analytics/quickstart).
 
 ## Project Structure
+
+The production build prerenders all 21 localized pages using the same React
+components as the browser. Each page contains its content, metadata, canonical
+URL, language alternatives and structured data before JavaScript runs. Live data
+and WebGL start in the browser after hydration. The build also generates
+`dist/sitemap.xml` and `dist/404.html`, and validates the output with 24 SEO checks.
+See [SEO_CHECKLIST.md](SEO_CHECKLIST.md) for Search Console setup and maintenance.
 
 ```text
 .

@@ -143,15 +143,15 @@ const en = {
     siteName: "ISS Explorer",
     ogImageAlt: "ISS Explorer live tracker and learning guide",
     defaultDescription:
-      "Track the International Space Station live, explore real ISS telemetry, learn how orbit and microgravity work, and discover when you can see the ISS from Earth.",
+      "Track the ISS live on a 3D globe, meet the station crew, explore recent research and calculate visible passes from your location.",
     routes: {
       "/": {
-        title: "ISS Explorer – Live ISS Tracker and Space Station Learning Guide",
+        title: "ISS Live Tracker, Crew & Research | ISS Explorer",
         description:
-          "Track the International Space Station live, explore real ISS telemetry, learn how orbit and microgravity work, and discover when you can see the ISS from Earth."
+          "Track the ISS live on a 3D globe, meet the station crew, explore recent research and calculate visible passes from your location."
       },
       "/tracker": {
-        title: "Live ISS Tracker – Where Is the International Space Station Now?",
+        title: "ISS Live Tracker: Where Is the Space Station Now?",
         description:
           "Follow the International Space Station in real time with live position, altitude, speed, visibility, ground track, and recent path information."
       },
@@ -161,7 +161,7 @@ const en = {
           "Simple student-friendly explanations about the International Space Station, orbit, speed, microgravity, astronaut life, science, docking, and spacewalks."
       },
       "/see-the-iss": {
-        title: "See the ISS from Earth – Visibility Guide and Pass Estimator",
+        title: "See the ISS Tonight: Pass Predictions & Viewing Guide",
         description:
           "Learn when and how to see the International Space Station from Earth, check visible pass estimates, and understand what makes a good ISS sighting."
       },
@@ -467,7 +467,7 @@ const en = {
       },
       {
         title: "Privacy",
-        body: "The app does not include analytics or user tracking code. Browser location is requested only when a user chooses the pass lookup location button."
+        body: "Vercel Web Analytics measures visits and page views. Browser location is requested only when you use the location button in the pass finder; those coordinates are used locally for pass calculations."
       }
     ]
   },
@@ -550,27 +550,27 @@ const de = {
     ...en.seo,
     ogImageAlt: "ISS Explorer Live-Tracker und Lernführer",
     defaultDescription:
-      "Verfolge die Internationale Raumstation live, erkunde echte ISS-Telemetrie, lerne, wie Orbit und Mikrogravitation funktionieren, und finde heraus, wann du die ISS von der Erde sehen kannst.",
+      "Verfolge die ISS live auf dem 3D-Globus, entdecke Besatzung und Forschung und berechne sichtbare Überflüge der Raumstation für deinen Standort.",
     routes: {
       "/": {
-        title: "ISS Explorer – Live-ISS-Tracker und Lernführer zur Raumstation",
+        title: "ISS live verfolgen: Tracker, Besatzung & Forschung",
         description:
-          "Verfolge die Internationale Raumstation live, erkunde echte ISS-Telemetrie, lerne, wie Orbit und Mikrogravitation funktionieren, und finde heraus, wann du die ISS von der Erde sehen kannst."
+          "Verfolge die ISS live auf dem 3D-Globus, entdecke Besatzung und Forschung und berechne sichtbare Überflüge der Raumstation für deinen Standort."
       },
       "/tracker": {
-        title: "Live-ISS-Tracker – Wo ist die Internationale Raumstation jetzt?",
+        title: "ISS live: Wo ist die Raumstation gerade? | ISS Explorer",
         description:
-          "Folge der Internationalen Raumstation in Echtzeit mit Position, Höhe, Geschwindigkeit, Sichtbarkeit, Bodenspur und aktuellem Flugpfad."
+          "Wo ist die ISS gerade? Verfolge ihre aktuelle Position, Höhe und Geschwindigkeit auf dem 3D-Globus mit Tag-Nacht-Grenze und berechneter Flugbahn."
       },
       "/learn": {
-        title: "Über die ISS lernen – Orbit, Mikrogravitation und Leben im All",
+        title: "ISS einfach erklärt: Umlaufbahn, Forschung & Leben im All",
         description:
-          "Einfache, schülerfreundliche Erklärungen zur Internationalen Raumstation, zu Orbit, Geschwindigkeit, Mikrogravitation, Astronautenleben, Wissenschaft, Andocken und Weltraumspaziergängen."
+          "Wie funktioniert die ISS? Entdecke Umlaufbahn, Schwerelosigkeit, Alltag und Forschung in verständlichen Lernmodulen mit Quiz und Unterrichtsideen."
       },
       "/see-the-iss": {
-        title: "Die ISS von der Erde sehen – Sichtbarkeitsführer und Überflugrechner",
+        title: "ISS heute sehen: Überflüge berechnen | ISS Explorer",
         description:
-          "Lerne, wann und wie du die Internationale Raumstation von der Erde sehen kannst, prüfe sichtbare Überflüge und verstehe, was eine gute ISS-Sichtung ausmacht."
+          "Wann ist die ISS sichtbar? Berechne kommende Überflüge für deinen Standort und erfahre, wann und wo du die Raumstation am Himmel entdecken kannst."
       },
       "/gallery": {
         title: "ISS-Galerie – NASA-Bilder, Erdansichten und Stationsvideos",
@@ -881,7 +881,7 @@ const de = {
       },
       {
         title: "Datenschutz",
-        body: "Die App enthält keine Analytics- oder Nutzertracking-Skripte. Der Browserstandort wird nur angefragt, wenn ein Nutzer die Standorttaste der Überflugsuche auswählt."
+        body: "Vercel Web Analytics erfasst Besuche und Seitenaufrufe. Dein Browserstandort wird nur auf Wunsch im Überflugrechner abgefragt; die Koordinaten werden lokal für die Berechnung verwendet."
       }
     ]
   },
@@ -953,15 +953,15 @@ const da = {
     ...en.seo,
     ogImageAlt: "ISS Explorer live-tracker og læringsguide",
     defaultDescription:
-      "Følg Den Internationale Rumstation live, udforsk ægte ISS-telemetri, lær hvordan kredsløb og mikrogravitation fungerer, og find ud af, hvornår du kan se ISS fra Jorden.",
+      "Følg ISS live på en 3D-globus, mød besætningen, læs om forskning, og beregn synlige passager for dit sted.",
     routes: {
       "/": {
-        title: "ISS Explorer – Live ISS-tracker og læringsguide til rumstationen",
+        title: "ISS live: Tracker, besætning og forskning | ISS Explorer",
         description:
-          "Følg Den Internationale Rumstation live, udforsk ægte ISS-telemetri, lær hvordan kredsløb og mikrogravitation fungerer, og find ud af, hvornår du kan se ISS fra Jorden."
+          "Følg ISS live på en 3D-globus, mød besætningen, læs om forskning, og beregn synlige passager for dit sted."
       },
       "/tracker": {
-        title: "Live ISS-tracker – Hvor er Den Internationale Rumstation nu?",
+        title: "ISS-tracker live: Hvor er rumstationen lige nu?",
         description:
           "Følg Den Internationale Rumstation i realtid med liveposition, højde, hastighed, synlighed, jordspor og den seneste bane."
       },
@@ -971,7 +971,7 @@ const da = {
           "Enkle elevvenlige forklaringer om Den Internationale Rumstation, kredsløb, hastighed, mikrogravitation, astronautliv, forskning, docking og rumvandringer."
       },
       "/see-the-iss": {
-        title: "Se ISS fra Jorden – Synlighedsguide og passageberegner",
+        title: "Se ISS i aften: Beregn passager og synlighed",
         description:
           "Lær hvornår og hvordan du kan se Den Internationale Rumstation fra Jorden, tjek synlige passager, og forstå hvad der giver en god ISS-observation."
       },
@@ -1284,7 +1284,7 @@ const da = {
       },
       {
         title: "Privatliv",
-        body: "Appen indeholder ikke analyse- eller brugertrackingkode. Browserplacering anmodes kun, når en bruger vælger placeringsknappen i passagesøgningen."
+        body: "Vercel Web Analytics måler besøg og sidevisninger. Browserplacering anmodes kun, når du bruger placeringsknappen i passageberegneren; koordinaterne bruges lokalt til beregningen."
       }
     ]
   },
@@ -1315,10 +1315,15 @@ const da = {
 };
 
 export const translations = { en, de, da };
+const stationMetadata = {
+  en: { title: "ISS Crew & Current Research | ISS Explorer", description: "Who is aboard the ISS? Meet the NASA-listed crew, discover recently reported experiments and read station updates with dates and source links." },
+  de: { title: "ISS-Besatzung und aktuelle Forschung | ISS Explorer", description: "Wer ist gerade auf der ISS? Entdecke die von NASA gemeldete Besatzung, aktuelle Forschungsberichte und Stationsnachrichten mit Datum und Quellen." },
+  da: { title: "ISS-besætning og aktuel forskning | ISS Explorer", description: "Hvem er om bord på ISS? Mød den NASA-listede besætning, læs om nyligt omtalte forsøg, og følg stationsnyheder med datoer og kilder." }
+};
 for (const [language, translation] of Object.entries(translations)) {
   const copy = missionCopy[language];
   translation.nav.splice(2, 0, { href: "/station", label: copy.nav });
-  translation.seo.routes["/station"] = { title: `${copy.title} – ISS Explorer`, description: copy.intro };
+  translation.seo.routes["/station"] = stationMetadata[language];
   translation.sidebar.labels.visibility = copy.measured;
 }
 

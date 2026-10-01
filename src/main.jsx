@@ -1,13 +1,13 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import { Analytics } from "@vercel/analytics/react";
-import App from "./App";
+import { Root } from "./Root";
 import "./styles/index.css";
 import "./styles/mission-control.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-    <Analytics mode={import.meta.env.DEV ? "development" : "production"} />
-  </React.StrictMode>
-);
+const root = document.getElementById("root");
+const app = <Root initialPath={root.dataset.prerenderedPath} />;
+
+if (root.hasChildNodes()) {
+  ReactDOM.hydrateRoot(root, app);
+} else {
+  ReactDOM.createRoot(root).render(app);
+}

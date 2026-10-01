@@ -14,6 +14,7 @@ import {
   languageMap,
   localizePath,
   parseLocalizedPath,
+  routePaths,
   translations,
   useI18n
 } from "./lib/i18n.jsx";
@@ -107,11 +108,12 @@ function scrollToHash(hash = window.location.hash) {
   return true;
 }
 
-function usePathRouting() {
+function usePathRouting(initialPath) {
   const [currentRoute, setCurrentRoute] = useState(() => {
-    const initialRoute = parseLocalizedPath(window.location.pathname);
+    const pathname = initialPath ?? window.location.pathname;
+    const initialRoute = parseLocalizedPath(pathname);
 
-    if (initialRoute.path === "/learn" && window.location.pathname.includes("teachers")) {
+    if (typeof window !== "undefined" && initialRoute.path === "/learn" && pathname.includes("teachers")) {
       window.history.replaceState(
         {},
         "",
@@ -136,7 +138,7 @@ function usePathRouting() {
         return;
       }
 
-      setCurrentRoute(nextRoute);
+      setCurrentRoute(previous => previous.path === nextRoute.path && previous.language === nextRoute.language ? previous : nextRoute);
     }
 
     function handleClick(event) {
@@ -158,6 +160,8 @@ function usePathRouting() {
       }
 
       const nextRoute = parseLocalizedPath(url.pathname);
+      // Let the server handle unknown paths and files, including their HTTP status.
+      if (!routePaths.includes(nextRoute.path)) return;
       const currentRouteBeforeNavigation = parseLocalizedPath(window.location.pathname);
       const resolvedPath = nextRoute.path === "/teachers" ? "/learn" : nextRoute.path;
       const resolvedHash = url.pathname.includes("teachers") ? "" : url.hash;
@@ -188,6 +192,7 @@ function usePathRouting() {
       }
     }
 
+    handlePopState();
     window.addEventListener("popstate", handlePopState);
     document.addEventListener("click", handleClick);
 
@@ -230,9 +235,15 @@ function NotFoundPage() {
   );
 }
 
-function App() {
+function ClientScene({ telemetry }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  return mounted ? <EarthScene telemetry={telemetry} /> : <SceneLoadingState />;
+}
+
+function App({ initialPath }) {
   const telemetry = useIssTelemetry();
-  const currentRoute = usePathRouting();
+  const currentRoute = usePathRouting(initialPath);
   const currentPath = currentRoute.path;
   const language = currentRoute.language;
   const metadata = useMemo(
@@ -242,7 +253,7 @@ function App() {
   const trackerScene = useMemo(
     () => (
       <Suspense fallback={<SceneLoadingState />}>
-        <EarthScene telemetry={telemetry} />
+        <ClientScene telemetry={telemetry} />
       </Suspense>
     ),
     [telemetry]
@@ -255,9 +266,13 @@ function App() {
 
     document.documentElement.lang = languageInfo.htmlLang;
     document.title = metadata.title;
-    setLink("canonical", pageUrl);
-    setAlternateLinks(metadata.path);
-    setMeta("robots", "index,follow");
+    if (metadata.noindex) {
+      document.head.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang]').forEach(element => element.remove());
+    } else {
+      setLink("canonical", pageUrl);
+      setAlternateLinks(metadata.path);
+    }
+    setMeta("robots", metadata.noindex ? "noindex,follow" : "index,follow,max-image-preview:large");
     setMeta("description", metadata.description);
     setMeta("og:site_name", SITE_NAME, "property");
     setMeta("og:title", metadata.title, "property");
