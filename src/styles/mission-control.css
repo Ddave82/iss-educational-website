@@ -28,7 +28,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .hero-badge-row { gap: 10px; }
 .live-line { font-size: .74rem; }
 .home-hero .hero-visual { position: relative; margin: 0; border: 1px solid #394651; border-radius: 22px; overflow: hidden; background: #07101d; box-shadow: 0 30px 100px #0005; }
-.home-hero .hero-visual-compact img { width: 100%; aspect-ratio: 1.12; object-fit: cover; min-height: 0; filter: saturate(.7); }
+.home-hero .hero-visual-compact img { width: 100%; aspect-ratio: 1.25; object-fit: cover; min-height: 0; filter: saturate(.7); }
 .mission-image-label { position: absolute; z-index: 1; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; padding: 23px; color: #fff; font: 10px ui-monospace, monospace; letter-spacing: .12em; background: linear-gradient(#0008,transparent); }
 .home-hero .hero-visual figcaption { position: relative; padding: 17px 22px; background: #101820; border-top: 1px solid #394651; font-size: .74rem; }
 .fact-strip { gap: 0; padding-top: 0; padding-bottom: 64px; }
