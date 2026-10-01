@@ -4,6 +4,7 @@ const LOCAL_FALLBACK_SOURCE = "/api/iss/fallback";
 const REQUEST_TIMEOUT_MS = 15000;
 
 function toFiniteNumber(value) {
+  if (value == null || value === "" || typeof value === "boolean") return null;
   const numberValue = Number(value);
   return Number.isFinite(numberValue) ? numberValue : null;
 }

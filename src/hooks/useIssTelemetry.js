@@ -82,6 +82,7 @@ export function useIssTelemetry() {
 
   useEffect(() => {
     let active = true;
+    let inFlight = false;
     let timeoutId = 0;
     let headingBootstrapTimeoutId = 0;
     let headingBootstrapAttempts = 0;
@@ -105,6 +106,8 @@ export function useIssTelemetry() {
     }
 
     async function updateSnapshot() {
+      if (inFlight || document.hidden || !active) return;
+      inFlight = true;
       try {
         const nextSnapshot = await fetchIssSnapshot();
 
@@ -205,21 +208,33 @@ export function useIssTelemetry() {
 
         setError(requestError.message);
         setStatus(latestSnapshotRef.current ? "stale" : "offline");
+      } finally {
+        inFlight = false;
       }
     }
 
     async function runPollingCycle() {
       await updateSnapshot();
 
-      if (active) {
+      if (active && !document.hidden) {
         timeoutId = window.setTimeout(runPollingCycle, POLL_INTERVAL_MS);
       }
     }
 
+    function handleVisibility() {
+      window.clearTimeout(timeoutId);
+      clearHeadingBootstrap();
+      if (!document.hidden && !inFlight) {
+        if (latestSnapshotRef.current) setStatus("stale");
+        runPollingCycle();
+      }
+    }
+    document.addEventListener("visibilitychange", handleVisibility);
     runPollingCycle();
 
     return () => {
       active = false;
+      document.removeEventListener("visibilitychange", handleVisibility);
       window.clearTimeout(timeoutId);
       clearHeadingBootstrap();
     };

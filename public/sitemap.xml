@@ -180,4 +180,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url><loc>https://iss-education.online/station</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://iss-education.online/de/station</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://iss-education.online/da/station</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 </urlset>

@@ -25,6 +25,7 @@ export const routeMetadata = Object.fromEntries(
 
 export const sitemapRoutes = [
   { path: "/", priority: "1.0", changefreq: "weekly" },
+  { path: "/station", priority: "0.9", changefreq: "daily" },
   { path: "/tracker", priority: "0.9", changefreq: "daily" },
   { path: "/learn", priority: "0.9", changefreq: "monthly" },
   { path: "/see-the-iss", priority: "0.8", changefreq: "weekly" },

@@ -3,24 +3,21 @@ import { Html, Line, OrbitControls, PerspectiveCamera } from "@react-three/drei"
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import {
-  createOrbitPreviewPoints,
-  createEarthTexture,
-  createCloudTexture,
   getOrbitRadius,
   latLonToVector3,
   toTrailSegments
 } from "../../lib/earthMath";
+import { EarthSurface } from "./EarthSurface.jsx";
+import { useOrbitPrediction } from "../../hooks/useOrbitPrediction.js";
+import { missionCopy } from "../../lib/missionCopy.js";
 import { useI18n } from "../../lib/i18n.jsx";
 
 const EARTH_RADIUS = 1.9;
 const CAMERA_DISTANCE = 7.7;
 const VIEW_TARGET_Y = 0.08;
-const MOBILE_CAMERA_DISTANCE = 5.9;
+const MOBILE_CAMERA_DISTANCE = 8.8;
 const MOBILE_EARTH_POSITION_Y = -0.16;
-const SURFACE_NORMAL = new THREE.Vector3(0, 0, 1);
 const MOBILE_SCENE_BREAKPOINT = "(max-width: 900px)";
-const DESKTOP_TEXTURE_WIDTH = 2304;
-const MOBILE_TEXTURE_WIDTH = 1536;
 
 function useIsMobileScene() {
   const [isMobile, setIsMobile] = useState(() => {
@@ -133,236 +130,52 @@ async function exitCurrentFullscreen() {
   return null;
 }
 
-function EarthBody({ snapshot, history, isMobile, positionY }) {
-  const trackingRef = useRef(null);
-  const targetRotationRef = useRef({ x: 0, y: 0 });
-  const rotationActiveRef = useRef(false);
+function IssMarker({ snapshot, earthRef }) {
+  const marker = useRef();
   const { invalidate } = useThree();
-  const textureWidth = isMobile ? MOBILE_TEXTURE_WIDTH : DESKTOP_TEXTURE_WIDTH;
-  const earthTexture = useMemo(
-    () => createEarthTexture(textureWidth),
-    [textureWidth]
-  );
-  const cloudTexture = useMemo(
-    () => createCloudTexture(textureWidth),
-    [textureWidth]
-  );
-  const groupPosition = useMemo(() => [0, positionY, 0], [positionY]);
-
-  const hasPosition =
-    Number.isFinite(snapshot?.latitude) && Number.isFinite(snapshot?.longitude);
-  const trailSegments = useMemo(
-    () => toTrailSegments(history, EARTH_RADIUS),
-    [history]
-  );
-  const orbitPreviewPoints = useMemo(
-    () =>
-      createOrbitPreviewPoints(
-        snapshot,
-        EARTH_RADIUS,
-        isMobile ? 168 : 220
-      ),
-    [snapshot, isMobile]
-  );
-  const positionMarkers = useMemo(() => {
-    if (!hasPosition) {
-      return null;
-    }
-
-    const surfacePoint = latLonToVector3(
-      snapshot.latitude,
-      snapshot.longitude,
-      EARTH_RADIUS
-    );
-    const orbitPoint = latLonToVector3(
-      snapshot.latitude,
-      snapshot.longitude,
-      getOrbitRadius(snapshot.altitude, EARTH_RADIUS)
-    );
-    const markerPoint = surfacePoint.clone().setLength(EARTH_RADIUS + 0.02);
-    const markerRotation = new THREE.Quaternion().setFromUnitVectors(
-      SURFACE_NORMAL,
-      markerPoint.clone().normalize()
-    );
-    const markerPointArray = markerPoint.toArray();
-    const orbitPointArray = orbitPoint.toArray();
-
-    return {
-      markerPoint: markerPointArray,
-      orbitPoint: orbitPointArray,
-      markerRotation,
-      tetherPoints: [markerPointArray, orbitPointArray]
-    };
-  }, [hasPosition, snapshot]);
-  const earthSegments = isMobile ? 52 : 72;
-  const cloudSegments = isMobile ? 36 : 48;
-
-  useEffect(() => {
-    if (!snapshot) {
-      return;
-    }
-
-    targetRotationRef.current = {
-      x: THREE.MathUtils.degToRad(snapshot.latitude),
-      y: THREE.MathUtils.degToRad(-snapshot.longitude)
-    };
-    rotationActiveRef.current = true;
-    invalidate();
-  }, [snapshot, invalidate]);
-
-  useFrame(() => {
-    if (!trackingRef.current || !rotationActiveRef.current) {
-      return;
-    }
-
-    const nextRotation = targetRotationRef.current;
-    const currentGroup = trackingRef.current;
-
-    currentGroup.rotation.x = THREE.MathUtils.lerp(
-      currentGroup.rotation.x,
-      nextRotation.x,
-      0.11
-    );
-    currentGroup.rotation.y = THREE.MathUtils.lerp(
-      currentGroup.rotation.y,
-      nextRotation.y,
-      0.11
-    );
-    currentGroup.rotation.z = 0;
-
-    const rotationSettled =
-      Math.abs(currentGroup.rotation.x - nextRotation.x) < 0.0006 &&
-      Math.abs(currentGroup.rotation.y - nextRotation.y) < 0.0006;
-
-    if (rotationSettled) {
-      currentGroup.rotation.x = nextRotation.x;
-      currentGroup.rotation.y = nextRotation.y;
-      currentGroup.rotation.z = 0;
-      rotationActiveRef.current = false;
-      return;
-    }
-
-    invalidate();
+  const target = useMemo(() => latLonToVector3(snapshot.latitude, snapshot.longitude, getOrbitRadius(snapshot.altitude, EARTH_RADIUS)), [snapshot]);
+  const initial = useRef(target.clone());
+  useFrame((_, delta) => {
+    if (!marker.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    marker.current.position.lerp(target, reduced ? 1 : 1 - Math.exp(-delta * 7));
+    if (marker.current.position.distanceTo(target) > 0.0001) invalidate();
   });
+  return <group ref={marker} position={initial.current}>
+    <mesh><sphereGeometry args={[0.04, 16, 16]} /><meshBasicMaterial color="#d5f878" /></mesh>
+    <Html occlude={[earthRef]} center>
+      <div className="iss-overlay"><span className="iss-core-dot" /><div className="iss-tag">ISS</div></div>
+    </Html>
+  </group>;
+}
 
+function EarthBody({ snapshot, history, isMobile, positionY, following, orbit, time }) {
+  const trackingRef = useRef(null);
+  const earthRef = useRef(null);
+  const target = useRef(new THREE.Quaternion());
+  const { invalidate } = useThree();
+  useEffect(() => { invalidate(); }, [time, invalidate]);
+  const hasPosition = Number.isFinite(snapshot?.latitude) && Number.isFinite(snapshot?.longitude);
+  const trailSegments = useMemo(() => toTrailSegments(history, EARTH_RADIUS), [history]);
+  const preview = useMemo(() => orbit.points.map(point => latLonToVector3(point.latitude, point.longitude, getOrbitRadius(point.altitude, EARTH_RADIUS)).toArray()), [orbit.points]);
   useEffect(() => {
-    return () => {
-      earthTexture.dispose();
-      cloudTexture.dispose();
-    };
-  }, [earthTexture, cloudTexture]);
-
-  return (
-    <group position={groupPosition}>
-      <group ref={trackingRef}>
-        <group rotation={[0, -Math.PI / 2, 0]}>
-          <mesh>
-            <sphereGeometry args={[EARTH_RADIUS, earthSegments, earthSegments]} />
-            <meshStandardMaterial
-              map={earthTexture}
-              metalness={0.04}
-              roughness={0.9}
-              emissive="#081628"
-              emissiveIntensity={0.1}
-            />
-          </mesh>
-
-          <mesh>
-            <sphereGeometry args={[EARTH_RADIUS + 0.022, cloudSegments, cloudSegments]} />
-            <meshStandardMaterial
-              map={cloudTexture}
-              transparent
-              opacity={0.12}
-              depthWrite={false}
-              emissive="#78d7ff"
-              emissiveIntensity={0.02}
-            />
-          </mesh>
-
-          <mesh scale={1.045}>
-            <sphereGeometry args={[EARTH_RADIUS, 48, 48]} />
-            <meshBasicMaterial
-              color="#2ca8ff"
-              transparent
-              opacity={0.14}
-              blending={THREE.AdditiveBlending}
-              side={THREE.BackSide}
-            />
-          </mesh>
-        </group>
-
-        {trailSegments.map((trailPoints, index) => (
-          <Line
-            key={`trail-segment-${index}-${trailPoints.length}`}
-            points={trailPoints}
-            color="#ff5c6e"
-            transparent
-            opacity={0.42}
-            lineWidth={2}
-          />
-        ))}
-
-        {orbitPreviewPoints.length > 1 ? (
-          <Line
-            points={orbitPreviewPoints}
-            color="#9fe8ff"
-            transparent
-            opacity={0.24}
-            lineWidth={1.5}
-            dashed
-            dashScale={36}
-            dashSize={0.8}
-            gapSize={0.55}
-          />
-        ) : null}
-
-        {positionMarkers ? (
-          <>
-            <Line
-              points={positionMarkers.tetherPoints}
-              color="#76ecff"
-              transparent
-              opacity={0.16}
-              lineWidth={0.8}
-            />
-
-            <group
-              position={positionMarkers.markerPoint}
-              quaternion={positionMarkers.markerRotation}
-            >
-              <mesh>
-                <ringGeometry args={[0.016, 0.034, 32]} />
-                <meshBasicMaterial color="#d6fbff" transparent opacity={0.72} />
-              </mesh>
-              <mesh>
-                <ringGeometry args={[0.04, 0.055, 32]} />
-                <meshBasicMaterial color="#47dbff" transparent opacity={0.12} />
-              </mesh>
-            </group>
-
-            <group position={positionMarkers.orbitPoint}>
-              <mesh>
-                <sphereGeometry args={[0.06, 18, 18]} />
-                <meshBasicMaterial color="#cfffff" />
-              </mesh>
-              <Html
-                position={[0, 0, 0]}
-                transform={false}
-                wrapperClass="iss-tag-anchor"
-              >
-                <div className="iss-overlay">
-                  <span className="iss-pulse-ring" />
-                  <span className="iss-pulse-halo" />
-                  <span className="iss-core-dot" />
-                  <div className="iss-tag">ISS</div>
-                </div>
-              </Html>
-            </group>
-          </>
-        ) : null}
-      </group>
-    </group>
-  );
+    if (following && hasPosition) {
+      target.current.setFromEuler(new THREE.Euler(THREE.MathUtils.degToRad(snapshot.latitude), THREE.MathUtils.degToRad(-snapshot.longitude), 0));
+      invalidate();
+    }
+  }, [following, snapshot, hasPosition, invalidate]);
+  useFrame((_, delta) => {
+    if (!following || !trackingRef.current) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    trackingRef.current.quaternion.slerp(target.current, reduced ? 1 : 1 - Math.exp(-delta * 6));
+    if (trackingRef.current.quaternion.angleTo(target.current) > 0.0001) invalidate();
+  });
+  return <group position={[0, positionY, 0]}><group ref={trackingRef}>
+    <EarthSurface earthRef={earthRef} radius={EARTH_RADIUS} isMobile={isMobile} time={time} />
+    {trailSegments.map((points, index) => <Line key={index} points={points} color="#f3a7a0" transparent opacity={0.65} lineWidth={2} />)}
+    {preview.length > 1 && <Line points={preview} color="#d5f878" transparent opacity={0.65} lineWidth={1.4} dashed dashScale={20} dashSize={0.8} gapSize={0.5} />}
+    {hasPosition && <IssMarker snapshot={snapshot} earthRef={earthRef} />}
+  </group></group>;
 }
 
 function SceneControls({ isMobile, viewTargetY }) {
@@ -394,25 +207,6 @@ function SceneControls({ isMobile, viewTargetY }) {
       }
       onChange={() => invalidate()}
     />
-  );
-}
-
-function SceneLighting() {
-  return (
-    <>
-      <ambientLight intensity={0.54} color="#bfd5ff" />
-      <directionalLight
-        position={[8.8, 6.4, 7.6]}
-        intensity={2.8}
-        color="#f2fbff"
-      />
-      <directionalLight
-        position={[-7.5, -3.2, -5.4]}
-        intensity={0.42}
-        color="#1d4fa2"
-      />
-      <pointLight position={[0, 0, 8.5]} intensity={0.22} color="#28c6ff" />
-    </>
   );
 }
 
@@ -478,7 +272,17 @@ function SceneHudCard({ groundTrack, statusText, interactionHint, inline = false
 
 export function EarthScene({ telemetry }) {
   const { snapshot, history, status } = telemetry;
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const copy = missionCopy[language];
+  const orbit = useOrbitPrediction();
+  const [following, setFollowing] = useState(true);
+  const [time, setTime] = useState(Date.now());
+  useEffect(() => {
+    const tick = () => { if (!document.hidden) setTime(Date.now()); };
+    const timer = setInterval(tick, 30000);
+    document.addEventListener("visibilitychange", tick);
+    return () => { clearInterval(timer); document.removeEventListener("visibilitychange", tick); };
+  }, []);
   const isMobile = useIsMobileScene();
   const stageRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -545,6 +349,11 @@ export function EarthScene({ telemetry }) {
         </div>
       ) : null}
 
+      <div className="orbit-controls-bar">
+        <button type="button" aria-pressed={following} onClick={() => setFollowing(value => !value)}>{following ? copy.following : copy.freeView}</button>
+        <span><i className="orbit-key" />{orbit.status === "ready" ? copy.orbitPreview : copy.orbitUnavailable}</span>
+        <span className="solar-clock">☀ {new Date(time).toISOString().slice(11, 16)} UTC</span>
+      </div>
       <div
         ref={stageRef}
         className={`scene-stage${isFullscreen ? " scene-stage-fullscreen" : ""}`}
@@ -577,12 +386,14 @@ export function EarthScene({ telemetry }) {
             fov={36}
           />
           <fog attach="fog" args={["#02030b", 10, 22]} />
-          <SceneLighting />
           <EarthBody
             snapshot={snapshot}
             history={history}
             isMobile={isMobile}
             positionY={earthPositionY}
+            following={following}
+            orbit={orbit}
+            time={time}
           />
           <SceneControls isMobile={isMobile} viewTargetY={viewTargetY} />
         </Canvas>
@@ -599,6 +410,7 @@ export function EarthScene({ telemetry }) {
         <div className="scene-overlay scene-overlay-bottom" />
       </div>
 
+      <p className="orbit-source-note">{copy.solarNote}{orbit.epoch ? ` · ${copy.orbitEpoch}: ${new Date(orbit.epoch).toLocaleString(language, { dateStyle: "short", timeStyle: "short" })}` : ""}</p>
       {isMobile ? (
         <SceneHudCard
           groundTrack={snapshot?.groundTrack}

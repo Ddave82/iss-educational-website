@@ -122,6 +122,7 @@ export function PassPredictionPanel({ compact = false }) {
             <span>{t.pass.latitude}</span>
             <input
               type="number"
+              required
               value={latitudeInput}
               min="-90"
               max="90"
@@ -135,6 +136,7 @@ export function PassPredictionPanel({ compact = false }) {
             <span>{t.pass.longitude}</span>
             <input
               type="number"
+              required
               value={longitudeInput}
               min="-180"
               max="180"

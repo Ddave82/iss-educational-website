@@ -1,3 +1,4 @@
+import { missionCopy } from "./missionCopy.js";
 import { createContext, useContext } from "react";
 
 export const DEFAULT_LANGUAGE = "en";
@@ -43,6 +44,7 @@ export const languageMap = Object.fromEntries(
 export const routePaths = [
   "/",
   "/tracker",
+  "/station",
   "/learn",
   "/see-the-iss",
   "/gallery",
@@ -1313,6 +1315,12 @@ const da = {
 };
 
 export const translations = { en, de, da };
+for (const [language, translation] of Object.entries(translations)) {
+  const copy = missionCopy[language];
+  translation.nav.splice(2, 0, { href: "/station", label: copy.nav });
+  translation.seo.routes["/station"] = { title: `${copy.title} – ISS Explorer`, description: copy.intro };
+  translation.sidebar.labels.visibility = copy.measured;
+}
 
 const I18nContext = createContext({
   language: DEFAULT_LANGUAGE,

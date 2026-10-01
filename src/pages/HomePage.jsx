@@ -1,3 +1,6 @@
+import { StationBrief } from "../components/sections/StationBrief.jsx";
+import { DeferredContent } from "../components/ui/DeferredContent";
+import { MissionBrief } from "../components/sections/MissionBrief";
 import { FactStrip } from "../components/sections/FactStrip";
 import { MediaGallery } from "../components/sections/MediaGallery";
 import { SidebarPanel } from "../components/panels/SidebarPanel";
@@ -25,6 +28,7 @@ export function HomePage({ telemetry, scene }) {
               <StatusPill status={status} error={error} />
               <span className="live-line">{t.home.liveLine(liveSpeed)}</span>
             </div>
+            <span className="mission-eyebrow">ISS EXPLORER <span> / </span> MISSION CONTROL</span>
             <h1>{t.home.title}</h1>
             <p>{t.home.intro}</p>
             <div className="hero-actions" aria-label="Homepage shortcuts">
@@ -38,6 +42,7 @@ export function HomePage({ telemetry, scene }) {
           </div>
 
           <figure className="hero-visual hero-visual-compact">
+            <div className="mission-image-label"><span>ISS / 25544</span><span>LOW EARTH ORBIT</span></div>
             <img
               src={HERO_IMAGE}
               alt={t.home.heroAlt}
@@ -50,13 +55,15 @@ export function HomePage({ telemetry, scene }) {
       </header>
 
       <FactStrip telemetry={telemetry} />
+      <StationBrief compact />
+      <MissionBrief telemetry={telemetry} />
 
       <section className="tracker-section tracker-preview" id="live-tracker">
         <SectionHeader kicker={t.home.trackerKicker} title={t.home.trackerTitle}>
           {t.home.trackerIntro}
         </SectionHeader>
         <div className="tracker-grid">
-          <div className="tracker-scene">{scene}</div>
+          <div className="tracker-scene"><DeferredContent>{scene}</DeferredContent></div>
           <SidebarPanel telemetry={telemetry} />
         </div>
         <div className="section-cta-row">
@@ -116,20 +123,7 @@ export function HomePage({ telemetry, scene }) {
         </a>
       </div>
 
-      <section className="final-cta">
-        <h2>{t.home.finalTitle}</h2>
-        <div className="hero-actions">
-          <a className="button-primary" href={localizedPath("/tracker")}>
-            {t.home.actions.tracker}
-          </a>
-          <a className="button-secondary" href={localizedPath("/learn")}>
-            {t.home.actions.learn}
-          </a>
-          <a className="button-secondary" href={localizedPath("/gallery#livestream")}>
-            {t.home.actions.nasaLive}
-          </a>
-        </div>
-      </section>
+
     </>
   );
 }

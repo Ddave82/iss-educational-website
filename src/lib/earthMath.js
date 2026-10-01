@@ -71,16 +71,6 @@ export function latLonToVector3(latitude, longitude, radius) {
   return new THREE.Vector3(x, y, z);
 }
 
-function createEastVector(longitude) {
-  const longitudeRadians = toRadians(longitude);
-
-  return new THREE.Vector3(
-    Math.cos(longitudeRadians),
-    0,
-    -Math.sin(longitudeRadians)
-  ).normalize();
-}
-
 export function getOrbitRadius(altitude, earthRadius) {
   const safeAltitude = Number.isFinite(altitude)
     ? altitude
@@ -142,53 +132,6 @@ export function toTrailSegments(history, radius) {
   flushTrailSegment(segments, currentSegment);
 
   return segments;
-}
-
-export function createOrbitPreviewPoints(snapshot, earthRadius, pointCount = 220) {
-  if (
-    !snapshot ||
-    !Number.isFinite(snapshot.latitude) ||
-    !Number.isFinite(snapshot.longitude) ||
-    !Number.isFinite(snapshot.heading)
-  ) {
-    return [];
-  }
-
-  const orbitRadius = getOrbitRadius(snapshot.altitude, earthRadius);
-  const surfaceVector = latLonToVector3(
-    snapshot.latitude,
-    snapshot.longitude,
-    1
-  ).normalize();
-  const eastVector = createEastVector(snapshot.longitude);
-  const northReference = new THREE.Vector3(0, 1, 0);
-  const northVector = northReference
-    .clone()
-    .sub(surfaceVector.clone().multiplyScalar(surfaceVector.dot(northReference)))
-    .normalize();
-  const headingRadians = toRadians(snapshot.heading);
-  const tangentVector = northVector
-    .multiplyScalar(Math.cos(headingRadians))
-    .add(eastVector.multiplyScalar(Math.sin(headingRadians)))
-    .normalize();
-  const orbitAxis = new THREE.Vector3()
-    .crossVectors(surfaceVector, tangentVector)
-    .normalize();
-
-  if (orbitAxis.lengthSq() < 0.000001) {
-    return [];
-  }
-
-  const points = [];
-  const baseOrbitVector = surfaceVector.clone().multiplyScalar(orbitRadius);
-
-  for (let step = 0; step <= pointCount; step += 1) {
-    const angle = (step / pointCount) * Math.PI * 2;
-    const point = baseOrbitVector.clone().applyAxisAngle(orbitAxis, angle);
-    points.push(point.toArray());
-  }
-
-  return points;
 }
 
 function createCanvasTexture(drawTexture, width = 2304, height = 1152) {

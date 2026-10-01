@@ -2,12 +2,13 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Layout } from "./components/layout/Layout";
 import { PageHero } from "./components/ui/PageHero";
 import { useIssTelemetry } from "./hooks/useIssTelemetry";
-import { AboutDataPage } from "./pages/AboutDataPage";
-import { GalleryPage } from "./pages/GalleryPage";
+const AboutDataPage = lazy(() => import("./pages/AboutDataPage").then(module => ({ default: module.AboutDataPage })));
+const GalleryPage = lazy(() => import("./pages/GalleryPage").then(module => ({ default: module.GalleryPage })));
 import { HomePage } from "./pages/HomePage";
-import { LearnPage } from "./pages/LearnPage";
-import { SeeTheIssPage } from "./pages/SeeTheIssPage";
-import { TrackerPage } from "./pages/TrackerPage";
+const LearnPage = lazy(() => import("./pages/LearnPage").then(module => ({ default: module.LearnPage })));
+const SeeTheIssPage = lazy(() => import("./pages/SeeTheIssPage").then(module => ({ default: module.SeeTheIssPage })));
+const StationPage = lazy(() => import("./pages/StationPage").then(module => ({ default: module.StationPage })));
+const TrackerPage = lazy(() => import("./pages/TrackerPage").then(module => ({ default: module.TrackerPage })));
 import {
   I18nProvider,
   languageMap,
@@ -145,7 +146,7 @@ function usePathRouting() {
         !anchor ||
         anchor.target ||
         anchor.hasAttribute("download") ||
-        event.defaultPrevented
+        event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
       ) {
         return;
       }
@@ -295,6 +296,8 @@ function App() {
       <HomePage telemetry={telemetry} scene={trackerScene} />
     ) : currentPath === "/tracker" ? (
       <TrackerPage telemetry={telemetry} scene={trackerScene} />
+    ) : currentPath === "/station" ? (
+      <StationPage />
     ) : currentPath === "/learn" ? (
       <LearnPage />
     ) : currentPath === "/see-the-iss" ? (
@@ -309,7 +312,7 @@ function App() {
 
   return (
     <I18nProvider language={language}>
-      <Layout currentPath={currentPath}>{page}</Layout>
+      <Layout currentPath={currentPath}><Suspense fallback={<div className="route-loading" role="status">…</div>}>{page}</Suspense></Layout>
     </I18nProvider>
   );
 }

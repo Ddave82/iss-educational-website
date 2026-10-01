@@ -19,7 +19,7 @@ export function SidebarPanel({ telemetry }) {
 
   const trailWindow =
     history.length > 1
-      ? t.sidebar.pointsTrail(history.length, (((history.length - 1) * 10) / 60).toFixed(1))
+      ? t.sidebar.pointsTrail(history.length, ((history.at(-1).timestamp - history[0].timestamp) / 60).toFixed(1))
       : t.sidebar.buildingTrail;
 
   return (

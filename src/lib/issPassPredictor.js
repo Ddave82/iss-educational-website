@@ -2,12 +2,12 @@ import {
   ecfToLookAngles,
   eciToEcf,
   gstime,
-  propagate,
-  twoline2satrec
+  propagate
 } from "satellite.js";
 
-const ISS_TLE_SOURCE = "https://api.wheretheiss.at/v1/satellites/25544/tles";
-const EARTH_RADIUS_KM = 6378.137;
+import { getObserverSunElevation, isSatelliteSunlit } from "./astronomy.js";
+import { parseIssTle } from "./orbitPrediction.js";
+export { fetchIssTle } from "./orbitPrediction.js";
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 const PREDICTION_HOURS = 48;
@@ -26,62 +26,6 @@ function toDegrees(value) {
 
 function normalizeDegrees(value) {
   return ((value % 360) + 360) % 360;
-}
-
-function getJulianDate(date) {
-  return date.getTime() / 86400000 + 2440587.5;
-}
-
-function getSunVector(date) {
-  const daysSinceJ2000 = getJulianDate(date) - 2451545.0;
-  const meanLongitude = normalizeDegrees(280.460 + 0.9856474 * daysSinceJ2000);
-  const meanAnomaly = normalizeDegrees(357.528 + 0.9856003 * daysSinceJ2000);
-  const meanAnomalyRad = toRadians(meanAnomaly);
-  const eclipticLongitude = normalizeDegrees(
-    meanLongitude +
-      1.915 * Math.sin(meanAnomalyRad) +
-      0.02 * Math.sin(2 * meanAnomalyRad)
-  );
-  const eclipticLongitudeRad = toRadians(eclipticLongitude);
-  const obliquityRad = toRadians(23.439 - 0.0000004 * daysSinceJ2000);
-
-  return {
-    x: Math.cos(eclipticLongitudeRad),
-    y: Math.cos(obliquityRad) * Math.sin(eclipticLongitudeRad),
-    z: Math.sin(obliquityRad) * Math.sin(eclipticLongitudeRad)
-  };
-}
-
-function getObserverSunElevation(date, latitude, longitude) {
-  const sunVector = getSunVector(date);
-  const rightAscension = Math.atan2(sunVector.y, sunVector.x);
-  const declination = Math.asin(sunVector.z);
-  const localSiderealTime = gstime(date) + toRadians(longitude);
-  const hourAngle = localSiderealTime - rightAscension;
-  const latitudeRad = toRadians(latitude);
-  const elevation = Math.asin(
-    Math.sin(latitudeRad) * Math.sin(declination) +
-      Math.cos(latitudeRad) * Math.cos(declination) * Math.cos(hourAngle)
-  );
-
-  return toDegrees(elevation);
-}
-
-function isSatelliteSunlit(positionEci, date) {
-  const sunVector = getSunVector(date);
-  const satelliteDotSun =
-    positionEci.x * sunVector.x +
-    positionEci.y * sunVector.y +
-    positionEci.z * sunVector.z;
-  const satelliteDistanceSquared =
-    positionEci.x ** 2 + positionEci.y ** 2 + positionEci.z ** 2;
-  const distanceFromSunLineSquared =
-    satelliteDistanceSquared - satelliteDotSun ** 2;
-
-  return !(
-    satelliteDotSun < 0 &&
-    distanceFromSunLineSquared < EARTH_RADIUS_KM ** 2
-  );
 }
 
 function azimuthToCompass(azimuthRadians) {
@@ -134,31 +78,10 @@ function validateCoordinates(latitude, longitude) {
   }
 }
 
-export async function fetchIssTle({ signal } = {}) {
-  const response = await fetch(ISS_TLE_SOURCE, {
-    signal,
-    headers: {
-      Accept: "application/json"
-    }
-  });
-
-  if (!response.ok) {
-    throw new Error(`ISS TLE request failed: ${response.status}`);
-  }
-
-  const payload = await response.json();
-
-  if (!payload.line1 || !payload.line2) {
-    throw new Error("ISS TLE response is incomplete.");
-  }
-
-  return payload;
-}
-
 export function predictVisibleIssPasses({ latitude, longitude }, tle) {
   validateCoordinates(latitude, longitude);
 
-  const satrec = twoline2satrec(tle.line1, tle.line2);
+  const { satellite: satrec } = parseIssTle(tle);
   const observerGd = {
     latitude: toRadians(latitude),
     longitude: toRadians(longitude),
